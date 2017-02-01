@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/recipeCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="7dp"
+    card_view:cardCornerRadius="@dimen/recycler_card_corner_radius"
+    card_view:cardElevation="@dimen/recycler_card_elevation"
+    card_view:cardBackgroundColor="@android:color/white">
+
+    <ImageView
+        android:id="@+id/recycler_item_recipe_image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"/>
+
+    <!-- Used for the ripple effect on touch -->
+    <LinearLayout
+        android:id="@+id/recycler_item_recipe_holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:selectableItemBackground"
+        android:orientation="horizontal" />
+
+    <LinearLayout
+        android:id="@+id/recycler_item_recipe_name_holder"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/recycler_title_height"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/recycler_item_recipe_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="left"
+            android:paddingLeft="@dimen/recycler_title_padding_left"
+            android:textAppearance="@style/CollapsedAppBar"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
