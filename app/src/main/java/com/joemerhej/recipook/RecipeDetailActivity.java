@@ -1,31 +1,27 @@
 package com.joemerhej.recipook;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import static android.R.id.list;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 
 public class RecipeDetailActivity extends AppCompatActivity
@@ -34,9 +30,10 @@ public class RecipeDetailActivity extends AppCompatActivity
     public static final String EXTRA_PARAM_ID = "recipe_id";
 
     // General Variables
-    public Recipe mRecipe;              // recipe in question
-    public int mRecipeIndex;            // index of recipe in question
-    public boolean mInEditMode;         // if the activity is now in edit mode
+    public Recipe mRecipe;                      // recipe in question
+    public int mRecipeIndex;                    // index of recipe in question
+    public boolean mInEditMode;                 // if the activity is now in edit mode
+    public Recipe mRecipeBeforeEdit;            // save a copy for undo edit changes
 
     // views: toolbar area
     private ImageView mImageView;
@@ -73,7 +70,10 @@ public class RecipeDetailActivity extends AppCompatActivity
 
         // get the recipe from the index in the extra
         mRecipeIndex = getIntent().getIntExtra(EXTRA_PARAM_ID, 0);
-        mRecipe = RecipeData.Instance().getRecipeList().get(mRecipeIndex);
+        mRecipe = RecipeData.Instance().getRecipeList().get(mRecipeIndex); // this is a shallow copy
+
+        // make a deep copy of the recipe to hold for canceling changes
+        mRecipeBeforeEdit = new Recipe(mRecipe.name, mRecipe.imageName, mRecipe.ingredients, mRecipe.directions);
 
         // set general variables
         mInEditMode = false;
@@ -143,45 +143,18 @@ public class RecipeDetailActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
+                // toggle edit mode
                 mInEditMode = !mInEditMode;
 
-                String editMode = mInEditMode ? "ON." : "OFF.";
-                Snackbar.make(view, "Edit mode is now " + editMode, Snackbar.LENGTH_SHORT)
-                        .setAction("Action", null)
-                        .show();
-
-                // what's in edit mode
+                // if in edit mode
                 if (mInEditMode)
                 {
-
-                    // change the main fab icon
-                    mMainFab.setImageResource(android.R.drawable.ic_dialog_email);
-
-                    // make the edit views visible
-                    mEditAddIngredientLinearLayout.setVisibility(View.VISIBLE);
-                    mEditAddDirectionLinearLayout.setVisibility(View.VISIBLE);
-
-                    // notify the recycler view adapters so they make the right changes to theirs views
-                    mIngredientListAdapter.notifyDataSetChanged();
-                    mDirectionListAdapter.notifyDataSetChanged();
+                    engageEditMode();
                 }
-                // what's in view mode
+                // if in view mode (or when done editing)
                 else
                 {
-                    // change the main fab icon
-                    mMainFab.setImageResource(android.R.drawable.ic_menu_edit);
-
-                    // make the edit views invisible
-                    mEditAddIngredientLinearLayout.setVisibility(View.GONE);
-                    mEditAddDirectionLinearLayout.setVisibility(View.GONE);
-
-                    // notify the recycler view adapters so they make the right changes to theirs views
-                    mIngredientListAdapter.notifyDataSetChanged();
-                    mDirectionListAdapter.notifyDataSetChanged();
-
-                    // hide the keyboard
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    engageViewMode();
                 }
             }
         });
@@ -189,6 +162,49 @@ public class RecipeDetailActivity extends AppCompatActivity
         // additional set ups
         loadRecipe();
         getPhoto();
+    }
+
+    // what happens when the back button is pressed
+    @Override
+    public void onBackPressed()
+    {
+        // if the user is in Edit mode show the dialog to save/discard/cancel
+        if (mInEditMode)
+        {
+            // set up the dialog
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+            alertDialogBuilder.setMessage("Save Changes?");
+
+            alertDialogBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener()
+            {
+                public void onClick(DialogInterface dialog, int id)
+                {
+                    // user hits Save button
+                    mInEditMode = false;
+
+                    engageViewMode();
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Discard", new DialogInterface.OnClickListener()
+            {
+                public void onClick(DialogInterface dialog, int id)
+                {
+                    // user hits Discard button
+                    mInEditMode = false;
+                    RecipeData.Instance().getRecipeList().set(mRecipeIndex, mRecipeBeforeEdit);
+                    recreate();
+                }
+            });
+
+            AlertDialog dialog = alertDialogBuilder.create();
+            dialog.show();
+
+        }
+        // else this is normal app behavior (will go back to main activity)
+        else
+            super.onBackPressed();
     }
 
     // loads the recipe (title and image url for now)
@@ -208,6 +224,43 @@ public class RecipeDetailActivity extends AppCompatActivity
         Palette mPalette = Palette.from(photo).generate();
 
         mCollapsingToolbarLayout.setContentScrim(new ColorDrawable(mPalette.getDarkVibrantColor(defaultColor)));
+    }
+
+    // what happens when the activity is in edit mode
+    public void engageEditMode()
+    {
+        // change the main fab icon
+        mMainFab.setImageResource(android.R.drawable.ic_dialog_email);
+
+        // make the edit views visible
+        mEditAddIngredientLinearLayout.setVisibility(View.VISIBLE);
+        mEditAddDirectionLinearLayout.setVisibility(View.VISIBLE);
+
+        // notify the recycler view adapters so they make the right changes to theirs views
+        mIngredientListAdapter.notifyDataSetChanged();
+        mDirectionListAdapter.notifyDataSetChanged();
+    }
+
+    // what happens when the activity is not in edit mode
+    public void engageViewMode()
+    {
+        // save a copy of the new edited recipe on user edit validation
+        mRecipeBeforeEdit.MakeCopyOf(mRecipe);
+
+        // change the main fab icon
+        mMainFab.setImageResource(android.R.drawable.ic_menu_edit);
+
+        // make the edit views invisible
+        mEditAddIngredientLinearLayout.setVisibility(View.GONE);
+        mEditAddDirectionLinearLayout.setVisibility(View.GONE);
+
+        // notify the recycler view adapters so they make the right changes to theirs views
+        mIngredientListAdapter.notifyDataSetChanged();
+        mDirectionListAdapter.notifyDataSetChanged();
+
+        // hide the keyboard
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(this.findViewById(android.R.id.content).getWindowToken(), 0);
     }
 
     // method to be called when add ingredient button pressed
@@ -238,4 +291,6 @@ public class RecipeDetailActivity extends AppCompatActivity
 
         mEditAddDirectionText.getText().clear();
     }
+
+
 }
