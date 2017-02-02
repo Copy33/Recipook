@@ -108,6 +108,12 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         mIngredientsList = ingredients;
     }
 
+    // method to update the data used when canceling/discarding changes (like constructor)
+    public void UpdateDataWith(ArrayList<Ingredient> ingredients)
+    {
+        mIngredientsList = ingredients;
+    }
+
     // setter for the fab click listener
     public void setOnItemFabClickListener(final OnItemFabClickListener itemFabClickListener)
     {

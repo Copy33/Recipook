@@ -112,6 +112,12 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
         mDirectionsList = directions;
     }
 
+    // method to update the data used when canceling/discarding changes (like constructor)
+    public void UpdateDataWith(ArrayList<String> directions)
+    {
+        mDirectionsList = directions;
+    }
+
     // setter for fab click listener
     public void setOnItemFabClickListener(final OnItemFabClickListener itemFabClickListener)
     {

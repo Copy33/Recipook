@@ -193,8 +193,15 @@ public class RecipeDetailActivity extends AppCompatActivity
                 {
                     // user hits Discard button
                     mInEditMode = false;
-                    RecipeData.Instance().getRecipeList().set(mRecipeIndex, mRecipeBeforeEdit);
-                    recreate();
+
+                    mRecipe.MakeCopyOf(mRecipeBeforeEdit);
+                    mIngredientListAdapter.UpdateDataWith(mRecipe.ingredients);
+                    mDirectionListAdapter.UpdateDataWith(mRecipe.directions);
+
+                    mDirectionListAdapter.notifyDataSetChanged();
+                    mIngredientListAdapter.notifyDataSetChanged();
+
+                    engageViewMode();
                 }
             });
 
