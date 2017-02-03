@@ -34,6 +34,7 @@ public class RecipeDetailActivity extends AppCompatActivity
     public int mRecipeIndex;                    // index of recipe in question
     public boolean mInEditMode;                 // if the activity is now in edit mode
     public Recipe mRecipeBeforeEdit;            // save a copy for undo edit changes
+    public boolean mAtLeastOneChange;           // so the app won't ask for discard/save changes if that didn't happen
 
     // views: toolbar area
     private ImageView mImageView;
@@ -77,6 +78,7 @@ public class RecipeDetailActivity extends AppCompatActivity
 
         // set general variables
         mInEditMode = false;
+        mAtLeastOneChange = false;
 
         // fill in the views
         mImageView = (ImageView) findViewById(R.id.recycler_item_recipe_image);
@@ -95,6 +97,7 @@ public class RecipeDetailActivity extends AppCompatActivity
                 RecipeData.Instance().removeIngredient(mRecipeIndex, position);
                 mIngredientListAdapter.notifyItemRemoved(position);
                 mEditAddIngredientText.requestFocus();
+                mAtLeastOneChange = true;
             }
         };
 
@@ -108,6 +111,7 @@ public class RecipeDetailActivity extends AppCompatActivity
                 mDirectionListAdapter.notifyItemRemoved(position);
                 mDirectionListAdapter.notifyItemRangeChanged(position, mDirectionListAdapter.getItemCount());   // this updates the numbers
                 mEditAddDirectionText.requestFocus();
+                mAtLeastOneChange = true;
             }
         };
 
@@ -168,45 +172,49 @@ public class RecipeDetailActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        // if the user is in Edit mode show the dialog to save/discard/cancel
+        // if the user is in Edit mode show the dialog to save/discard/cancel if at least one change happened
         if (mInEditMode)
         {
-            // set up the dialog
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-            alertDialogBuilder.setMessage("Save Changes?");
-
-            alertDialogBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener()
+            if(!mAtLeastOneChange)
             {
-                public void onClick(DialogInterface dialog, int id)
-                {
-                    // user hits Save button
-                    mInEditMode = false;
-
-                    engageViewMode();
-                }
-            });
-
-            alertDialogBuilder.setNegativeButton("Discard", new DialogInterface.OnClickListener()
+                engageViewMode();
+            }
+            // if at least one change happened
+            else
             {
-                public void onClick(DialogInterface dialog, int id)
+                // set up the dialog
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+                alertDialogBuilder.setMessage("Save Changes?");
+
+                alertDialogBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener()
                 {
-                    // user hits Discard button
-                    mInEditMode = false;
+                    public void onClick(DialogInterface dialog, int id)
+                    {
+                        // user hits Save button
+                        engageViewMode();
+                    }
+                });
 
-                    mRecipe.MakeCopyOf(mRecipeBeforeEdit);
-                    mIngredientListAdapter.UpdateDataWith(mRecipe.ingredients);
-                    mDirectionListAdapter.UpdateDataWith(mRecipe.directions);
+                alertDialogBuilder.setNegativeButton("Discard", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int id)
+                    {
+                        // user hits Discard button, reset recipe to last saved recipe
+                        mRecipe.MakeCopyOf(mRecipeBeforeEdit);
+                        mIngredientListAdapter.UpdateDataWith(mRecipe.ingredients);
+                        mDirectionListAdapter.UpdateDataWith(mRecipe.directions);
 
-                    mDirectionListAdapter.notifyDataSetChanged();
-                    mIngredientListAdapter.notifyDataSetChanged();
+                        mDirectionListAdapter.notifyDataSetChanged();
+                        mIngredientListAdapter.notifyDataSetChanged();
 
-                    engageViewMode();
-                }
-            });
+                        engageViewMode();
+                    }
+                });
 
-            AlertDialog dialog = alertDialogBuilder.create();
-            dialog.show();
+                AlertDialog dialog = alertDialogBuilder.create();
+                dialog.show();
+            }
 
         }
         // else this is normal app behavior (will go back to main activity)
@@ -257,9 +265,15 @@ public class RecipeDetailActivity extends AppCompatActivity
         // change the main fab icon
         mMainFab.setImageResource(android.R.drawable.ic_menu_edit);
 
+        // reset edit variables
+        mInEditMode = false;
+        mAtLeastOneChange = false;
+
         // make the edit views invisible
         mEditAddIngredientLinearLayout.setVisibility(View.GONE);
         mEditAddDirectionLinearLayout.setVisibility(View.GONE);
+        mEditAddDirectionText.getText().clear();
+        mEditAddIngredientText.getText().clear();
 
         // notify the recycler view adapters so they make the right changes to theirs views
         mIngredientListAdapter.notifyDataSetChanged();
@@ -278,6 +292,8 @@ public class RecipeDetailActivity extends AppCompatActivity
         if (newIngredientText.isEmpty())
             return;
 
+        mAtLeastOneChange = true;
+
         Ingredient newIngredient = new Ingredient(1, Unit.unit, newIngredientText);
         RecipeData.Instance().addIngredient(mRecipeIndex, newIngredient);
         mIngredientListAdapter.notifyItemInserted(mRecipe.ingredients.size() - 1);
@@ -292,6 +308,8 @@ public class RecipeDetailActivity extends AppCompatActivity
 
         if (newDirectionText.isEmpty())
             return;
+
+        mAtLeastOneChange = true;
 
         RecipeData.Instance().addDirection(mRecipeIndex, newDirectionText);
         mDirectionListAdapter.notifyItemInserted(mRecipe.directions.size() - 1);
