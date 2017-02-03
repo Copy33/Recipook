@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
@@ -238,7 +239,7 @@ public class RecipeDetailActivity extends AppCompatActivity
 
         Palette mPalette = Palette.from(photo).generate();
 
-        mCollapsingToolbarLayout.setContentScrim(new ColorDrawable(mPalette.getDarkVibrantColor(defaultColor)));
+        //mCollapsingToolbarLayout.setContentScrim(new ColorDrawable(mPalette.getDarkVibrantColor(defaultColor)));
     }
 
     // what happens when the activity is in edit mode
@@ -317,5 +318,43 @@ public class RecipeDetailActivity extends AppCompatActivity
         mEditAddDirectionText.getText().clear();
     }
 
+    // method to be called when the collapsing toolbar layout is clicked
+    public void onClickDetailCollapsingToolbarLayout(View view)
+    {
+        // only allow changes in edit mode
+        if(mInEditMode)
+        {
+            // set up the dialog
+            final EditText newTitleEditText = new EditText(this);
+            newTitleEditText.setText(mRecipe.name);
+            newTitleEditText.setSelection(newTitleEditText.length());
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+            alertDialogBuilder.setMessage("Recipe Name:");
+
+            alertDialogBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener()
+            {
+                public void onClick(DialogInterface dialog, int id)
+                {
+                    String newTitle = newTitleEditText.getText().toString();
+                    mCollapsingToolbarLayout.setTitle(newTitle);
+                    mRecipe.name = newTitle;
+                    mRecipeBeforeEdit.name = newTitle;
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener()
+            {
+                public void onClick(DialogInterface dialog, int id)
+                {
+                    // nothing happens if the user presses discard but we need this empty listener
+                }
+            });
+
+            alertDialogBuilder.setView(newTitleEditText);
+            alertDialogBuilder.show();
+        }
+    }
 
 }
