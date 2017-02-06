@@ -90,7 +90,6 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         @Override
         public void afterTextChanged(Editable s)
         {
-            //mIngredientsList.get(mIngredientPosition).quantity = RecipookParser.Instance().GetQuantityStringFromIngredient(mIngredientsList.get(mIngredientPosition));
             mIngredientsList.get(mIngredientPosition).quantity = RecipookParser.Instance().GetQuantityFromQuantityString(s.toString());
             mIngredientsList.get(mIngredientPosition).unit = RecipookParser.Instance().GetUnitFromQuantityString(s.toString());
         }

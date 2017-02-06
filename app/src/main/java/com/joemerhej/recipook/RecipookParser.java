@@ -58,6 +58,9 @@ public final class RecipookParser
     {
         String ingredientQuantity = String.valueOf(ingredient.quantity);
 
+        if(ingredient.quantity == 0)
+            return "";
+
         if(ingredient.quantity % 1 == 0)
         {
             int ingredientQuantityInt = (int) ingredient.quantity;
@@ -92,10 +95,13 @@ public final class RecipookParser
     // method that will get quantity from quantity string
     public double GetQuantityFromQuantityString(String s)
     {
-        if(s.isEmpty())
+        if(s == null || s.isEmpty())
             return 0;
 
         String[] strings = s.split("\\s+");
+
+        if(strings.length == 0)
+            return 0;
 
         if(strings[0].equals("1/4"))
         {
@@ -127,7 +133,7 @@ public final class RecipookParser
     // method that will get unit from quantity string
     public Unit GetUnitFromQuantityString(String s)
     {
-        if(s.isEmpty())
+        if(s == null || s.isEmpty())
             return Unit.unit;
 
         String[] strings = s.split("\\s+");
