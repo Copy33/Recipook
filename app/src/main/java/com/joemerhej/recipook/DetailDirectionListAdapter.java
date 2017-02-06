@@ -28,6 +28,7 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
     // list of directions
     private ArrayList<String> mDirectionsList;
 
+    // click listener for the fabs that activity will deal with
     private OnItemFabClickListener mFabClickListener;
 
     // interface that activities that use this need to implement

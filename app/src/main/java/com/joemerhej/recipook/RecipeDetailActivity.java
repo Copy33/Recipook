@@ -72,7 +72,7 @@ public class RecipeDetailActivity extends AppCompatActivity
 
         // get the recipe from the index in the extra
         mRecipeIndex = getIntent().getIntExtra(EXTRA_PARAM_ID, 0);
-        mRecipe = RecipeData.Instance().getRecipeList().get(mRecipeIndex); // this is a shallow copy
+        mRecipe = RecipeData.Instance().getRecipeList().get(mRecipeIndex); // this is a shallow copy, mRecipe is now pointing at data
 
         // make a deep copy of the recipe to hold for canceling changes
         mRecipeBeforeEdit = new Recipe(mRecipe.name, mRecipe.imageName, mRecipe.ingredients, mRecipe.directions);
@@ -95,7 +95,7 @@ public class RecipeDetailActivity extends AppCompatActivity
             @Override
             public void onItemFabClick(View view, int position)
             {
-                RecipeData.Instance().removeIngredient(mRecipeIndex, position);
+                mRecipe.ingredients.remove(position);
                 mIngredientListAdapter.notifyItemRemoved(position);
                 mEditAddIngredientText.requestFocus();
                 mAtLeastOneChange = true;
@@ -108,7 +108,7 @@ public class RecipeDetailActivity extends AppCompatActivity
             @Override
             public void onItemFabClick(View view, int position)
             {
-                RecipeData.Instance().removeDirection(mRecipeIndex, position);
+                mRecipe.directions.remove(position);
                 mDirectionListAdapter.notifyItemRemoved(position);
                 mDirectionListAdapter.notifyItemRangeChanged(position, mDirectionListAdapter.getItemCount());   // this updates the numbers
                 mEditAddDirectionText.requestFocus();
@@ -140,7 +140,7 @@ public class RecipeDetailActivity extends AppCompatActivity
         mEditAddDirectionText = (EditText) findViewById(R.id.detail_direction_edit_text);
         mEditAddDirectionButton = (Button) findViewById(R.id.detail_direction_add_button);
 
-        // set up the main fab
+        // set up the main fab (top right of the screen)
         mMainFab = (FloatingActionButton) findViewById(R.id.recipeDetailFab);
         mMainFab.setOnClickListener(new View.OnClickListener()
         {
@@ -296,7 +296,7 @@ public class RecipeDetailActivity extends AppCompatActivity
         mAtLeastOneChange = true;
 
         Ingredient newIngredient = new Ingredient(1, Unit.unit, newIngredientText);
-        RecipeData.Instance().addIngredient(mRecipeIndex, newIngredient);
+        mRecipe.ingredients.add(newIngredient);
         mIngredientListAdapter.notifyItemInserted(mRecipe.ingredients.size() - 1);
 
         mEditAddIngredientText.getText().clear();
@@ -312,7 +312,7 @@ public class RecipeDetailActivity extends AppCompatActivity
 
         mAtLeastOneChange = true;
 
-        RecipeData.Instance().addDirection(mRecipeIndex, newDirectionText);
+        mRecipe.directions.add(newDirectionText);
         mDirectionListAdapter.notifyItemInserted(mRecipe.directions.size() - 1);
 
         mEditAddDirectionText.getText().clear();
