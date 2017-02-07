@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
@@ -141,7 +139,7 @@ public class RecipeDetailActivity extends AppCompatActivity
         mEditAddDirectionButton = (Button) findViewById(R.id.detail_direction_add_button);
 
         // set up the main fab (top right of the screen)
-        mMainFab = (FloatingActionButton) findViewById(R.id.recipeDetailFab);
+        mMainFab = (FloatingActionButton) findViewById(R.id.recipe_detail_main_fab);
         mMainFab.setOnClickListener(new View.OnClickListener()
         {
             // click listener for main fab
