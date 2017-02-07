@@ -289,17 +289,21 @@ public class RecipeDetailActivity extends AppCompatActivity
     public void onClickDetailAddIngredient(View view)
     {
         String newIngredientText = mEditAddIngredientText.getText().toString();
+        newIngredientText = newIngredientText.trim();
 
         if (newIngredientText.isEmpty())
             return;
 
         mAtLeastOneChange = true;
 
-        Ingredient newIngredient = new Ingredient(1, Unit.unit, newIngredientText);
-        mRecipe.ingredients.add(newIngredient);
-        mIngredientListAdapter.notifyItemInserted(mRecipe.ingredients.size() - 1);
+        Ingredient newIngredient = RecipookParser.Instance().GetIngredientFromIngredientString(newIngredientText);
+        if(newIngredient != null)
+        {
+            mRecipe.ingredients.add(newIngredient);
+            mIngredientListAdapter.notifyItemInserted(mRecipe.ingredients.size() - 1);
 
-        mEditAddIngredientText.getText().clear();
+            mEditAddIngredientText.getText().clear();
+        }
     }
 
     // method to be called when add direction button pressed
