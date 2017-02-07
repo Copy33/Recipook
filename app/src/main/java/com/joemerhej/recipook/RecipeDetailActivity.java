@@ -58,8 +58,12 @@ public class RecipeDetailActivity extends AppCompatActivity
     private EditText mEditAddDirectionText;
     private Button mEditAddDirectionButton;
 
-    // main fab
+    // views: fabs
     private FloatingActionButton mMainFab;
+    private com.github.clans.fab.FloatingActionMenu mMainFAM;
+    private com.github.clans.fab.FloatingActionButton mEditFab;
+    private com.github.clans.fab.FloatingActionButton mShareFab;
+    private com.github.clans.fab.FloatingActionButton mAddToShoppingListFab;
 
 
     @Override
@@ -162,6 +166,21 @@ public class RecipeDetailActivity extends AppCompatActivity
             }
         });
 
+        // set up the main fam and its children fabs
+        mMainFAM = (com.github.clans.fab.FloatingActionMenu) findViewById(R.id.recipe_detail_main_fam);
+        mMainFAM.setClosedOnTouchOutside(true);
+
+        mEditFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.recipe_detail_edit_fab);
+        mEditFab.setOnClickListener(onClickDetailFAMFabs);
+
+        mShareFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.recipe_detail_share_fab);
+        mShareFab.setOnClickListener(onClickDetailFAMFabs);
+        mShareFab.setEnabled(false);
+
+        mAddToShoppingListFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.recipe_detail_add_to_shopping_list_fab);
+        mAddToShoppingListFab.setOnClickListener(onClickDetailFAMFabs);
+        mAddToShoppingListFab.setEnabled(false);
+
         // additional set ups
         loadRecipe();
         getPhoto();
@@ -174,7 +193,7 @@ public class RecipeDetailActivity extends AppCompatActivity
         // if the user is in Edit mode show the dialog to save/discard/cancel if at least one change happened
         if (mInEditMode)
         {
-            if(!mAtLeastOneChange)
+            if (!mAtLeastOneChange)
             {
                 engageViewMode();
             }
@@ -211,6 +230,7 @@ public class RecipeDetailActivity extends AppCompatActivity
                     }
                 });
 
+                // show dialog
                 AlertDialog dialog = alertDialogBuilder.create();
                 dialog.show();
             }
@@ -238,6 +258,13 @@ public class RecipeDetailActivity extends AppCompatActivity
         Palette mPalette = Palette.from(photo).generate();
 
         //mCollapsingToolbarLayout.setContentScrim(new ColorDrawable(mPalette.getDarkVibrantColor(defaultColor)));
+    }
+
+    // what happens when the edit button is clicked
+    private void handleEditButtonClicked()
+    {
+        // here we should always switch to edit mode, then we will collapse the main FAM and set its icon to "ic_save_white_24dp"
+        // after its saved, or discared, the edit mode should be set to false again, which means this button will only turn on edit mode.
     }
 
     // what happens when the activity is in edit mode
@@ -295,7 +322,7 @@ public class RecipeDetailActivity extends AppCompatActivity
         mAtLeastOneChange = true;
 
         Ingredient newIngredient = RecipookParser.Instance().GetIngredientFromIngredientString(newIngredientText);
-        if(newIngredient != null)
+        if (newIngredient != null)
         {
             mRecipe.ingredients.add(newIngredient);
             mIngredientListAdapter.notifyItemInserted(mRecipe.ingredients.size() - 1);
@@ -324,7 +351,7 @@ public class RecipeDetailActivity extends AppCompatActivity
     public void onClickDetailCollapsingToolbarLayout(View view)
     {
         // only allow changes in edit mode
-        if(mInEditMode)
+        if (mInEditMode)
         {
             // set up the dialog
             final EditText newTitleEditText = new EditText(this);
@@ -358,5 +385,26 @@ public class RecipeDetailActivity extends AppCompatActivity
             alertDialogBuilder.show();
         }
     }
+
+    // click listeners for the menu fabs
+    private View.OnClickListener onClickDetailFAMFabs = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            switch (v.getId())
+            {
+                case R.id.recipe_detail_edit_fab:
+                    handleEditButtonClicked();
+                    break;
+
+                case R.id.recipe_detail_share_fab:
+                    break;
+
+                case R.id.recipe_detail_add_to_shopping_list_fab:
+                    break;
+            }
+        }
+    };
 
 }

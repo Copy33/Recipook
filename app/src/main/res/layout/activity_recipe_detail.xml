@@ -151,7 +151,7 @@
         android:src="@android:drawable/ic_menu_edit"/>
 
     <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/menu_red"
+        android:id="@+id/recipe_detail_main_fam"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingRight="10dp"
@@ -180,7 +180,7 @@
             app:fab_label="Share" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/recip_detail_add_to_shopping_list_fab"
+            android:id="@+id/recipe_detail_add_to_shopping_list_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add_shopping_cart_white_24dp"
