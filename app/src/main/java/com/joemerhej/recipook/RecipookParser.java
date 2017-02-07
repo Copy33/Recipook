@@ -1,5 +1,9 @@
 package com.joemerhej.recipook;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import static com.joemerhej.recipook.Unit.unit;
+
 /**
  * Created by Joe Merhej on 1/29/17.
  */
@@ -7,6 +11,14 @@ package com.joemerhej.recipook;
 public final class RecipookParser
 {
     private static RecipookParser Instance = null;
+
+    private static ArrayList<String> mSupportedUnitTexts = new ArrayList<>(
+            Arrays.asList("oz", "ounce", "ounces", "lb","lbs", "pd", "pds", "pound", "pounds", "pint", "pints", "pt", "pts", "cup", "cups",
+                            "cp", "cps", "tbsp", "tbsps", "tablespoon", "tablespoons", "tsp", "tsps", "teaspoon", "teaspoons", "kg", "kgs",
+                            "kilogram", "kilograms", "k", "ks", "kilo", "kilos", "g", "gs", "gram", "grams", "l", "ls", "liter", "liters",
+                            "ml", "mls", "milliliter", "milliliters", "milli", "millis", "unit", "units", "quart", "quarts", "q", "qs",
+                            "qrt", "qrts", "dash", "dashes", "dashs", "d")
+            );
 
 
     public static RecipookParser Instance()
@@ -17,10 +29,62 @@ public final class RecipookParser
         return Instance;
     }
 
-    // method that will take a user string and format it to an ingredient.
-    public Ingredient GetIngredientFromString(String text)
+
+    // method that will return ingredient from full ingredient string
+    public Ingredient GetIngredientFromIngredientString(String ingredientString)
     {
-        return null;
+        if(ingredientString == null || ingredientString.isEmpty())
+            return null;
+
+        double quantity = GetQuantityFromQuantityString(ingredientString);
+        Unit unit = GetUnitFromQuantityString(ingredientString);
+        String name = "";
+
+        ingredientString = ingredientString.trim();
+        String [] strings = ingredientString.split("\\s+");
+
+        if(strings.length == 0)
+            return null;
+
+        if(isValidQuantity(strings[0]))
+        {
+            if(strings.length > 1)
+            {
+                if(isValidUnit(strings[1]))
+                {
+                    if(strings.length > 2)
+                    {
+                        for(int i=2; i<strings.length; ++i)
+                            name += strings[i] + " ";
+
+                        return new Ingredient(quantity, unit, name);
+                    }
+                    else return new Ingredient(0, unit, "");
+                }
+                else
+                {
+                    for(int i=1; i<strings.length; ++i)
+                        name += strings[i] + " ";
+
+                    return new Ingredient(quantity, Unit.unit, name);
+                }
+            }
+            else return new Ingredient(quantity, Unit.unit, "");
+        }
+        else if (isValidUnit(strings[0]))
+        {
+            if(strings.length > 1)
+            {
+                for(int i=1; i<strings.length; ++i)
+                    name += strings[i] + " ";
+
+                return new Ingredient(1, unit, name);
+            }
+            else return new Ingredient(1, unit, "");
+        }
+        else return new Ingredient(0, Unit.unit, ingredientString);
+
+
     }
 
     // method that will format the unit and return it as a string.
@@ -44,7 +108,7 @@ public final class RecipookParser
         }
 
         // in case of "unit" return an empty text
-        if(ingredient.unit == Unit.unit)
+        if(ingredient.unit == unit)
         {
             ingredientUnit = "";
         }
@@ -92,11 +156,31 @@ public final class RecipookParser
         return ingredientQuantity;
     }
 
+    // returns if the string is a valid quantity
+    public boolean isValidQuantity(String s)
+    {
+        if(s.matches("-?\\d+(\\.\\d+)?") || s.equals("1/4") || s.equals("1/3") || s.equals("1/2") || s.equals("2/3") || s.equals("3/4"))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    // returns is the string is a valid unit
+    public boolean isValidUnit(String s)
+    {
+        s = s.toLowerCase();
+        return mSupportedUnitTexts.contains(s);
+    }
+
     // method that will get quantity from quantity string
     public double GetQuantityFromQuantityString(String s)
     {
         if(s == null || s.isEmpty())
             return 0;
+
+        s = s.trim();
 
         String[] strings = s.split("\\s+");
 
@@ -125,7 +209,11 @@ public final class RecipookParser
         }
         else if(strings[0].matches("-?\\d+(\\.\\d+)?"))
         {
-            return Double.valueOf(strings[0]);
+            double result = Double.valueOf(strings[0]);
+            if(result > 0)
+                return result;
+            else
+                return -result;
         }
         else return 0;
     }
@@ -136,68 +224,85 @@ public final class RecipookParser
         if(s == null || s.isEmpty())
             return Unit.unit;
 
-        String[] strings = s.split("\\s+");
+        s = s.trim();
 
-        if(strings.length < 2)
+        String[] strings = s.split("\\s+");
+        String evaluate;
+
+        if(strings.length == 0)
             return Unit.unit;
 
-        if(strings[1].toLowerCase().equals("oz") || strings[1].toLowerCase().equals("ounce") || strings[1].toLowerCase().equals("ounces"))
+        if(GetQuantityFromQuantityString(strings[0]) == 0)
+        {
+            if(!isValidUnit(strings[0]))
+                return Unit.unit;
+            else
+                evaluate = strings[0];
+        }
+        else
+        {
+            if(strings.length > 1)
+                evaluate = strings[1];
+            else
+                return Unit.unit;
+        }
+
+        if(evaluate.toLowerCase().equals("oz") || evaluate.toLowerCase().equals("ounce") || evaluate.toLowerCase().equals("ounces"))
         {
             return Unit.oz;
         }
-        else if(strings[1].toLowerCase().equals("lb") || strings[1].toLowerCase().equals("lbs") || strings[1].toLowerCase().equals("pd")
-                || strings[1].toLowerCase().equals("pds") || strings[1].toLowerCase().equals("pound") || strings[1].toLowerCase().equals("pounds"))
+        else if(evaluate.toLowerCase().equals("lb") || evaluate.toLowerCase().equals("lbs") || evaluate.toLowerCase().equals("pd")
+                || evaluate.toLowerCase().equals("pds") || evaluate.toLowerCase().equals("pound") || evaluate.toLowerCase().equals("pounds"))
         {
             return Unit.lb;
         }
-        else if(strings[1].toLowerCase().equals("pint") || strings[1].toLowerCase().equals("pints") || strings[1].toLowerCase().equals("pt") || strings[1].toLowerCase().equals("pts"))
+        else if(evaluate.toLowerCase().equals("pint") || evaluate.toLowerCase().equals("pints") || evaluate.toLowerCase().equals("pt") || evaluate.toLowerCase().equals("pts"))
         {
             return Unit.pint;
         }
-        else if(strings[1].toLowerCase().equals("cup") || strings[1].toLowerCase().equals("cups") || strings[1].toLowerCase().equals("cp") || strings[1].toLowerCase().equals("cps"))
+        else if(evaluate.toLowerCase().equals("cup") || evaluate.toLowerCase().equals("cups") || evaluate.toLowerCase().equals("cp") || evaluate.toLowerCase().equals("cps"))
         {
             return Unit.cup;
         }
-        else if(strings[1].toLowerCase().equals("tbsp") || strings[1].toLowerCase().equals("tbsps") || strings[1].toLowerCase().equals("tablespoon") || strings[1].toLowerCase().equals("tablespoons"))
+        else if(evaluate.toLowerCase().equals("tbsp") || evaluate.toLowerCase().equals("tbsps") || evaluate.toLowerCase().equals("tablespoon") || evaluate.toLowerCase().equals("tablespoons"))
         {
             return Unit.tbsp;
         }
-        else if(strings[1].toLowerCase().equals("tsp") || strings[1].toLowerCase().equals("tsps") || strings[1].toLowerCase().equals("teaspoon") || strings[1].toLowerCase().equals("teaspoons"))
+        else if(evaluate.toLowerCase().equals("tsp") || evaluate.toLowerCase().equals("tsps") || evaluate.toLowerCase().equals("teaspoon") || evaluate.toLowerCase().equals("teaspoons"))
         {
             return Unit.tsp;
         }
-        else if(strings[1].toLowerCase().equals("kg") || strings[1].toLowerCase().equals("kgs") || strings[1].toLowerCase().equals("kilogram") || strings[1].toLowerCase().equals("k")
-                || strings[1].toLowerCase().equals("ks") || strings[1].toLowerCase().equals("kilograms") || strings[1].toLowerCase().equals("kilo") || strings[1].toLowerCase().equals("kilos"))
+        else if(evaluate.toLowerCase().equals("kg") || evaluate.toLowerCase().equals("kgs") || evaluate.toLowerCase().equals("kilogram") || evaluate.toLowerCase().equals("k")
+                || evaluate.toLowerCase().equals("ks") || evaluate.toLowerCase().equals("kilograms") || evaluate.toLowerCase().equals("kilo") || evaluate.toLowerCase().equals("kilos"))
         {
             return Unit.kg;
         }
-        else if(strings[1].toLowerCase().equals("g") || strings[1].toLowerCase().equals("gs") || strings[1].toLowerCase().equals("gram") || strings[1].toLowerCase().equals("grams"))
+        else if(evaluate.toLowerCase().equals("g") || evaluate.toLowerCase().equals("gs") || evaluate.toLowerCase().equals("gram") || evaluate.toLowerCase().equals("grams"))
         {
             return Unit.gram;
         }
-        else if(strings[1].toLowerCase().equals("l") || strings[1].toLowerCase().equals("liter") || strings[1].toLowerCase().equals("ls") || strings[1].toLowerCase().equals("liters"))
+        else if(evaluate.toLowerCase().equals("l") || evaluate.toLowerCase().equals("liter") || evaluate.toLowerCase().equals("ls") || evaluate.toLowerCase().equals("liters"))
         {
             return Unit.liter;
         }
-        else if(strings[1].toLowerCase().equals("ml") || strings[1].toLowerCase().equals("mls") || strings[1].toLowerCase().equals("milliliter") || strings[1].toLowerCase().equals("milliliters")
-                || strings[1].toLowerCase().equals("milli") || strings[1].toLowerCase().equals("millis"))
+        else if(evaluate.toLowerCase().equals("ml") || evaluate.toLowerCase().equals("mls") || evaluate.toLowerCase().equals("milliliter") || evaluate.toLowerCase().equals("milliliters")
+                || evaluate.toLowerCase().equals("milli") || evaluate.toLowerCase().equals("millis"))
         {
             return Unit.ml;
         }
-        else if(strings[1].toLowerCase().equals("unit") || strings[1].toLowerCase().equals("units"))
+        else if(evaluate.toLowerCase().equals("unit") || evaluate.toLowerCase().equals("units"))
         {
-            return Unit.unit;
+            return unit;
         }
-        else if(strings[1].toLowerCase().equals("quart") || strings[1].toLowerCase().equals("quarts") || strings[1].toLowerCase().equals("q") || strings[1].toLowerCase().equals("qs")
-                || strings[1].toLowerCase().equals("qrt") || strings[1].toLowerCase().equals("qrts"))
+        else if(evaluate.toLowerCase().equals("quart") || evaluate.toLowerCase().equals("quarts") || evaluate.toLowerCase().equals("q") || evaluate.toLowerCase().equals("qs")
+                || evaluate.toLowerCase().equals("qrt") || evaluate.toLowerCase().equals("qrts"))
         {
             return Unit.quart;
         }
-        else if(strings[1].toLowerCase().equals("dash") || strings[1].toLowerCase().equals("dashes") || strings[1].toLowerCase().equals("dashs"))
+        else if(evaluate.toLowerCase().equals("dash") || evaluate.toLowerCase().equals("dashes") || evaluate.toLowerCase().equals("dashs") || evaluate.toLowerCase().equals("d"))
         {
             return Unit.dash;
         }
-
         else return Unit.unit;
     }
 }
