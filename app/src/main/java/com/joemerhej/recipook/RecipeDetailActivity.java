@@ -144,41 +144,21 @@ public class RecipeDetailActivity extends AppCompatActivity
 
         // set up the main fab (top right of the screen)
         mMainFab = (FloatingActionButton) findViewById(R.id.recipe_detail_main_fab);
-        mMainFab.setOnClickListener(new View.OnClickListener()
-        {
-            // click listener for main fab
-            @Override
-            public void onClick(View view)
-            {
-                // toggle edit mode
-                mInEditMode = !mInEditMode;
-
-                // if in edit mode
-                if (mInEditMode)
-                {
-                    engageEditMode();
-                }
-                // if in view mode (or when done editing)
-                else
-                {
-                    engageViewMode();
-                }
-            }
-        });
+        mMainFab.setOnClickListener(onClickDetailFabsListener);
 
         // set up the main fam and its children fabs
         mMainFAM = (com.github.clans.fab.FloatingActionMenu) findViewById(R.id.recipe_detail_main_fam);
         mMainFAM.setClosedOnTouchOutside(true);
 
         mEditFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.recipe_detail_edit_fab);
-        mEditFab.setOnClickListener(onClickDetailFAMFabs);
+        mEditFab.setOnClickListener(onClickDetailFabsListener);
 
         mShareFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.recipe_detail_share_fab);
-        mShareFab.setOnClickListener(onClickDetailFAMFabs);
+        mShareFab.setOnClickListener(onClickDetailFabsListener);
         mShareFab.setEnabled(false);
 
         mAddToShoppingListFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.recipe_detail_add_to_shopping_list_fab);
-        mAddToShoppingListFab.setOnClickListener(onClickDetailFAMFabs);
+        mAddToShoppingListFab.setOnClickListener(onClickDetailFabsListener);
         mAddToShoppingListFab.setEnabled(false);
 
         // additional set ups
@@ -260,18 +240,58 @@ public class RecipeDetailActivity extends AppCompatActivity
         //mCollapsingToolbarLayout.setContentScrim(new ColorDrawable(mPalette.getDarkVibrantColor(defaultColor)));
     }
 
+    // click listeners for the menu fabs
+    private View.OnClickListener onClickDetailFabsListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            switch (v.getId())
+            {
+                case R.id.recipe_detail_main_fab:
+                    handleMainFabClicked();
+                    break;
+
+                case R.id.recipe_detail_edit_fab:
+                    handleEditButtonClicked();
+                    break;
+
+                case R.id.recipe_detail_share_fab:
+                    break;
+
+                case R.id.recipe_detail_add_to_shopping_list_fab:
+                    break;
+            }
+        }
+    };
+
+    // what happens when the main fab button is clicked
+    private void handleMainFabClicked()
+    {
+        // if in edit mode
+        if (mInEditMode)
+        {
+            engageViewMode();
+        }
+    }
+
     // what happens when the edit button is clicked
     private void handleEditButtonClicked()
     {
-        // here we should always switch to edit mode, then we will collapse the main FAM and set its icon to "ic_save_white_24dp"
-        // after its saved, or discared, the edit mode should be set to false again, which means this button will only turn on edit mode.
+        engageEditMode();
     }
 
     // what happens when the activity is in edit mode
     public void engageEditMode()
     {
-        // change the main fab icon
-        mMainFab.setImageResource(android.R.drawable.ic_dialog_email);
+        mInEditMode = true;
+
+        // hide the main fam
+        mMainFAM.hideMenu(false);
+
+        // set the main fab icon to save and show it
+        mMainFab.setImageResource(R.drawable.ic_save_white_24dp);
+        mMainFab.show();
 
         // make the edit views visible
         mEditAddIngredientLinearLayout.setVisibility(View.VISIBLE);
@@ -285,11 +305,12 @@ public class RecipeDetailActivity extends AppCompatActivity
     // what happens when the activity is not in edit mode
     public void engageViewMode()
     {
+        // hide the main fab, show the main fam
+        mMainFab.hide();
+        mMainFAM.showMenu(false);
+
         // save a copy of the new edited recipe on user edit validation
         mRecipeBeforeEdit.MakeCopyOf(mRecipe);
-
-        // change the main fab icon
-        mMainFab.setImageResource(android.R.drawable.ic_menu_edit);
 
         // reset edit variables
         mInEditMode = false;
@@ -309,6 +330,11 @@ public class RecipeDetailActivity extends AppCompatActivity
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(this.findViewById(android.R.id.content).getWindowToken(), 0);
     }
+
+
+    // ------------------------------------
+    // CALLBACKS ADDED FROM THE LAYOUT XML
+    // ------------------------------------
 
     // method to be called when add ingredient button pressed
     public void onClickDetailAddIngredient(View view)
@@ -385,26 +411,5 @@ public class RecipeDetailActivity extends AppCompatActivity
             alertDialogBuilder.show();
         }
     }
-
-    // click listeners for the menu fabs
-    private View.OnClickListener onClickDetailFAMFabs = new View.OnClickListener()
-    {
-        @Override
-        public void onClick(View v)
-        {
-            switch (v.getId())
-            {
-                case R.id.recipe_detail_edit_fab:
-                    handleEditButtonClicked();
-                    break;
-
-                case R.id.recipe_detail_share_fab:
-                    break;
-
-                case R.id.recipe_detail_add_to_shopping_list_fab:
-                    break;
-            }
-        }
-    };
 
 }
