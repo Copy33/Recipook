@@ -28,6 +28,7 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
     // list of directions
     private ArrayList<String> mDirectionsList;
 
+    // click listener for the fabs that activity will deal with
     private OnItemFabClickListener mFabClickListener;
 
     // interface that activities that use this need to implement
@@ -109,6 +110,12 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
     public DetailDirectionListAdapter(Context context, ArrayList<String> directions)
     {
         mContext = context;
+        mDirectionsList = directions;
+    }
+
+    // method to update the data used when canceling/discarding changes (like constructor)
+    public void UpdateDataWith(ArrayList<String> directions)
+    {
         mDirectionsList = directions;
     }
 

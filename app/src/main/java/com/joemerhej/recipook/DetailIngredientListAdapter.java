@@ -23,6 +23,7 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
     // list of ingredients
     public ArrayList<Ingredient> mIngredientsList;
 
+    // click listener for the fabs that activity will deal with
     private OnItemFabClickListener mFabClickListener;
 
     // interface that activities that use this need to implement
@@ -52,13 +53,45 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count)
         {
-            mIngredientsList.get(mIngredientPosition).name = s.toString();
+
         }
 
         @Override
         public void afterTextChanged(Editable s)
         {
+            mIngredientsList.get(mIngredientPosition).name = s.toString();
+        }
+    }
 
+    // listener for ingredient quantity text edit (textwatcher)
+    public class MyIngredientQuantityEditTextListener implements TextWatcher
+    {
+        // position of the view in the list
+        private int mIngredientPosition;
+
+
+        public void updateIngredientPosition(int position)
+        {
+            mIngredientPosition = position;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after)
+        {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count)
+        {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s)
+        {
+            mIngredientsList.get(mIngredientPosition).quantity = RecipookParser.Instance().GetQuantityFromQuantityString(s.toString());
+            mIngredientsList.get(mIngredientPosition).unit = RecipookParser.Instance().GetUnitFromQuantityString(s.toString());
         }
     }
 
@@ -72,8 +105,10 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
 
         // the listeners for every ingredient
         public MyIngredientNameEditTextListener mIngredientNameEditTextListener;
+        public MyIngredientQuantityEditTextListener mIngredientQuantityEditTextListener;
 
-        public DetailIngredientHolder(View itemView, MyIngredientNameEditTextListener ingredientNameEditTextListener)
+
+        public DetailIngredientHolder(View itemView, MyIngredientNameEditTextListener ingredientNameEditTextListener, MyIngredientQuantityEditTextListener ingredientQuantityEditTextListener)
         {
             super(itemView);
 
@@ -85,9 +120,13 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
             // bind listeners : delete item fab
             mEditRemoveIngredientFab.setOnClickListener(this);
 
-            // bind listeners : ingredient name text change
+            // bind listeners : ingredient name text change (passed from parameter, created in onCreateView so we don't have to create listener in onBindViewHolder)
             mIngredientNameEditTextListener = ingredientNameEditTextListener;
             mIngredientText.addTextChangedListener(mIngredientNameEditTextListener);
+
+            // bind listeners : ingredient quantity text change (passed from parameter, created in onCreateView so we don't have to create listener in onBindViewHolder)
+            mIngredientQuantityEditTextListener = ingredientQuantityEditTextListener;
+            mIngredientQuantity.addTextChangedListener(mIngredientQuantityEditTextListener);
         }
 
         @Override
@@ -108,6 +147,12 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         mIngredientsList = ingredients;
     }
 
+    // method to update the data used when canceling/discarding changes (like constructor)
+    public void UpdateDataWith(ArrayList<Ingredient> ingredients)
+    {
+        mIngredientsList = ingredients;
+    }
+
     // setter for the fab click listener
     public void setOnItemFabClickListener(final OnItemFabClickListener itemFabClickListener)
     {
@@ -121,7 +166,7 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         View inflatedView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_detail_ingredient, parent, false);
 
         // we pass the listeners to the view here so we don't have to created them in onBindViewHolder which is expensive
-        return new DetailIngredientHolder(inflatedView, new MyIngredientNameEditTextListener());
+        return new DetailIngredientHolder(inflatedView, new MyIngredientNameEditTextListener(), new MyIngredientQuantityEditTextListener());
     }
 
     // called once every time the viewholder wants to fill each row
@@ -135,11 +180,11 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         String ingredientUnit = RecipookParser.Instance().GetUnitStringFromIngredient(ingredient);
         String ingredientQuantity = RecipookParser.Instance().GetQuantityStringFromIngredient(ingredient);
 
-        holder.mIngredientQuantity.setText(ingredientQuantity + " " + ingredientUnit);
-
         // update the listener position so it knows which EditText to listen to for each view, and set that text
         holder.mIngredientNameEditTextListener.updateIngredientPosition(position);
         holder.mIngredientText.setText(ingredient.name);
+        holder.mIngredientQuantityEditTextListener.updateIngredientPosition(position);
+        holder.mIngredientQuantity.setText(ingredientQuantity + " " + ingredientUnit);
 
         // show the right views depending on edit mode
         if(((RecipeDetailActivity)mContext).mInEditMode)

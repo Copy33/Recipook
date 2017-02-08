@@ -20,7 +20,6 @@ enum Unit
     unit,
     quart,
     dash
-
 }
 
 public class Ingredient

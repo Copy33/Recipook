@@ -39,7 +39,6 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_alignBaseline="@+id/recycler_item_direction_number"
-        android:layout_alignBottom="@+id/recycler_item_direction_number"
         android:layout_toRightOf="@+id/recycler_item_direction_number"
         android:layout_toEndOf="@+id/recycler_item_direction_number"/>
 
