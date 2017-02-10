@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
@@ -18,7 +19,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -52,10 +52,10 @@ public class RecipeDetailActivity extends AppCompatActivity
 
     // views: edit mode views
     private LinearLayout mEditAddIngredientLinearLayout;
-    private EditText mEditAddIngredientText;
+    private TextInputEditText mEditAddIngredientText;
     private Button mEditAddIngredientButton;
     private LinearLayout mEditAddDirectionLinearLayout;
-    private EditText mEditAddDirectionText;
+    private TextInputEditText mEditAddDirectionText;
     private Button mEditAddDirectionButton;
 
     // views: fabs
@@ -134,12 +134,12 @@ public class RecipeDetailActivity extends AppCompatActivity
         // set up edit mode views (visibility GONE by default)
         mEditAddIngredientLinearLayout = (LinearLayout) findViewById(R.id.detail_ingredient_add_layout);
         mEditAddIngredientLinearLayout.setVisibility(View.GONE);
-        mEditAddIngredientText = (EditText) findViewById(R.id.detail_ingredient_edit_text);
+        mEditAddIngredientText = (TextInputEditText) findViewById(R.id.detail_ingredient_edit_text);
         mEditAddIngredientButton = (Button) findViewById(R.id.detail_ingredient_add_button);
 
         mEditAddDirectionLinearLayout = (LinearLayout) findViewById(R.id.detail_direction_add_layout);
         mEditAddDirectionLinearLayout.setVisibility(View.GONE);
-        mEditAddDirectionText = (EditText) findViewById(R.id.detail_direction_edit_text);
+        mEditAddDirectionText = (TextInputEditText) findViewById(R.id.detail_direction_edit_text);
         mEditAddDirectionButton = (Button) findViewById(R.id.detail_direction_add_button);
 
         // set up the main fab (top right of the screen)
@@ -302,7 +302,7 @@ public class RecipeDetailActivity extends AppCompatActivity
         mDirectionListAdapter.notifyDataSetChanged();
     }
 
-    // what happens when the activity is not in edit mode
+    // what happens when the activity is view mode
     public void engageViewMode()
     {
         // hide the main fab, show the main fam
@@ -380,7 +380,7 @@ public class RecipeDetailActivity extends AppCompatActivity
         if (mInEditMode)
         {
             // set up the dialog
-            final EditText newTitleEditText = new EditText(this);
+            final TextInputEditText newTitleEditText = new TextInputEditText(this);
             newTitleEditText.setText(mRecipe.name);
             newTitleEditText.setSelection(newTitleEditText.length());
 
@@ -403,7 +403,7 @@ public class RecipeDetailActivity extends AppCompatActivity
             {
                 public void onClick(DialogInterface dialog, int id)
                 {
-                    // nothing happens if the user presses discard but we need this empty listener
+                    // nothing happens if the user presses discard but we need this empty listener (negative case)
                 }
             });
 

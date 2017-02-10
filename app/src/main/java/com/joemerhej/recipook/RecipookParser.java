@@ -59,7 +59,7 @@ public final class RecipookParser
 
                         return new Ingredient(quantity, unit, name);
                     }
-                    else return new Ingredient(0, unit, "");
+                    else return new Ingredient(quantity, unit, "");
                 }
                 else
                 {
