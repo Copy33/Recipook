@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +17,11 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -135,6 +141,7 @@ public class RecipeDetailActivity extends AppCompatActivity
         mEditAddIngredientLinearLayout = (LinearLayout) findViewById(R.id.detail_ingredient_add_layout);
         mEditAddIngredientLinearLayout.setVisibility(View.GONE);
         mEditAddIngredientText = (TextInputEditText) findViewById(R.id.detail_ingredient_edit_text);
+        mEditAddIngredientText.addTextChangedListener(new MyAddIngredientEditTextWatcher());
         mEditAddIngredientButton = (Button) findViewById(R.id.detail_ingredient_add_button);
 
         mEditAddDirectionLinearLayout = (LinearLayout) findViewById(R.id.detail_direction_add_layout);
@@ -354,6 +361,96 @@ public class RecipeDetailActivity extends AppCompatActivity
             mIngredientListAdapter.notifyItemInserted(mRecipe.ingredients.size() - 1);
 
             mEditAddIngredientText.getText().clear();
+        }
+    }
+
+    // text watcher to be attached to the add ingredient editText
+    public class MyAddIngredientEditTextWatcher implements TextWatcher
+    {
+        boolean editing = false;
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after)
+        {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count)
+        {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s)
+        {
+            String written = s.toString();
+
+            // make sure what's written so far is not empty...
+            if(written.isEmpty())
+                return;
+
+            // ...doesn't start with space (don't allow trailing spaces)...
+            if(written.compareTo(" ") == 0)
+            {
+                if (!editing)
+                {
+                    editing = true;
+                    mEditAddIngredientText.setText("");
+                    editing = false;
+                }
+                return;
+            }
+
+            // ...and doesn't end with space (only allow 1 space between words).
+            if(written.endsWith(" "))
+            {
+                if (!editing)
+                {
+                    editing = true;
+                    mEditAddIngredientText.setText(written.trim() + " ");
+                    mEditAddIngredientText.setSelection(mEditAddIngredientText.getText().length());
+                    editing = false;
+                }
+            }
+
+            // parse what's written and make the correct coloring as the user types
+            String[] strings = written.split("\\s+");
+
+            RecipookParser parser = RecipookParser.Instance();
+            int primaryColor = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
+            int textColor = ContextCompat.getColor(getApplicationContext(), R.color.textColorPrimary);
+
+            // if one word is typed, color it green if it's a valid quantity or valid unit, else black (we need to recolor)
+            if(strings.length == 1)
+            {
+                if(parser.isValidQuantity(strings[0]) || parser.isValidUnit(strings[0]))
+                {
+                    s.setSpan(new ForegroundColorSpan(primaryColor), 0, strings[0].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                else
+                {
+                    s.setSpan(new ForegroundColorSpan(textColor), 0, strings[0].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+            }
+            // else if 2 or more words are typed
+            else if(strings.length > 1)
+            {
+                // using the indices here to color only works because there will be no white spaces (see above)
+                if(parser.isValidQuantity(strings[0]) && parser.isValidUnit(strings[1]))
+                {
+                    s.setSpan(new ForegroundColorSpan(primaryColor), 0, strings[0].length() + strings[1].length() + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                else if(parser.isValidQuantity(strings[0]) || parser.isValidUnit(strings[0]))
+                {
+                    s.setSpan(new ForegroundColorSpan(primaryColor), 0, strings[0].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                else
+                {
+                    s.setSpan(new ForegroundColorSpan(textColor), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+            }
+
         }
     }
 

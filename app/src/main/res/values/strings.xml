@@ -6,4 +6,9 @@
     <string name="detail_directions_title">Directions</string>
 
 
+    <item name="visible" type="id"/>
+    <item name="masked" type="id"/>
+
+
+
 </resources>

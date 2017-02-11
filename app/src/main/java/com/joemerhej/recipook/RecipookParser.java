@@ -161,6 +161,8 @@ public final class RecipookParser
     // returns if the string is a valid quantity
     public boolean isValidQuantity(String s)
     {
+        s = s.trim();
+
         String[] fraction = s.split("/");
         if(fraction.length == 2)
         {
@@ -179,6 +181,8 @@ public final class RecipookParser
     // returns is the string is a valid unit
     public boolean isValidUnit(String s)
     {
+        s = s.trim();
+
         s = s.toLowerCase();
         return mSupportedUnitTexts.contains(s);
     }
@@ -200,7 +204,7 @@ public final class RecipookParser
         String[] fraction = strings[0].split("/");
         if(fraction.length > 1)
         {
-            if(fraction[0].matches("\\d+") && fraction[1].matches("\\d+"))
+            if(fraction[0].matches("\\d+(\\.\\d+)?") && fraction[1].matches("\\d+(\\.\\d+)?"))
                 return Math.floor(Double.valueOf(fraction[0])/Double.valueOf(fraction[1])*100)/100;
             else return 0;
         }
