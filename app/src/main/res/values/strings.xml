@@ -1,14 +1,17 @@
 <resources>
+    <!--General variables for the app-->
     <string name="app_name">Recipook</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
+    <!--This is for the recipe detail page-->
     <string name="detail_ingredients_title">Ingredients</string>
     <string name="detail_directions_title">Directions</string>
 
+    <!--This is for the image picker-->
+    <string name="pick_image_intent_text">Choose an image</string>
 
+    <!--This is for the InputTextEdit and InputTextLayout-->
     <item name="visible" type="id"/>
     <item name="masked" type="id"/>
-
-
 
 </resources>

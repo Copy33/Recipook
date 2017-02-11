@@ -46,20 +46,6 @@ public class RecipeListTabFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        // Implement the click listener for every recipe list item
-        RecipeListAdapter.OnRecipeItemSelected onRecipeItemClickListener = new RecipeListAdapter.OnRecipeItemSelected()
-        {
-            @Override
-            public void OnRecipeItemClicked(View view, int position)
-            {
-                // clicking a recipe item will launch the recipe detail activity
-                Intent intent = new Intent(getContext(), RecipeDetailActivity.class);
-                intent.putExtra(RecipeDetailActivity.EXTRA_PARAM_ID, position);
-                startActivity(intent);
-            }
-        };
-
-
         final View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
         // get activity (parent) to use as context when setting layout manager of the recycler view
@@ -78,4 +64,17 @@ public class RecipeListTabFragment extends Fragment
 
         return view;
     }
+
+    // Implement the click listener for every recipe list item
+    RecipeListAdapter.OnRecipeItemSelected onRecipeItemClickListener = new RecipeListAdapter.OnRecipeItemSelected()
+    {
+        @Override
+        public void OnRecipeItemClicked(View view, int position)
+        {
+            // clicking a recipe item will launch the recipe detail activity
+            Intent intent = new Intent(getContext(), RecipeDetailActivity.class);
+            intent.putExtra(RecipeDetailActivity.EXTRA_PARAM_ID, position);
+            startActivity(intent);
+        }
+    };
 }

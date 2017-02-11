@@ -24,8 +24,7 @@
             app:collapsedTitleTextAppearance="@style/CollapsedAppBar"
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            android:onClick="onClickDetailCollapsingToolbarLayout">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
                 android:id="@+id/recycler_item_recipe_image"

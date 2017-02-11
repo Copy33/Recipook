@@ -90,7 +90,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     public void onBindViewHolder(RecipeListViewHolder holder, int position)
     {
         // get the position of the recipe we want form the data (global static instance)
-        final Recipe recipe = RecipeData.Instance().getRecipeList().get(position);
+        Recipe recipe = RecipeData.Instance().getRecipeList().get(position);
 
         // set the recipe data
         holder.recipeName.setText(recipe.name);

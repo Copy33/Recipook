@@ -1,10 +1,12 @@
 package com.joemerhej.recipook;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -19,7 +21,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Spannable;
-import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
@@ -27,9 +29,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 
-public class RecipeDetailActivity extends AppCompatActivity
+public class RecipeDetailActivity extends AppCompatActivity implements DetailEditRecipeHeaderDialog.DetailEditRecipeHeaderDialogListener
 {
     // intent extra
     public static final String EXTRA_PARAM_ID = "recipe_id";
@@ -40,10 +45,12 @@ public class RecipeDetailActivity extends AppCompatActivity
     public boolean mInEditMode;                 // if the activity is now in edit mode
     public Recipe mRecipeBeforeEdit;            // save a copy for undo edit changes
     public boolean mAtLeastOneChange;           // so the app won't ask for discard/save changes if that didn't happen
+    public int RESULT_LOAD_IMAGE;               // load image intent will return this
 
     // views: toolbar area
-    private ImageView mImageView;
+    private ImageView mToolbarImageView;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private DetailEditRecipeHeaderDialog mDetailEditRecipeHeaderDialog;
 
     // views: scrollviews (ingredients, directions)
     private NestedScrollView mScrollView;
@@ -52,7 +59,7 @@ public class RecipeDetailActivity extends AppCompatActivity
     private RecyclerView mDirectionsRecyclerView;
     private DetailDirectionListAdapter mDirectionListAdapter;
 
-    // listeners
+    // listeners : delete fabs (ingredients, directions)
     private DetailIngredientListAdapter.OnItemFabClickListener mIngredientFabClickListener;
     private DetailDirectionListAdapter.OnItemFabClickListener mDirectionFabClickListener;
 
@@ -64,7 +71,7 @@ public class RecipeDetailActivity extends AppCompatActivity
     private TextInputEditText mEditAddDirectionText;
     private Button mEditAddDirectionButton;
 
-    // views: fabs
+    // views: fam and fabs
     private FloatingActionButton mMainFab;
     private com.github.clans.fab.FloatingActionMenu mMainFAM;
     private com.github.clans.fab.FloatingActionButton mEditFab;
@@ -90,11 +97,14 @@ public class RecipeDetailActivity extends AppCompatActivity
         mAtLeastOneChange = false;
 
         // fill in the views
-        mImageView = (ImageView) findViewById(R.id.recycler_item_recipe_image);
+        mToolbarImageView = (ImageView) findViewById(R.id.recycler_item_recipe_image);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
         mScrollView = (NestedScrollView) findViewById(R.id.detail_scroll_view);
         mIngredientsRecyclerView = (RecyclerView) findViewById(R.id.detail_ingredients_list);
         mDirectionsRecyclerView = (RecyclerView) findViewById(R.id.detail_directions_list);
+
+        mCollapsingToolbarLayout.setOnClickListener(new CollapsingToolbarLayoutClickListener());
+        mDetailEditRecipeHeaderDialog = DetailEditRecipeHeaderDialog.Instance(mRecipe.name);
 
         // initialize the recycler view adapter listeners
         // DetailIngredientListAdapter fab click listener implemented to handle clicking on fabs of items
@@ -233,7 +243,7 @@ public class RecipeDetailActivity extends AppCompatActivity
     {
         mCollapsingToolbarLayout.setTitle(mRecipe.name);
 
-        mImageView.setImageResource(mRecipe.getImageResourceId(this));
+        mToolbarImageView.setImageResource(mRecipe.getImageResourceId(this));
     }
 
     // get the photo of the recipe from the loaded url
@@ -384,72 +394,6 @@ public class RecipeDetailActivity extends AppCompatActivity
         @Override
         public void afterTextChanged(Editable s)
         {
-            String written = s.toString();
-
-            // make sure what's written so far is not empty...
-            if(written.isEmpty())
-                return;
-
-            // ...doesn't start with space (don't allow trailing spaces)...
-            if(written.compareTo(" ") == 0)
-            {
-                if (!editing)
-                {
-                    editing = true;
-                    mEditAddIngredientText.setText("");
-                    editing = false;
-                }
-                return;
-            }
-
-            // ...and doesn't end with space (only allow 1 space between words).
-            if(written.endsWith(" "))
-            {
-                if (!editing)
-                {
-                    editing = true;
-                    mEditAddIngredientText.setText(written.trim() + " ");
-                    mEditAddIngredientText.setSelection(mEditAddIngredientText.getText().length());
-                    editing = false;
-                }
-            }
-
-            // parse what's written and make the correct coloring as the user types
-            String[] strings = written.split("\\s+");
-
-            RecipookParser parser = RecipookParser.Instance();
-            int primaryColor = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
-            int textColor = ContextCompat.getColor(getApplicationContext(), R.color.textColorPrimary);
-
-            // if one word is typed, color it green if it's a valid quantity or valid unit, else black (we need to recolor)
-            if(strings.length == 1)
-            {
-                if(parser.isValidQuantity(strings[0]) || parser.isValidUnit(strings[0]))
-                {
-                    s.setSpan(new ForegroundColorSpan(primaryColor), 0, strings[0].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
-                else
-                {
-                    s.setSpan(new ForegroundColorSpan(textColor), 0, strings[0].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
-            }
-            // else if 2 or more words are typed
-            else if(strings.length > 1)
-            {
-                // using the indices here to color only works because there will be no white spaces (see above)
-                if(parser.isValidQuantity(strings[0]) && parser.isValidUnit(strings[1]))
-                {
-                    s.setSpan(new ForegroundColorSpan(primaryColor), 0, strings[0].length() + strings[1].length() + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
-                else if(parser.isValidQuantity(strings[0]) || parser.isValidUnit(strings[0]))
-                {
-                    s.setSpan(new ForegroundColorSpan(primaryColor), 0, strings[0].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
-                else
-                {
-                    s.setSpan(new ForegroundColorSpan(textColor), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
-            }
 
         }
     }
@@ -471,42 +415,69 @@ public class RecipeDetailActivity extends AppCompatActivity
     }
 
     // method to be called when the collapsing toolbar layout is clicked
-    public void onClickDetailCollapsingToolbarLayout(View view)
+    public class CollapsingToolbarLayoutClickListener implements CollapsingToolbarLayout.OnClickListener
     {
-        // only allow changes in edit mode
-        if (mInEditMode)
+        @Override
+        public void onClick(View v)
         {
-            // set up the dialog
-            final TextInputEditText newTitleEditText = new TextInputEditText(this);
-            newTitleEditText.setText(mRecipe.name);
-            newTitleEditText.setSelection(newTitleEditText.length());
-
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-            alertDialogBuilder.setMessage("Recipe Name:");
-
-            alertDialogBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener()
+            if (mInEditMode)
             {
-                public void onClick(DialogInterface dialog, int id)
-                {
-                    String newTitle = newTitleEditText.getText().toString();
-                    mCollapsingToolbarLayout.setTitle(newTitle);
-                    mRecipe.name = newTitle;
-                    mRecipeBeforeEdit.name = newTitle;
-                }
-            });
-
-            alertDialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener()
-            {
-                public void onClick(DialogInterface dialog, int id)
-                {
-                    // nothing happens if the user presses discard but we need this empty listener (negative case)
-                }
-            });
-
-            alertDialogBuilder.setView(newTitleEditText);
-            alertDialogBuilder.show();
+                // show the dialog
+                mDetailEditRecipeHeaderDialog.show(getFragmentManager(), DetailEditRecipeHeaderDialog.class.getName());
+            }
         }
     }
 
+    // user clicks "Save" in the edit header dialog
+    @Override
+    public void onEditHeaderDialogPositiveClick(DetailEditRecipeHeaderDialog dialog)
+    {
+        String newTitle = dialog.mNewRecipeTitleEditText.getText().toString();
+        mCollapsingToolbarLayout.setTitle(newTitle);
+        mRecipe.name = newTitle;
+    }
+
+    // user clicks "Discard" in the edit header dialog
+    @Override
+    public void onEditHeaderDialogNegativeClick(DetailEditRecipeHeaderDialog dialog)
+    {
+        // nothing happens when the user discards, but we need this empty implementation
+    }
+
+    // user clicks on choose image button in the edit header dialog
+    @Override
+    public void onEditHeaderDialogChooseImageClick(DetailEditRecipeHeaderDialog dialog)
+    {
+        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        getIntent.setType("image/*");
+
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickIntent.setType("image/*");
+
+        Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
+
+        startActivityForResult(chooserIntent, RESULT_LOAD_IMAGE);
+    }
+
+    // this method will be called when intents triggered with "startActivityForResult" come back to this activity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        try
+        {
+            // check if it's the intent to change the toolbar image
+            if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null)
+            {
+                Uri imageUri = data.getData();
+                mToolbarImageView.setImageURI(imageUri);
+            }
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Something went wrong.", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 }
