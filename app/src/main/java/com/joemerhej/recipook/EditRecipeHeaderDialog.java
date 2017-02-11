@@ -14,15 +14,15 @@ import android.widget.Button;
  * Created by Joe Merhej on 2/10/17.
  */
 
-public class DetailEditRecipeHeaderDialog extends DialogFragment
+public class EditRecipeHeaderDialog extends DialogFragment
 {
     // the activity that creates an instance of this dialog fragment must implement this.
     // each method passes the dialog fragment in case the host needs to query it.
     public interface DetailEditRecipeHeaderDialogListener
     {
-        void onEditHeaderDialogPositiveClick(DetailEditRecipeHeaderDialog dialog);
-        void onEditHeaderDialogNegativeClick(DetailEditRecipeHeaderDialog dialog);
-        void onEditHeaderDialogChooseImageClick(DetailEditRecipeHeaderDialog dialog);
+        void onEditHeaderDialogPositiveClick(EditRecipeHeaderDialog dialog);
+        void onEditHeaderDialogNegativeClick(EditRecipeHeaderDialog dialog);
+        void onEditHeaderDialogChooseImageClick(EditRecipeHeaderDialog dialog);
     }
 
     // use this instance of the interface to deliver action events
@@ -32,14 +32,14 @@ public class DetailEditRecipeHeaderDialog extends DialogFragment
     public TextInputEditText mNewRecipeTitleEditText;
 
 
-    public DetailEditRecipeHeaderDialog()
+    public EditRecipeHeaderDialog()
     {
 
     }
 
-    public static DetailEditRecipeHeaderDialog Instance(String recipeTitle)
+    public static EditRecipeHeaderDialog Instance(String recipeTitle)
     {
-        DetailEditRecipeHeaderDialog dialog = new DetailEditRecipeHeaderDialog();
+        EditRecipeHeaderDialog dialog = new EditRecipeHeaderDialog();
         Bundle args = new Bundle();
         args.putString("recipeTitle", recipeTitle);
         dialog.setArguments(args);
@@ -77,7 +77,7 @@ public class DetailEditRecipeHeaderDialog extends DialogFragment
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        mListener.onEditHeaderDialogPositiveClick(DetailEditRecipeHeaderDialog.this);
+                        mListener.onEditHeaderDialogPositiveClick(EditRecipeHeaderDialog.this);
                     }
                 })
                 .setNegativeButton("Discard", new DialogInterface.OnClickListener()
@@ -85,7 +85,7 @@ public class DetailEditRecipeHeaderDialog extends DialogFragment
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        mListener.onEditHeaderDialogNegativeClick(DetailEditRecipeHeaderDialog.this);
+                        mListener.onEditHeaderDialogNegativeClick(EditRecipeHeaderDialog.this);
                     }
                 });
 
@@ -102,7 +102,7 @@ public class DetailEditRecipeHeaderDialog extends DialogFragment
             @Override
             public void onClick(View v)
             {
-                mListener.onEditHeaderDialogChooseImageClick(DetailEditRecipeHeaderDialog.this);
+                mListener.onEditHeaderDialogChooseImageClick(EditRecipeHeaderDialog.this);
             }
         });
 

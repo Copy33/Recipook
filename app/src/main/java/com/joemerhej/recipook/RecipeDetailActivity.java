@@ -1,6 +1,5 @@
 package com.joemerhej.recipook;
 
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,10 +19,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.Spannable;
-import android.text.Spanned;
 import android.text.TextWatcher;
-import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -31,10 +27,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
-
-public class RecipeDetailActivity extends AppCompatActivity implements DetailEditRecipeHeaderDialog.DetailEditRecipeHeaderDialogListener
+public class RecipeDetailActivity extends AppCompatActivity implements EditRecipeHeaderDialog.DetailEditRecipeHeaderDialogListener
 {
     // intent extra
     public static final String EXTRA_PARAM_ID = "recipe_id";
@@ -50,7 +44,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailEdi
     // views: toolbar area
     private ImageView mToolbarImageView;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
-    private DetailEditRecipeHeaderDialog mDetailEditRecipeHeaderDialog;
+    private EditRecipeHeaderDialog mEditRecipeHeaderDialog;
 
     // views: scrollviews (ingredients, directions)
     private NestedScrollView mScrollView;
@@ -104,7 +98,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailEdi
         mDirectionsRecyclerView = (RecyclerView) findViewById(R.id.detail_directions_list);
 
         mCollapsingToolbarLayout.setOnClickListener(new CollapsingToolbarLayoutClickListener());
-        mDetailEditRecipeHeaderDialog = DetailEditRecipeHeaderDialog.Instance(mRecipe.name);
 
         // initialize the recycler view adapter listeners
         // DetailIngredientListAdapter fab click listener implemented to handle clicking on fabs of items
@@ -235,7 +228,12 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailEdi
         }
         // else this is normal app behavior (will go back to main activity)
         else
+        {
+            Intent intent = new Intent();
+            intent.putExtra("recipePosition", mRecipeIndex);
+            setResult(RESULT_OK, intent);
             super.onBackPressed();
+        }
     }
 
     // loads the recipe (title and image url for now)
@@ -423,14 +421,15 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailEdi
             if (mInEditMode)
             {
                 // show the dialog
-                mDetailEditRecipeHeaderDialog.show(getFragmentManager(), DetailEditRecipeHeaderDialog.class.getName());
+                mEditRecipeHeaderDialog = EditRecipeHeaderDialog.Instance(mRecipe.name);
+                mEditRecipeHeaderDialog.show(getFragmentManager(), EditRecipeHeaderDialog.class.getName());
             }
         }
     }
 
     // user clicks "Save" in the edit header dialog
     @Override
-    public void onEditHeaderDialogPositiveClick(DetailEditRecipeHeaderDialog dialog)
+    public void onEditHeaderDialogPositiveClick(EditRecipeHeaderDialog dialog)
     {
         String newTitle = dialog.mNewRecipeTitleEditText.getText().toString();
         mCollapsingToolbarLayout.setTitle(newTitle);
@@ -439,14 +438,14 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailEdi
 
     // user clicks "Discard" in the edit header dialog
     @Override
-    public void onEditHeaderDialogNegativeClick(DetailEditRecipeHeaderDialog dialog)
+    public void onEditHeaderDialogNegativeClick(EditRecipeHeaderDialog dialog)
     {
         // nothing happens when the user discards, but we need this empty implementation
     }
 
     // user clicks on choose image button in the edit header dialog
     @Override
-    public void onEditHeaderDialogChooseImageClick(DetailEditRecipeHeaderDialog dialog)
+    public void onEditHeaderDialogChooseImageClick(EditRecipeHeaderDialog dialog)
     {
         Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
         getIntent.setType("image/*");
@@ -462,7 +461,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailEdi
 
     // this method will be called when intents triggered with "startActivityForResult" come back to this activity
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
         try
