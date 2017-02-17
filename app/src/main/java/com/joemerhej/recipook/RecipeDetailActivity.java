@@ -167,7 +167,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         // set up the main fam and its children fabs
         mMainFAM = (com.github.clans.fab.FloatingActionMenu) findViewById(R.id.recipe_detail_main_fam);
         mMainFAM.setClosedOnTouchOutside(true);
-        createMainFAMAnimation();
+        //createMainFAMAnimation();
 
         mEditFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.recipe_detail_edit_fab);
         mEditFab.setOnClickListener(onClickDetailFabsListener);
@@ -303,40 +303,40 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         engageEditMode();
     }
 
-    private void createMainFAMAnimation()
-    {
-        AnimatorSet set = new AnimatorSet();
-
-        ObjectAnimator scaleOutX = ObjectAnimator.ofFloat(mMainFAM.getMenuIconView(), "scaleX", 1.0f, 0.2f);
-        ObjectAnimator scaleOutY = ObjectAnimator.ofFloat(mMainFAM.getMenuIconView(), "scaleY", 1.0f, 0.2f);
-
-        ObjectAnimator scaleInX = ObjectAnimator.ofFloat(mMainFAM.getMenuIconView(), "scaleX", 0.2f, 1.0f);
-        ObjectAnimator scaleInY = ObjectAnimator.ofFloat(mMainFAM.getMenuIconView(), "scaleY", 0.2f, 1.0f);
-
-        scaleOutX.setDuration(50);
-        scaleOutY.setDuration(50);
-
-        scaleInX.setDuration(150);
-        scaleInY.setDuration(150);
-
-        scaleInX.addListener(new AnimatorListenerAdapter()
-        {
-            @Override
-            public void onAnimationStart(Animator animation)
-            {
-                mMainFAM.getMenuIconView().setImageResource(mMainFAM.isOpened()
-                        ? R.drawable.ic_keyboard_arrow_down_white_24dp
-                        : R.drawable.ic_restaurant_menu_white_24dp);
-            }
-        });
-
-        set.play(scaleOutX).with(scaleOutY);
-        set.play(scaleInX).with(scaleInY).after(scaleOutX);
-
-        set.setInterpolator(new OvershootInterpolator(2));
-
-        mMainFAM.setIconToggleAnimatorSet(set);
-    }
+//    private void createMainFAMAnimation()
+//    {
+//        AnimatorSet set = new AnimatorSet();
+//
+//        ObjectAnimator scaleOutX = ObjectAnimator.ofFloat(mMainFAM.getMenuIconView(), "scaleX", 1.0f, 0.2f);
+//        ObjectAnimator scaleOutY = ObjectAnimator.ofFloat(mMainFAM.getMenuIconView(), "scaleY", 1.0f, 0.2f);
+//
+//        ObjectAnimator scaleInX = ObjectAnimator.ofFloat(mMainFAM.getMenuIconView(), "scaleX", 0.2f, 1.0f);
+//        ObjectAnimator scaleInY = ObjectAnimator.ofFloat(mMainFAM.getMenuIconView(), "scaleY", 0.2f, 1.0f);
+//
+//        scaleOutX.setDuration(50);
+//        scaleOutY.setDuration(50);
+//
+//        scaleInX.setDuration(150);
+//        scaleInY.setDuration(150);
+//
+//        scaleInX.addListener(new AnimatorListenerAdapter()
+//        {
+//            @Override
+//            public void onAnimationStart(Animator animation)
+//            {
+//                mMainFAM.getMenuIconView().setImageResource(mMainFAM.isOpened()
+//                        ? R.drawable.ic_keyboard_arrow_down_white_24dp
+//                        : R.drawable.ic_restaurant_menu_white_24dp);
+//            }
+//        });
+//
+//        set.play(scaleOutX).with(scaleOutY);
+//        set.play(scaleInX).with(scaleInY).after(scaleOutX);
+//
+//        set.setInterpolator(new OvershootInterpolator(2));
+//
+//        mMainFAM.setIconToggleAnimatorSet(set);
+//    }
 
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
