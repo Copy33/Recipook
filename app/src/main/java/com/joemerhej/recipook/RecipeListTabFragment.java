@@ -2,7 +2,6 @@ package com.joemerhej.recipook;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -80,7 +79,7 @@ public class RecipeListTabFragment extends Fragment
         {
             // clicking a recipe item will launch the recipe detail activity
             Intent intent = new Intent(getContext(), RecipeDetailActivity.class);
-            intent.putExtra(RecipeDetailActivity.EXTRA_PARAM_ID, position);
+            intent.putExtra(RecipeDetailActivity.EXTRA_RECIPE_ID, position);
             startActivityForResult(intent, RECIPE_DETAIL_RESULT_CODE);
         }
     };
@@ -97,6 +96,13 @@ public class RecipeListTabFragment extends Fragment
             {
                 int recipePosition = data.getIntExtra("recipePosition", 0);
                 mRecipeListAdapter.notifyItemChanged(recipePosition);
+            }
+
+            // check if it's the intent to change the toolbar image
+            if (requestCode == RECIPE_DETAIL_RESULT_CODE && resultCode == RecipookIntentResult.RESULT_DELETED && data != null)
+            {
+                int recipePosition = data.getIntExtra("recipePosition", 0);
+                mRecipeListAdapter.notifyItemRemoved(recipePosition);
             }
         }
         catch (Exception e)

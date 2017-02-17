@@ -3,18 +3,14 @@ package com.joemerhej.recipook;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.graphics.Palette;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,11 +23,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import static java.security.AccessController.getContext;
+
 
 public class RecipeDetailActivity extends AppCompatActivity implements EditRecipeHeaderDialog.DetailEditRecipeHeaderDialogListener
 {
     // intent extra
-    public static final String EXTRA_PARAM_ID = "recipe_id";
+    public static final String EXTRA_RECIPE_ID = "recipe_id";
 
     // General Variables
     public Recipe mRecipe;                      // recipe in question
@@ -64,6 +62,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     private LinearLayout mEditAddDirectionLinearLayout;
     private TextInputEditText mEditAddDirectionText;
     private Button mEditAddDirectionButton;
+    private Button mDeleteRecipeButton;
 
     // views: fam and fabs
     private FloatingActionButton mMainFab;
@@ -73,6 +72,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     private com.github.clans.fab.FloatingActionButton mAddToShoppingListFab;
 
 
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // ACTIVITY CREATE FUNCTION
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -80,7 +83,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         setContentView(R.layout.activity_recipe_detail);
 
         // get the recipe from the index in the extra
-        mRecipeIndex = getIntent().getIntExtra(EXTRA_PARAM_ID, 0);
+        mRecipeIndex = getIntent().getIntExtra(EXTRA_RECIPE_ID, 0);
         mRecipe = RecipeData.Instance().getRecipeList().get(mRecipeIndex); // this is a shallow copy, mRecipe is now pointing at data
 
         // make a deep copy of the recipe to hold for canceling changes
@@ -152,6 +155,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mEditAddDirectionText = (TextInputEditText) findViewById(R.id.detail_direction_edit_text);
         mEditAddDirectionButton = (Button) findViewById(R.id.detail_direction_add_button);
 
+        mDeleteRecipeButton = (Button) findViewById(R.id.detail_delete_recipe_button);
+        mDeleteRecipeButton.setVisibility(View.GONE);
+
         // set up the main fab (top right of the screen)
         mMainFab = (FloatingActionButton) findViewById(R.id.recipe_detail_main_fab);
         mMainFab.setOnClickListener(onClickDetailFabsListener);
@@ -171,10 +177,21 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mAddToShoppingListFab.setOnClickListener(onClickDetailFabsListener);
         mAddToShoppingListFab.setEnabled(false);
 
-        // additional set ups
-        loadRecipe();
-        getPhoto();
+        // load recipe
+        mCollapsingToolbarLayout.setTitle(mRecipe.name);
+        mToolbarImageView.setImageResource(mRecipe.getImageResourceId(this));
+
+        // get photo palette
+        //Bitmap photo = BitmapFactory.decodeResource(getResources(), mRecipe.getImageResourceId(this));
+        //int defaultColor = ContextCompat.getColor(this, R.color.colorPrimary);
+        //Palette mPalette = Palette.from(photo).generate();
+        //mCollapsingToolbarLayout.setContentScrim(new ColorDrawable(mPalette.getDarkVibrantColor(defaultColor)));
     }
+
+
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // BACK BUTTON PRESSED LISTENER
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
 
     // what happens when the back button is pressed
     @Override
@@ -195,6 +212,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
                 alertDialogBuilder.setMessage("Save Changes?");
 
+                // positive button click listener
                 alertDialogBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
@@ -203,7 +221,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
                         engageViewMode();
                     }
                 });
-
+                // negative button click listener
                 alertDialogBuilder.setNegativeButton("Discard", new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
@@ -236,24 +254,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         }
     }
 
-    // loads the recipe (title and image url for now)
-    private void loadRecipe()
-    {
-        mCollapsingToolbarLayout.setTitle(mRecipe.name);
 
-        mToolbarImageView.setImageResource(mRecipe.getImageResourceId(this));
-    }
-
-    // get the photo of the recipe from the loaded url
-    private void getPhoto()
-    {
-        int defaultColor = ContextCompat.getColor(this, R.color.colorPrimary);
-        Bitmap photo = BitmapFactory.decodeResource(getResources(), mRecipe.getImageResourceId(this));
-
-        Palette mPalette = Palette.from(photo).generate();
-
-        //mCollapsingToolbarLayout.setContentScrim(new ColorDrawable(mPalette.getDarkVibrantColor(defaultColor)));
-    }
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // MAIN FAM AND CHILD FABS LISTENERS
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
 
     // click listeners for the menu fabs
     private View.OnClickListener onClickDetailFabsListener = new View.OnClickListener()
@@ -264,7 +268,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             switch (v.getId())
             {
                 case R.id.recipe_detail_main_fab:
-                    handleMainFabClicked();
+                    handleMainFabClicked(); // the main fab is the one at the top right
                     break;
 
                 case R.id.recipe_detail_edit_fab:
@@ -296,6 +300,11 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         engageEditMode();
     }
 
+
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // EDIT MODE AND VIEW MODE METHODS
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
+
     // what happens when the activity is in edit mode
     public void engageEditMode()
     {
@@ -311,6 +320,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         // make the edit views visible
         mEditAddIngredientLinearLayout.setVisibility(View.VISIBLE);
         mEditAddDirectionLinearLayout.setVisibility(View.VISIBLE);
+        mDeleteRecipeButton.setVisibility(View.VISIBLE);
 
         // notify the recycler view adapters so they make the right changes to theirs views
         mIngredientListAdapter.notifyDataSetChanged();
@@ -336,6 +346,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mEditAddDirectionLinearLayout.setVisibility(View.GONE);
         mEditAddDirectionText.getText().clear();
         mEditAddIngredientText.getText().clear();
+        mDeleteRecipeButton.setVisibility(View.GONE);
 
         // notify the recycler view adapters so they make the right changes to theirs views
         mIngredientListAdapter.notifyDataSetChanged();
@@ -347,9 +358,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     }
 
 
-    // ------------------------------------
-    // CALLBACKS ADDED FROM THE LAYOUT XML
-    // ------------------------------------
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // CALLBACKS ADDED FROM THE LAYOUT XML (Add Ingredient Button, Add Direction Button, Delete Recipe Button)
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
 
     // method to be called when add ingredient button pressed
     public void onClickDetailAddIngredient(View view)
@@ -372,10 +383,124 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         }
     }
 
+    // method to be called when add direction button pressed
+    public void onClickDetailAddDirection(View view)
+    {
+        String newDirectionText = mEditAddDirectionText.getText().toString();
+
+        if (newDirectionText.isEmpty())
+            return;
+
+        mAtLeastOneChange = true;
+
+        mRecipe.directions.add(newDirectionText);
+        mDirectionListAdapter.notifyItemInserted(mRecipe.directions.size() - 1);
+
+        mEditAddDirectionText.getText().clear();
+    }
+
+    // method to be called when delete recipe button pressed
+    public void onClickDetailDeleteRecipe(View view)
+    {
+//        // if the user is in Edit mode show the dialog to save/discard/cancel if at least one change happened
+//        if (mInEditMode)
+//        {
+//            if (!mAtLeastOneChange)
+//            {
+//                engageViewMode();
+//            }
+//            // if at least one change happened
+//            else
+//            {
+//                // set up the dialog
+//                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+//
+//                alertDialogBuilder.setMessage("Save Changes?");
+//
+//                // positive click listener
+//                alertDialogBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener()
+//                {
+//                    public void onClick(DialogInterface dialog, int id)
+//                    {
+//                        // user hits Save button
+//                        engageViewMode();
+//                    }
+//                });
+//                // negative click listener
+//                alertDialogBuilder.setNegativeButton("Discard", new DialogInterface.OnClickListener()
+//                {
+//                    public void onClick(DialogInterface dialog, int id)
+//                    {
+//                        // user hits Discard button, reset recipe to last saved recipe
+//                        mRecipe.MakeCopyOf(mRecipeBeforeEdit);
+//                        mIngredientListAdapter.UpdateDataWith(mRecipe.ingredients);
+//                        mDirectionListAdapter.UpdateDataWith(mRecipe.directions);
+//
+//                        mDirectionListAdapter.notifyDataSetChanged();
+//                        mIngredientListAdapter.notifyDataSetChanged();
+//
+//                        engageViewMode();
+//                    }
+//                });
+//
+//                // show dialog
+//                AlertDialog dialog = alertDialogBuilder.create();
+//                dialog.show();
+//            }
+//
+//        }
+//        // else this is normal app behavior (will go back to main activity)
+//        else
+//        {
+//            Intent intent = new Intent();
+//            intent.putExtra("recipePosition", mRecipeIndex);
+//            setResult(RESULT_OK, intent);
+//            super.onBackPressed();
+//        }
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        alertDialogBuilder.setMessage("Delete Recipe?");
+
+        // positive button click listener
+        alertDialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                // remove the recipe and go back to the main activity
+                RecipeData.Instance().removeRecipe(mRecipeIndex);
+
+                Intent intent = new Intent();
+                intent.putExtra("recipePosition", mRecipeIndex);
+                setResult(RecipookIntentResult.RESULT_DELETED, intent);
+                RecipeDetailActivity.super.finish();
+            }
+        });
+        // negative button click listener
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                // nothing happens if user cancels but we need this method
+            }
+        });
+
+        AlertDialog dialog = alertDialogBuilder.create();
+        dialog.show();
+
+    }
+
+
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // ADD INGREDIENT TEXTWATCHER TODO: Implement text watcher.
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
+
     // text watcher to be attached to the add ingredient editText
     public class MyAddIngredientEditTextWatcher implements TextWatcher
     {
-        boolean editing = false;
+        //boolean editing = false;
 
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after)
@@ -396,21 +521,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         }
     }
 
-    // method to be called when add direction button pressed
-    public void onClickDetailAddDirection(View view)
-    {
-        String newDirectionText = mEditAddDirectionText.getText().toString();
 
-        if (newDirectionText.isEmpty())
-            return;
-
-        mAtLeastOneChange = true;
-
-        mRecipe.directions.add(newDirectionText);
-        mDirectionListAdapter.notifyItemInserted(mRecipe.directions.size() - 1);
-
-        mEditAddDirectionText.getText().clear();
-    }
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // COLLAPSING TOOLBAR LISTENER AND CUSTOM DIALOG
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
 
     // method to be called when the collapsing toolbar layout is clicked
     public class CollapsingToolbarLayoutClickListener implements CollapsingToolbarLayout.OnClickListener

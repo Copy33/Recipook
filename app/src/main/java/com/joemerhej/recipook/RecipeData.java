@@ -90,7 +90,7 @@ public class RecipeData
     public static ArrayList<Ingredient> RaspberryPieIngredients;
     public static ArrayList<Ingredient> ToastedAlmondsWithRosemaryIngredients;
 
-    public static void setupIngredientsArrayLists()
+    private static void setupIngredientsArrayLists()
     {
         AllIngredients = new ArrayList<ArrayList<Ingredient>>();
         BuffaloDrumsticksIngredients = new ArrayList<>();
@@ -124,7 +124,7 @@ public class RecipeData
         ChickenPastaIngredients.add(new Ingredient(3, Unit.cup, "hot cooked campanelle"));
         ChickenPastaIngredients.add(new Ingredient(0.25, Unit.cup, "crumbled feta cheese"));
 
-        GreenVegetableSoupIngredients.add(new Ingredient(2, Unit.tsp, "canola oil mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"));
+        GreenVegetableSoupIngredients.add(new Ingredient(2, Unit.tsp, "canola oil"));
         GreenVegetableSoupIngredients.add(new Ingredient(1, Unit.unit, "medium onion, chopped"));
         GreenVegetableSoupIngredients.add(new Ingredient(3, Unit.unit, "cloves garlic"));
         GreenVegetableSoupIngredients.add(new Ingredient(1.5, Unit.tsp, "grated fresh ginger"));
@@ -182,6 +182,7 @@ public class RecipeData
     }
 
 
+    // instance method will create the instance or return it if it exists
     public static RecipeData Instance()
     {
         if(Instance == null)
@@ -216,21 +217,31 @@ public class RecipeData
             return Instance;
     }
 
+    // method to get a point to the recipe list
     public ArrayList<Recipe> getRecipeList()
     {
         return mRecipelist;
     }
 
+    // method to remove a recipe at a given index
+    public void removeRecipe(int recipeIndex)
+    {
+        mRecipelist.remove(recipeIndex);
+    }
+
+    // method to add ingredient at a given index to a given recipe
     public void addIngredient(int recipeIndex, Ingredient ingredient, int ingredientIndex)
     {
         mRecipelist.get(recipeIndex).ingredients.add(ingredientIndex, ingredient);
     }
 
+    // method to add ingredient to a certain recipe (at the end)
     public void addIngredient(int recipeIndex, Ingredient ingredient)
     {
         mRecipelist.get(recipeIndex).ingredients.add(ingredient);
     }
 
+    // method to remove ingredient at the given index from a certain recipe
     public void removeIngredient(int recipeIndex, int ingredientIndex)
     {
         int size = mRecipelist.get(recipeIndex).ingredients.size();
@@ -241,16 +252,19 @@ public class RecipeData
         mRecipelist.get(recipeIndex).ingredients.remove(ingredientIndex);
     }
 
+    // method to add direction to a certain recipe (at the end)
     public void addDirection(int recipeIndex, String direction)
     {
         mRecipelist.get(recipeIndex).directions.add(direction);
     }
 
+    // method to add direction at the given index to a certain recipe
     public void addDirection(int recipeIndex, String direction, int directionIndex)
     {
         mRecipelist.get(recipeIndex).directions.add(directionIndex, direction);
     }
 
+    // method to remove direction at the given index
     public void removeDirection(int recipeIndex, int directionIndex)
     {
         int size = mRecipelist.get(recipeIndex).directions.size();

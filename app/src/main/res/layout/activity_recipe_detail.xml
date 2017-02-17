@@ -143,6 +143,15 @@
                     android:text="Add"
                     android:onClick="onClickDetailAddDirection"/>
             </LinearLayout>
+
+            <Button
+                android:id="@+id/detail_delete_recipe_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delete Recipe"
+                android:backgroundTint="@android:color/holo_red_light"
+                android:textColor="@android:color/white"
+                android:onClick="onClickDetailDeleteRecipe"/>
             
             <LinearLayout
                 android:layout_width="match_parent"
