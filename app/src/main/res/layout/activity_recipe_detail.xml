@@ -181,7 +181,11 @@
         app:menu_labels_ellipsize="end"
         app:menu_openDirection="up"
         app:menu_labels_singleLine="true"
-        app:menu_backgroundColor="#ccffffff">
+        app:menu_backgroundColor="#ccffffff"
+        app:menu_animationDelayPerItem="0"
+        app:menu_colorNormal="#DA4336"
+        app:menu_colorPressed="#E75043"
+        app:menu_colorRipple="#E75043">
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/recipe_detail_edit_fab"

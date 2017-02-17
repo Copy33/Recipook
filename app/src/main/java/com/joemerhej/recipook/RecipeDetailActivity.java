@@ -1,5 +1,9 @@
 package com.joemerhej.recipook;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,14 +21,12 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import static java.security.AccessController.getContext;
-
 
 public class RecipeDetailActivity extends AppCompatActivity implements EditRecipeHeaderDialog.DetailEditRecipeHeaderDialogListener
 {
@@ -165,6 +167,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         // set up the main fam and its children fabs
         mMainFAM = (com.github.clans.fab.FloatingActionMenu) findViewById(R.id.recipe_detail_main_fam);
         mMainFAM.setClosedOnTouchOutside(true);
+        createMainFAMAnimation();
 
         mEditFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.recipe_detail_edit_fab);
         mEditFab.setOnClickListener(onClickDetailFabsListener);
@@ -256,7 +259,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
-    // MAIN FAM AND CHILD FABS LISTENERS
+    // MAIN FAM AND CHILD FABS LISTENERS AND METHODS
     // ----------------------------------------------------------------------------------------------------------------------------------------------
 
     // click listeners for the menu fabs
@@ -298,6 +301,41 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     private void handleEditButtonClicked()
     {
         engageEditMode();
+    }
+
+    private void createMainFAMAnimation()
+    {
+        AnimatorSet set = new AnimatorSet();
+
+        ObjectAnimator scaleOutX = ObjectAnimator.ofFloat(mMainFAM.getMenuIconView(), "scaleX", 1.0f, 0.2f);
+        ObjectAnimator scaleOutY = ObjectAnimator.ofFloat(mMainFAM.getMenuIconView(), "scaleY", 1.0f, 0.2f);
+
+        ObjectAnimator scaleInX = ObjectAnimator.ofFloat(mMainFAM.getMenuIconView(), "scaleX", 0.2f, 1.0f);
+        ObjectAnimator scaleInY = ObjectAnimator.ofFloat(mMainFAM.getMenuIconView(), "scaleY", 0.2f, 1.0f);
+
+        scaleOutX.setDuration(50);
+        scaleOutY.setDuration(50);
+
+        scaleInX.setDuration(150);
+        scaleInY.setDuration(150);
+
+        scaleInX.addListener(new AnimatorListenerAdapter()
+        {
+            @Override
+            public void onAnimationStart(Animator animation)
+            {
+                mMainFAM.getMenuIconView().setImageResource(mMainFAM.isOpened()
+                        ? R.drawable.ic_keyboard_arrow_down_white_24dp
+                        : R.drawable.ic_restaurant_menu_white_24dp);
+            }
+        });
+
+        set.play(scaleOutX).with(scaleOutY);
+        set.play(scaleInX).with(scaleInY).after(scaleOutX);
+
+        set.setInterpolator(new OvershootInterpolator(2));
+
+        mMainFAM.setIconToggleAnimatorSet(set);
     }
 
 
@@ -402,62 +440,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     // method to be called when delete recipe button pressed
     public void onClickDetailDeleteRecipe(View view)
     {
-//        // if the user is in Edit mode show the dialog to save/discard/cancel if at least one change happened
-//        if (mInEditMode)
-//        {
-//            if (!mAtLeastOneChange)
-//            {
-//                engageViewMode();
-//            }
-//            // if at least one change happened
-//            else
-//            {
-//                // set up the dialog
-//                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-//
-//                alertDialogBuilder.setMessage("Save Changes?");
-//
-//                // positive click listener
-//                alertDialogBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener()
-//                {
-//                    public void onClick(DialogInterface dialog, int id)
-//                    {
-//                        // user hits Save button
-//                        engageViewMode();
-//                    }
-//                });
-//                // negative click listener
-//                alertDialogBuilder.setNegativeButton("Discard", new DialogInterface.OnClickListener()
-//                {
-//                    public void onClick(DialogInterface dialog, int id)
-//                    {
-//                        // user hits Discard button, reset recipe to last saved recipe
-//                        mRecipe.MakeCopyOf(mRecipeBeforeEdit);
-//                        mIngredientListAdapter.UpdateDataWith(mRecipe.ingredients);
-//                        mDirectionListAdapter.UpdateDataWith(mRecipe.directions);
-//
-//                        mDirectionListAdapter.notifyDataSetChanged();
-//                        mIngredientListAdapter.notifyDataSetChanged();
-//
-//                        engageViewMode();
-//                    }
-//                });
-//
-//                // show dialog
-//                AlertDialog dialog = alertDialogBuilder.create();
-//                dialog.show();
-//            }
-//
-//        }
-//        // else this is normal app behavior (will go back to main activity)
-//        else
-//        {
-//            Intent intent = new Intent();
-//            intent.putExtra("recipePosition", mRecipeIndex);
-//            setResult(RESULT_OK, intent);
-//            super.onBackPressed();
-//        }
-
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
         alertDialogBuilder.setMessage("Delete Recipe?");
