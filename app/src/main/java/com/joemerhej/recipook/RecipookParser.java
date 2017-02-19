@@ -2,7 +2,6 @@ package com.joemerhej.recipook;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import static com.joemerhej.recipook.Unit.unit;
 
 /**
  * Created by Joe Merhej on 1/29/17.
@@ -59,17 +58,17 @@ public final class RecipookParser
 
                         return new Ingredient(quantity, unit, name);
                     }
-                    else return new Ingredient(0, unit, "");
+                    else return new Ingredient(quantity, unit, "");
                 }
                 else
                 {
                     for(int i=1; i<strings.length; ++i)
                         name += strings[i] + " ";
 
-                    return new Ingredient(quantity, Unit.unit, name);
+                    return new Ingredient(quantity, unit, name);
                 }
             }
-            else return new Ingredient(quantity, Unit.unit, "");
+            else return new Ingredient(quantity, unit, "");
         }
         else if (isValidUnit(strings[0]))
         {
@@ -82,7 +81,7 @@ public final class RecipookParser
             }
             else return new Ingredient(1, unit, "");
         }
-        else return new Ingredient(0, Unit.unit, ingredientString);
+        else return new Ingredient(0, unit, ingredientString);
 
 
     }
@@ -108,7 +107,7 @@ public final class RecipookParser
         }
 
         // in case of "unit" return an empty text
-        if(ingredient.unit == unit)
+        if(ingredient.unit == Unit.unit)
         {
             ingredientUnit = "";
         }
@@ -121,6 +120,9 @@ public final class RecipookParser
     public String GetQuantityStringFromIngredient(Ingredient ingredient)
     {
         String ingredientQuantity = String.valueOf(ingredient.quantity);
+
+        // truncate to 2 decimal places
+        ingredient.quantity = Math.floor(ingredient.quantity * 100) / 100;
 
         if(ingredient.quantity == 0)
             return "";
@@ -159,7 +161,16 @@ public final class RecipookParser
     // returns if the string is a valid quantity
     public boolean isValidQuantity(String s)
     {
-        if(s.matches("-?\\d+(\\.\\d+)?") || s.equals("1/4") || s.equals("1/3") || s.equals("1/2") || s.equals("2/3") || s.equals("3/4"))
+        s = s.trim();
+
+        String[] fraction = s.split("/");
+        if(fraction.length == 2)
+        {
+            if(fraction[0].matches("-?\\d+(\\.\\d+)?") && fraction[1].matches("-?\\d+(\\.\\d+)?"))
+                return true;
+        }
+
+        if(s.matches("-?\\d+(\\.\\d+)?"))
         {
             return true;
         }
@@ -170,6 +181,8 @@ public final class RecipookParser
     // returns is the string is a valid unit
     public boolean isValidUnit(String s)
     {
+        s = s.trim();
+
         s = s.toLowerCase();
         return mSupportedUnitTexts.contains(s);
     }
@@ -187,29 +200,18 @@ public final class RecipookParser
         if(strings.length == 0)
             return 0;
 
-        if(strings[0].equals("1/4"))
+        // check for fraction
+        String[] fraction = strings[0].split("/");
+        if(fraction.length > 1)
         {
-            return 0.25;
+            if(fraction[0].matches("\\d+(\\.\\d+)?") && fraction[1].matches("\\d+(\\.\\d+)?"))
+                return Math.floor(Double.valueOf(fraction[0])/Double.valueOf(fraction[1])*100)/100;
+            else return 0;
         }
-        else if(strings[0].equals("1/3"))
-        {
-            return 0.33;
-        }
-        else if(strings[0].equals("1/2"))
-        {
-            return 0.5;
-        }
-        else if(strings[0].equals("2/3"))
-        {
-            return 0.66;
-        }
-        else if(strings[0].equals("3/4"))
-        {
-            return 0.75;
-        }
+
         else if(strings[0].matches("-?\\d+(\\.\\d+)?"))
         {
-            double result = Double.valueOf(strings[0]);
+            double result = Math.floor(Double.valueOf(strings[0])*100)/100;
             if(result > 0)
                 return result;
             else
@@ -292,7 +294,7 @@ public final class RecipookParser
         }
         else if(evaluate.toLowerCase().equals("unit") || evaluate.toLowerCase().equals("units"))
         {
-            return unit;
+            return Unit.unit;
         }
         else if(evaluate.toLowerCase().equals("quart") || evaluate.toLowerCase().equals("quarts") || evaluate.toLowerCase().equals("q") || evaluate.toLowerCase().equals("qs")
                 || evaluate.toLowerCase().equals("qrt") || evaluate.toLowerCase().equals("qrts"))

@@ -24,8 +24,7 @@
             app:collapsedTitleTextAppearance="@style/CollapsedAppBar"
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            android:onClick="onClickDetailCollapsingToolbarLayout">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
                 android:id="@+id/recycler_item_recipe_image"
@@ -82,12 +81,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/detail_ingredient_edit_text"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/visible"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"/>
+                    android:hint="Add Ingredient (ex: 1 tsp salt)">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/detail_ingredient_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"/>
+                </android.support.design.widget.TextInputLayout>
 
                 <Button
                     android:id="@+id/detail_ingredient_add_button"
@@ -118,12 +123,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/detail_direction_edit_text"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/masked"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:inputType="textCapSentences|textMultiLine"/>
+                    android:hint="Add Direction"
+                    android:layout_height="wrap_content">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/detail_direction_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapSentences|textMultiLine"/>
+                </android.support.design.widget.TextInputLayout>
 
                 <Button
                     android:id="@+id/detail_direction_add_button"
@@ -132,6 +143,15 @@
                     android:text="Add"
                     android:onClick="onClickDetailAddDirection"/>
             </LinearLayout>
+
+            <Button
+                android:id="@+id/detail_delete_recipe_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delete Recipe"
+                android:backgroundTint="@android:color/holo_red_light"
+                android:textColor="@android:color/white"
+                android:onClick="onClickDetailDeleteRecipe"/>
             
             <LinearLayout
                 android:layout_width="match_parent"
@@ -161,7 +181,10 @@
         app:menu_labels_ellipsize="end"
         app:menu_openDirection="up"
         app:menu_labels_singleLine="true"
-        app:menu_backgroundColor="#ccffffff">
+        app:menu_backgroundColor="#ccffffff"
+        app:menu_colorNormal="#DA4336"
+        app:menu_colorPressed="#E75043"
+        app:menu_colorRipple="#E75043">
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/recipe_detail_edit_fab"
@@ -185,7 +208,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add_shopping_cart_white_24dp"
             app:fab_size="mini"
-            app:fab_label="Add to Shopping List" />
+            app:fab_label="Add All to Shopping List" />
 
     </com.github.clans.fab.FloatingActionMenu>
 

@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 /**
  * Created by Joe Merhej on 1/22/17.
  */
@@ -17,7 +19,11 @@ import com.squareup.picasso.Picasso;
 // adapter needed for the recipe list recycler view, it also needs a view holder inside it
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.RecipeListViewHolder>
 {
+    // context
     private Context mContext;
+
+    // list of all recipes
+    private ArrayList<Recipe> mRecipesList;
 
     private OnRecipeItemSelected mRecipeItemClickListener;
 
@@ -72,9 +78,10 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     }
 
     // setter for the mItemClickListener
-    public void setOnRecipeItemClickListener(final OnRecipeItemSelected mItemClickListener)
+    public void setOnRecipeItemClickListener(final OnRecipeItemSelected itemClickListener, ArrayList<Recipe> recipes)
     {
-        this.mRecipeItemClickListener = mItemClickListener;
+        this.mRecipeItemClickListener = itemClickListener;
+        mRecipesList = recipes;
     }
 
     // this will create the view of each row of the RecyclerView
@@ -90,7 +97,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     public void onBindViewHolder(RecipeListViewHolder holder, int position)
     {
         // get the position of the recipe we want form the data (global static instance)
-        final Recipe recipe = RecipeData.Instance().getRecipeList().get(position);
+        Recipe recipe = mRecipesList.get(position);
 
         // set the recipe data
         holder.recipeName.setText(recipe.name);
@@ -107,6 +114,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     @Override
     public int getItemCount()
     {
-        return RecipeData.Instance().getRecipeList().size();
+        return mRecipesList.size();
     }
 }

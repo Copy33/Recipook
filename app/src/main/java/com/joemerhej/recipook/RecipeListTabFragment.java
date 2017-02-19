@@ -10,6 +10,9 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -22,7 +25,10 @@ public class RecipeListTabFragment extends Fragment
     public static StaggeredGridLayoutManager mStaggeredLayoutManager;
 
     // adapter of the recipe list
-    public RecipeListAdapter mAdapter;
+    public RecipeListAdapter mRecipeListAdapter;
+
+    // will return from RecipeDetailActivity
+    private int RECIPE_DETAIL_RESULT_CODE;
 
 
     // every fragment requires a default constructor and a newInstance method
@@ -46,20 +52,6 @@ public class RecipeListTabFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        // Implement the click listener for every recipe list item
-        RecipeListAdapter.OnRecipeItemSelected onRecipeItemClickListener = new RecipeListAdapter.OnRecipeItemSelected()
-        {
-            @Override
-            public void OnRecipeItemClicked(View view, int position)
-            {
-                // clicking a recipe item will launch the recipe detail activity
-                Intent intent = new Intent(getContext(), RecipeDetailActivity.class);
-                intent.putExtra(RecipeDetailActivity.EXTRA_PARAM_ID, position);
-                startActivity(intent);
-            }
-        };
-
-
         final View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
         // get activity (parent) to use as context when setting layout manager of the recycler view
@@ -72,10 +64,50 @@ public class RecipeListTabFragment extends Fragment
         recyclerView.setLayoutManager(mStaggeredLayoutManager);
 
         // set the adapter, and add the click listener
-        mAdapter = new RecipeListAdapter(activity);
-        recyclerView.setAdapter(mAdapter);
-        mAdapter.setOnRecipeItemClickListener(onRecipeItemClickListener);
+        mRecipeListAdapter = new RecipeListAdapter(activity);
+        recyclerView.setAdapter(mRecipeListAdapter);
+        mRecipeListAdapter.setOnRecipeItemClickListener(onRecipeItemClickListener, RecipeData.Instance().getRecipeList());
 
         return view;
+    }
+
+    // Implement the click listener for every recipe list item
+    RecipeListAdapter.OnRecipeItemSelected onRecipeItemClickListener = new RecipeListAdapter.OnRecipeItemSelected()
+    {
+        @Override
+        public void OnRecipeItemClicked(View view, int position)
+        {
+            // clicking a recipe item will launch the recipe detail activity
+            Intent intent = new Intent(getContext(), RecipeDetailActivity.class);
+            intent.putExtra(RecipeDetailActivity.EXTRA_RECIPE_ID, position);
+            startActivityForResult(intent, RECIPE_DETAIL_RESULT_CODE);
+        }
+    };
+
+    // this method will be called when intents triggered with "startActivityForResult" come back to this activity
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        try
+        {
+            // check if it's the intent to change the toolbar image
+            if (requestCode == RECIPE_DETAIL_RESULT_CODE && resultCode == RESULT_OK && data != null)
+            {
+                int recipePosition = data.getIntExtra("recipePosition", 0);
+                mRecipeListAdapter.notifyItemChanged(recipePosition);
+            }
+
+            // check if it's the intent to change the toolbar image
+            if (requestCode == RECIPE_DETAIL_RESULT_CODE && resultCode == RecipookIntentResult.RESULT_DELETED && data != null)
+            {
+                int recipePosition = data.getIntExtra("recipePosition", 0);
+                mRecipeListAdapter.notifyItemRemoved(recipePosition);
+            }
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this.getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

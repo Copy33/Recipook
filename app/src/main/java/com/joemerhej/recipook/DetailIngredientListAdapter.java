@@ -1,7 +1,6 @@
 package com.joemerhej.recipook;
 
 import android.content.Context;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
+
 import java.util.ArrayList;
 
 /**
@@ -23,13 +24,14 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
     // list of ingredients
     public ArrayList<Ingredient> mIngredientsList;
 
-    // click listener for the fabs that activity will deal with
-    private OnItemFabClickListener mFabClickListener;
+    // click listener for the ingredient buttons that activity will implement and assign
+    private OnIngredientButtonsClickListener mIngredientButtonsClickListeners;
 
-    // interface that activities that use this need to implement
-    public interface OnItemFabClickListener
+    // interface for ingredient buttons listeners
+    public interface OnIngredientButtonsClickListener
     {
-        void onItemFabClick(View view, int position);
+        void onIngredientDeleteButtonClick(View view, int position);
+        void onIngredientAddToShoppingListButtonClick(View view, int position);
     }
 
     // listener for ingredient name text edit (textwatcher)
@@ -101,7 +103,8 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         // the views for every ingredient
         public EditText mIngredientQuantity;
         public EditText mIngredientText;
-        public FloatingActionButton mEditRemoveIngredientFab;
+        public ImageButton mEditRemoveIngredientButton;
+        public ImageButton mAddToShoppingListButton;
 
         // the listeners for every ingredient
         public MyIngredientNameEditTextListener mIngredientNameEditTextListener;
@@ -115,10 +118,12 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
             // bind the views
             mIngredientQuantity = (EditText) itemView.findViewById(R.id.recycler_item_ingredient_quantity);
             mIngredientText = (EditText) itemView.findViewById(R.id.recycler_item_ingredient_text);
-            mEditRemoveIngredientFab = (FloatingActionButton) itemView.findViewById(R.id.recycler_item_remove_ingredient_fab);
+            mEditRemoveIngredientButton = (ImageButton) itemView.findViewById(R.id.recycler_item_ingredient_delete_button);
+            mAddToShoppingListButton = (ImageButton) itemView.findViewById(R.id.recycler_item_ingredient_add_to_shopping_list_button);
 
             // bind listeners : delete item fab
-            mEditRemoveIngredientFab.setOnClickListener(this);
+            mEditRemoveIngredientButton.setOnClickListener(this);
+            mAddToShoppingListButton.setOnClickListener(this);
 
             // bind listeners : ingredient name text change (passed from parameter, created in onCreateView so we don't have to create listener in onBindViewHolder)
             mIngredientNameEditTextListener = ingredientNameEditTextListener;
@@ -132,9 +137,13 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         @Override
         public void onClick(View v)
         {
-            if(mFabClickListener != null)
+            if(mIngredientButtonsClickListeners != null)
             {
-                mFabClickListener.onItemFabClick(v, getLayoutPosition());
+                if(v.getId() == mEditRemoveIngredientButton.getId())
+                    mIngredientButtonsClickListeners.onIngredientDeleteButtonClick(v, getLayoutPosition());
+
+                if(v.getId() == mAddToShoppingListButton.getId())
+                    mIngredientButtonsClickListeners.onIngredientAddToShoppingListButtonClick(v, getLayoutPosition());
             }
         }
     }
@@ -154,9 +163,9 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
     }
 
     // setter for the fab click listener
-    public void setOnItemFabClickListener(final OnItemFabClickListener itemFabClickListener)
+    public void setOnItemFabClickListener(final OnIngredientButtonsClickListener ingredientButtonsClickListener)
     {
-        mFabClickListener = itemFabClickListener;
+        mIngredientButtonsClickListeners = ingredientButtonsClickListener;
     }
 
     // creates the view holder
@@ -189,15 +198,15 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         // show the right views depending on edit mode
         if(((RecipeDetailActivity)mContext).mInEditMode)
         {
-            holder.mEditRemoveIngredientFab.setVisibility(View.VISIBLE);
             holder.mIngredientQuantity.setEnabled(true);
             holder.mIngredientText.setEnabled(true);
+            holder.mEditRemoveIngredientButton.setVisibility(View.VISIBLE);
         }
         else
         {
-            holder.mEditRemoveIngredientFab.setVisibility(View.GONE);
             holder.mIngredientQuantity.setEnabled(false);
             holder.mIngredientText.setEnabled(false);
+            holder.mEditRemoveIngredientButton.setVisibility(View.INVISIBLE);
         }
     }
 
