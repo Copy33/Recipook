@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
@@ -50,7 +51,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     private DetailDirectionListAdapter mDirectionListAdapter;
 
     // listeners : delete fabs (ingredients, directions)
-    private DetailIngredientListAdapter.OnItemFabClickListener mIngredientFabClickListener;
+    private DetailIngredientListAdapter.OnIngredientButtonsClickListener mIngredientFabClickListener;
     private DetailDirectionListAdapter.OnItemFabClickListener mDirectionFabClickListener;
 
     // views: edit mode views
@@ -102,15 +103,22 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
         // initialize the recycler view adapter listeners
         // DetailIngredientListAdapter fab click listener implemented to handle clicking on fabs of items
-        mIngredientFabClickListener = new DetailIngredientListAdapter.OnItemFabClickListener()
+        mIngredientFabClickListener = new DetailIngredientListAdapter.OnIngredientButtonsClickListener()
         {
             @Override
-            public void onItemFabClick(View view, int position)
+            public void onIngredientDeleteButtonClick(View view, int position)
             {
                 mRecipe.ingredients.remove(position);
                 mIngredientListAdapter.notifyItemRemoved(position);
                 mEditAddIngredientText.requestFocus();
                 mAtLeastOneChange = true;
+            }
+
+            @Override
+            public void onIngredientAddToShoppingListButtonClick(View view, int position)
+            {
+                //TODO: logic to add ingredient to shopping list
+                Snackbar.make(view, "Added " + mRecipe.ingredients.get(position).name + " to the Shopping List.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
             }
         };
 
@@ -158,23 +166,23 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
         // set up the main fab (top right of the screen)
         mMainFab = (FloatingActionButton) findViewById(R.id.recipe_detail_main_fab);
-        mMainFab.setOnClickListener(onClickDetailFabsListener);
+        mMainFab.setOnClickListener(mClickDetailFabsListener);
 
         // set up the main fam and its children fabs
         mMainFAM = (com.github.clans.fab.FloatingActionMenu) findViewById(R.id.recipe_detail_main_fam);
         mMainFAM.setClosedOnTouchOutside(true);
         mMainFAM.setIconAnimated(false);
-        mMainFAM.setOnMenuToggleListener(onFAMToggleListener);
+        mMainFAM.setOnMenuToggleListener(mFAMToggleListener);
 
         mEditFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.recipe_detail_edit_fab);
-        mEditFab.setOnClickListener(onClickDetailFabsListener);
+        mEditFab.setOnClickListener(mClickDetailFabsListener);
 
         mShareFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.recipe_detail_share_fab);
-        mShareFab.setOnClickListener(onClickDetailFabsListener);
+        mShareFab.setOnClickListener(mClickDetailFabsListener);
         mShareFab.setEnabled(false); //TODO: implement sharing and enable this button
 
         mAddToShoppingListFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.recipe_detail_add_to_shopping_list_fab);
-        mAddToShoppingListFab.setOnClickListener(onClickDetailFabsListener);
+        mAddToShoppingListFab.setOnClickListener(mClickDetailFabsListener);
         mAddToShoppingListFab.setEnabled(false); //TODO: implement adding to shopping list and enable this button
 
         // load recipe
@@ -260,7 +268,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     // ----------------------------------------------------------------------------------------------------------------------------------------------
 
     // click listener for the main fam icon
-    private com.github.clans.fab.FloatingActionMenu.OnMenuToggleListener onFAMToggleListener = new com.github.clans.fab.FloatingActionMenu.OnMenuToggleListener()
+    private com.github.clans.fab.FloatingActionMenu.OnMenuToggleListener mFAMToggleListener = new com.github.clans.fab.FloatingActionMenu.OnMenuToggleListener()
     {
         @Override
         public void onMenuToggle(boolean opened)
@@ -272,7 +280,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     };
 
     // click listeners for the menu fabs
-    private View.OnClickListener onClickDetailFabsListener = new View.OnClickListener()
+    private View.OnClickListener mClickDetailFabsListener = new View.OnClickListener()
     {
         @Override
         public void onClick(View v)

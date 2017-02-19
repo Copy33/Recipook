@@ -208,7 +208,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add_shopping_cart_white_24dp"
             app:fab_size="mini"
-            app:fab_label="Add to Shopping List" />
+            app:fab_label="Add All to Shopping List" />
 
     </com.github.clans.fab.FloatingActionMenu>
 
