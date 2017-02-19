@@ -1,9 +1,5 @@
 package com.joemerhej.recipook;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,12 +17,12 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.animation.OvershootInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 
 public class RecipeDetailActivity extends AppCompatActivity implements EditRecipeHeaderDialog.DetailEditRecipeHeaderDialogListener
 {
@@ -167,18 +163,19 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         // set up the main fam and its children fabs
         mMainFAM = (com.github.clans.fab.FloatingActionMenu) findViewById(R.id.recipe_detail_main_fam);
         mMainFAM.setClosedOnTouchOutside(true);
-        //createMainFAMAnimation();
+        mMainFAM.setIconAnimated(false);
+        mMainFAM.setOnMenuToggleListener(onFAMToggleListener);
 
         mEditFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.recipe_detail_edit_fab);
         mEditFab.setOnClickListener(onClickDetailFabsListener);
 
         mShareFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.recipe_detail_share_fab);
         mShareFab.setOnClickListener(onClickDetailFabsListener);
-        mShareFab.setEnabled(false);
+        mShareFab.setEnabled(false); //TODO: implement sharing and enable this button
 
         mAddToShoppingListFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.recipe_detail_add_to_shopping_list_fab);
         mAddToShoppingListFab.setOnClickListener(onClickDetailFabsListener);
-        mAddToShoppingListFab.setEnabled(false);
+        mAddToShoppingListFab.setEnabled(false); //TODO: implement adding to shopping list and enable this button
 
         // load recipe
         mCollapsingToolbarLayout.setTitle(mRecipe.name);
@@ -261,6 +258,18 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // MAIN FAM AND CHILD FABS LISTENERS AND METHODS
     // ----------------------------------------------------------------------------------------------------------------------------------------------
+
+    // click listener for the main fam icon
+    private com.github.clans.fab.FloatingActionMenu.OnMenuToggleListener onFAMToggleListener = new com.github.clans.fab.FloatingActionMenu.OnMenuToggleListener()
+    {
+        @Override
+        public void onMenuToggle(boolean opened)
+        {
+            mMainFAM.getMenuIconView().setImageResource(opened
+                    ? R.drawable.ic_keyboard_arrow_down_white_24dp
+                    : R.drawable.ic_restaurant_menu_white_24dp);
+        }
+    };
 
     // click listeners for the menu fabs
     private View.OnClickListener onClickDetailFabsListener = new View.OnClickListener()
