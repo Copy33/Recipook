@@ -1,18 +1,15 @@
 package com.joemerhej.recipook;
 
 import android.content.Context;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -29,12 +26,12 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
     private ArrayList<String> mDirectionsList;
 
     // click listener for the fabs that activity will deal with
-    private OnItemFabClickListener mFabClickListener;
+    private OnDirectionButtonsClickListener mDirectionButtonsClickListener;
 
     // interface that activities that use this need to implement
-    public interface OnItemFabClickListener
+    public interface OnDirectionButtonsClickListener
     {
-        void onItemFabClick(View view, int position);
+        void onDirectionDeleteButtonClick(View view, int position);
     }
 
     // listener for direction text edit text (textwatcher)
@@ -73,7 +70,7 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
         // the views for every direction
         public TextView mDirectionNumber;
         public EditText mDirectionText;
-        public FloatingActionButton mEditRemoveDirectionFab;
+        public ImageButton mEditDeleteDirectionButton;
 
         // the listeners for every direction
         public MyDirectionTextEditTextListener mDirectionTextEditTextListener;
@@ -85,10 +82,10 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
             // bind the views
             mDirectionNumber = (TextView) itemView.findViewById(R.id.recycler_item_direction_number);
             mDirectionText = (EditText) itemView.findViewById(R.id.recycler_item_direction_text);
-            mEditRemoveDirectionFab = (FloatingActionButton) itemView.findViewById(R.id.recipe_item_remove_direction_fab);
+            mEditDeleteDirectionButton = (ImageButton) itemView.findViewById(R.id.recycler_item_direction_delete_button);
 
-            // bind listeners : delete fab item
-            mEditRemoveDirectionFab.setOnClickListener(this);
+            // bind listeners : delete direction button
+            mEditDeleteDirectionButton.setOnClickListener(this);
 
             // bind listeners : direction text text change
             mDirectionTextEditTextListener = directionTextEditTextListener;
@@ -98,9 +95,9 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
         @Override
         public void onClick(View v)
         {
-            if(mFabClickListener != null)
+            if(mDirectionButtonsClickListener != null)
             {
-                mFabClickListener.onItemFabClick(v, getLayoutPosition());
+                mDirectionButtonsClickListener.onDirectionDeleteButtonClick(v, getLayoutPosition());
             }
         }
     }
@@ -120,9 +117,9 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
     }
 
     // setter for fab click listener
-    public void setOnItemFabClickListener(final OnItemFabClickListener itemFabClickListener)
+    public void setDirectionButtonsClickListener(final OnDirectionButtonsClickListener itemFabClickListener)
     {
-        mFabClickListener = itemFabClickListener;
+        mDirectionButtonsClickListener = itemFabClickListener;
     }
 
     //creates the view holder from the inflated view
@@ -150,12 +147,12 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
         // show/hide the right views depending on edit mode
         if(((RecipeDetailActivity)mContext).mInEditMode)
         {
-            holder.mEditRemoveDirectionFab.setVisibility(View.VISIBLE);
+            holder.mEditDeleteDirectionButton.setVisibility(View.VISIBLE);
             holder.mDirectionText.setEnabled(true);
         }
         else
         {
-            holder.mEditRemoveDirectionFab.setVisibility(View.GONE);
+            holder.mEditDeleteDirectionButton.setVisibility(View.GONE);
             holder.mDirectionText.setEnabled(false);
         }
     }

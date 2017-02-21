@@ -103,7 +103,7 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         // the views for every ingredient
         public EditText mIngredientQuantity;
         public EditText mIngredientText;
-        public ImageButton mEditRemoveIngredientButton;
+        public ImageButton mEditDeleteIngredientButton;
         public ImageButton mAddToShoppingListButton;
 
         // the listeners for every ingredient
@@ -118,11 +118,11 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
             // bind the views
             mIngredientQuantity = (EditText) itemView.findViewById(R.id.recycler_item_ingredient_quantity);
             mIngredientText = (EditText) itemView.findViewById(R.id.recycler_item_ingredient_text);
-            mEditRemoveIngredientButton = (ImageButton) itemView.findViewById(R.id.recycler_item_ingredient_delete_button);
+            mEditDeleteIngredientButton = (ImageButton) itemView.findViewById(R.id.recycler_item_ingredient_delete_button);
             mAddToShoppingListButton = (ImageButton) itemView.findViewById(R.id.recycler_item_ingredient_add_to_shopping_list_button);
 
             // bind listeners : delete item fab
-            mEditRemoveIngredientButton.setOnClickListener(this);
+            mEditDeleteIngredientButton.setOnClickListener(this);
             mAddToShoppingListButton.setOnClickListener(this);
 
             // bind listeners : ingredient name text change (passed from parameter, created in onCreateView so we don't have to create listener in onBindViewHolder)
@@ -139,7 +139,7 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         {
             if(mIngredientButtonsClickListeners != null)
             {
-                if(v.getId() == mEditRemoveIngredientButton.getId())
+                if(v.getId() == mEditDeleteIngredientButton.getId())
                     mIngredientButtonsClickListeners.onIngredientDeleteButtonClick(v, getLayoutPosition());
 
                 if(v.getId() == mAddToShoppingListButton.getId())
@@ -163,7 +163,7 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
     }
 
     // setter for the fab click listener
-    public void setOnItemFabClickListener(final OnIngredientButtonsClickListener ingredientButtonsClickListener)
+    public void setIngredientButtonsClickListener(final OnIngredientButtonsClickListener ingredientButtonsClickListener)
     {
         mIngredientButtonsClickListeners = ingredientButtonsClickListener;
     }
@@ -200,13 +200,13 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         {
             holder.mIngredientQuantity.setEnabled(true);
             holder.mIngredientText.setEnabled(true);
-            holder.mEditRemoveIngredientButton.setVisibility(View.VISIBLE);
+            holder.mEditDeleteIngredientButton.setVisibility(View.VISIBLE);
         }
         else
         {
             holder.mIngredientQuantity.setEnabled(false);
             holder.mIngredientText.setEnabled(false);
-            holder.mEditRemoveIngredientButton.setVisibility(View.INVISIBLE);
+            holder.mEditDeleteIngredientButton.setVisibility(View.INVISIBLE);
         }
     }
 

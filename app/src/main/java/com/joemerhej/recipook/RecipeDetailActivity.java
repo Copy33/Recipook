@@ -52,7 +52,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
     // listeners : delete fabs (ingredients, directions)
     private DetailIngredientListAdapter.OnIngredientButtonsClickListener mIngredientFabClickListener;
-    private DetailDirectionListAdapter.OnItemFabClickListener mDirectionFabClickListener;
+    private DetailDirectionListAdapter.OnDirectionButtonsClickListener mDirectionFabClickListener;
 
     // views: edit mode views
     private LinearLayout mEditAddIngredientLinearLayout;
@@ -102,7 +102,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mCollapsingToolbarLayout.setOnClickListener(new CollapsingToolbarLayoutClickListener());
 
         // initialize the recycler view adapter listeners
-        // DetailIngredientListAdapter fab click listener implemented to handle clicking on fabs of items
+        // Ingredient list adapter needs the ingredient buttons click listener to be implemented
         mIngredientFabClickListener = new DetailIngredientListAdapter.OnIngredientButtonsClickListener()
         {
             @Override
@@ -122,11 +122,11 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             }
         };
 
-        //DetailDirectionListAdapter fab click listener implemented to handle clicking on fabs of items
-        mDirectionFabClickListener = new DetailDirectionListAdapter.OnItemFabClickListener()
+        //Direction list adapter needs the direction buttons click listener to be implemented
+        mDirectionFabClickListener = new DetailDirectionListAdapter.OnDirectionButtonsClickListener()
         {
             @Override
-            public void onItemFabClick(View view, int position)
+            public void onDirectionDeleteButtonClick(View view, int position)
             {
                 mRecipe.directions.remove(position);
                 mDirectionListAdapter.notifyItemRemoved(position);
@@ -141,13 +141,13 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mIngredientsRecyclerView.setAdapter(mIngredientListAdapter);
         mIngredientsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mIngredientsRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        mIngredientListAdapter.setOnItemFabClickListener(mIngredientFabClickListener);
+        mIngredientListAdapter.setIngredientButtonsClickListener(mIngredientFabClickListener);
 
         mDirectionListAdapter = new DetailDirectionListAdapter(this, mRecipe.directions);
         mDirectionsRecyclerView.setAdapter(mDirectionListAdapter);
         mDirectionsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mDirectionsRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        mDirectionListAdapter.setOnItemFabClickListener(mDirectionFabClickListener);
+        mDirectionListAdapter.setDirectionButtonsClickListener(mDirectionFabClickListener);
 
         // set up edit mode views (visibility GONE by default)
         mEditAddIngredientLinearLayout = (LinearLayout) findViewById(R.id.detail_ingredient_add_layout);
