@@ -1,6 +1,7 @@
 package com.joemerhej.recipook;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,10 +46,9 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     public class RecipeListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         // all the views of each row item (found in recycler_item_recipe layout)
-        public LinearLayout recipeHolder;
-        public LinearLayout recipeNameHolder;
-        public TextView recipeName;
-        public ImageView recipeImage;
+        public LinearLayout mRecipeHolder;
+        public TextView mRecipeName;
+        public ImageView mRecipeImage;
 
 
         // constructor for view holder
@@ -56,13 +56,12 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         {
             super(itemView);
 
-            recipeHolder = (LinearLayout) itemView.findViewById(R.id.recycler_item_recipe_holder);
-            recipeName = (TextView) itemView.findViewById(R.id.recycler_item_recipe_name);
-            recipeNameHolder = (LinearLayout) itemView.findViewById(R.id.recycler_item_recipe_name_holder);
-            recipeImage = (ImageView) itemView.findViewById(R.id.recycler_item_recipe_image);
+            mRecipeHolder = (LinearLayout) itemView.findViewById(R.id.recycler_item_recipe_holder);
+            mRecipeName = (TextView) itemView.findViewById(R.id.recycler_item_recipe_name);
+            mRecipeImage = (ImageView) itemView.findViewById(R.id.recycler_item_recipe_image);
 
             // manually set click listener since recycler view doesn't have one for its items
-            recipeHolder.setOnClickListener(this);
+            mRecipeHolder.setOnClickListener(this);
         }
 
         // implements onClick method since we're doing it manually
@@ -100,14 +99,12 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         Recipe recipe = mRecipesList.get(position);
 
         // set the recipe data
-        holder.recipeName.setText(recipe.name);
+        holder.mRecipeName.setText(recipe.name);
 
         // set the image of the recipe
         Picasso.with(mContext)
-                .load(recipe.getImageResourceId(mContext))
-                .resize(300, 300)
-                .centerCrop()
-                .into(holder.recipeImage);
+                .load(Uri.parse(recipe.imageUri))
+                .into(holder.mRecipeImage);
     }
 
     // every adapter needs getItemCount method

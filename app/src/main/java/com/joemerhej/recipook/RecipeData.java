@@ -197,6 +197,7 @@ public class RecipeData
                 Recipe recipe = new Recipe();
                 recipe.name = recipeListNames[i];
                 recipe.imageName = recipeListNames[i].replaceAll("\\s+", "").toLowerCase();
+                recipe.imageUri = "android.resource://com.joemerhej.recipook/drawable/" + recipe.imageName;
 
                 for (int j = 0; j < recipeListDirections[i].length; ++j)
                 {

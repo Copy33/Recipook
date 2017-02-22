@@ -9,8 +9,10 @@ import java.util.ArrayList;
 
 public class Recipe
 {
+    // recipe variables
     String name;
     String imageName;
+    String imageUri;
     ArrayList<Ingredient> ingredients;
     ArrayList<String> directions;
 
@@ -26,6 +28,7 @@ public class Recipe
     {
         name = Name;
         imageName = ImageName;
+        imageUri = "android.resource://com.joemerhej.recipook/drawable/" + ImageName;
 
         ingredients = new ArrayList<>();
         for(int i = 0; i < Ingredients.size(); ++i)
@@ -41,6 +44,7 @@ public class Recipe
     {
         name = CopyFrom.name;
         imageName = CopyFrom.imageName;
+        imageUri = CopyFrom.imageUri;
 
         ingredients = new ArrayList<>();
         for(int i = 0; i < CopyFrom.ingredients.size(); ++i)

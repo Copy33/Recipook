@@ -4,11 +4,15 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by Joe Merhej on 2/10/17.
@@ -21,15 +25,18 @@ public class EditRecipeHeaderDialog extends DialogFragment
     public interface DetailEditRecipeHeaderDialogListener
     {
         void onEditHeaderDialogPositiveClick(EditRecipeHeaderDialog dialog);
+
         void onEditHeaderDialogNegativeClick(EditRecipeHeaderDialog dialog);
+
         void onEditHeaderDialogChooseImageClick(EditRecipeHeaderDialog dialog);
     }
 
     // use this instance of the interface to deliver action events
     DetailEditRecipeHeaderDialogListener mListener;
 
+    public ImageView mRecipeImageView;
     public Button mChooseImageButton;
-    public TextInputEditText mNewRecipeTitleEditText;
+    public TextInputEditText mRecipeNameEditText;
 
 
     public EditRecipeHeaderDialog()
@@ -37,11 +44,12 @@ public class EditRecipeHeaderDialog extends DialogFragment
 
     }
 
-    public static EditRecipeHeaderDialog Instance(String recipeTitle)
+    public static EditRecipeHeaderDialog Instance(String recipeTitle, String recipeImageUri)
     {
         EditRecipeHeaderDialog dialog = new EditRecipeHeaderDialog();
         Bundle args = new Bundle();
         args.putString("recipeTitle", recipeTitle);
+        args.putString("mRecipeImage", recipeImageUri);
         dialog.setArguments(args);
         return dialog;
     }
@@ -51,6 +59,7 @@ public class EditRecipeHeaderDialog extends DialogFragment
     public void onAttach(Context context)
     {
         super.onAttach(context);
+
         // Verify that the host activity implements the callback interface
         try
         {
@@ -91,12 +100,23 @@ public class EditRecipeHeaderDialog extends DialogFragment
 
 
         // hook up the views
-        mNewRecipeTitleEditText = (TextInputEditText) view.findViewById(R.id.dialog_title_edit_text);
-        mNewRecipeTitleEditText.setText(getArguments().getString("recipeTitle"));
-        mNewRecipeTitleEditText.setSelection(getArguments().getString("recipeTitle").length());
+        mRecipeNameEditText = (TextInputEditText) view.findViewById(R.id.dialog_recipe_name_edit_text);
+        mChooseImageButton = (Button) view.findViewById(R.id.dialog_choose_image_button);
+        mRecipeImageView = (ImageView) view.findViewById(R.id.dialog_recipe_image_view);
+
+        // set the text to the recipe name that is in the arguments of the dialog instance called
+        mRecipeNameEditText.setText(getArguments().getString("recipeTitle"));
+        mRecipeNameEditText.setSelection(getArguments().getString("recipeTitle").length());
+
+        // set the image view to the recipe image view (also from arguments of instance)
+        Picasso.with(builder.getContext())
+                .load(Uri.parse(getArguments().getString("mRecipeImage")))
+                .into(mRecipeImageView);
+
+        // set the color of the button text
+        // TODO: set color of button text based on imageview palette (need to retrieve imageview src)
 
         // hook up the listener for the choose image button
-        mChooseImageButton = (Button) view.findViewById(R.id.choose_image_button);
         mChooseImageButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
