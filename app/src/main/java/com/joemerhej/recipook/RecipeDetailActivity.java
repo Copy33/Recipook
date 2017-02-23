@@ -3,7 +3,6 @@ package com.joemerhej.recipook;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -22,8 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 
 public class RecipeDetailActivity extends AppCompatActivity implements EditRecipeHeaderDialog.DetailEditRecipeHeaderDialogListener
@@ -191,7 +189,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
         // load recipe title and image
         mCollapsingToolbarLayout.setTitle(mRecipe.name);
-        Picasso.with(this)
+        Glide.with(this)
                 .load(Uri.parse(mRecipe.imageUri))
                 .into(mCollapsingToolbarImageView);
 
@@ -222,7 +220,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mCollapsingToolbarLayout.setTitle(mRecipe.name);
 
         // reset image
-        Picasso.with(this)
+        Glide.with(this)
                 .load(Uri.parse(mRecipe.imageUri))
                 .into(mCollapsingToolbarImageView);
 
@@ -536,7 +534,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
         // get the new image
         mRecipe.imageUri = mNewImageUri.toString();
-        Picasso.with(this)
+        Glide.with(this)
                 .load(Uri.parse(mRecipe.imageUri))
                 .into(mCollapsingToolbarImageView);
 
@@ -566,9 +564,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
 
         startActivityForResult(chooserIntent, RESULT_LOAD_IMAGE);
-
-//        Intent chooseImageIntent = RecipookImagePicker.getPickImageIntent(this);
-//        startActivityForResult(chooseImageIntent, RESULT_LOAD_IMAGE);
     }
 
     // this method will be called when intents triggered with "startActivityForResult" come back to this activity
@@ -583,7 +578,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && intent != null)
             {
                 Uri imageUri = intent.getData();
-                Picasso.with(this)
+                Glide.with(this)
                         .load(imageUri)
                         .into(mEditRecipeHeaderDialog.mRecipeImageView);
 

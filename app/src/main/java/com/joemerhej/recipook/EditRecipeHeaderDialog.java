@@ -11,8 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 /**
  * Created by Joe Merhej on 2/10/17.
@@ -109,7 +108,7 @@ public class EditRecipeHeaderDialog extends DialogFragment
         mRecipeNameEditText.setSelection(getArguments().getString("recipeTitle").length());
 
         // set the image view to the recipe image view (also from arguments of instance)
-        Picasso.with(builder.getContext())
+        Glide.with(builder.getContext())
                 .load(Uri.parse(getArguments().getString("mRecipeImage")))
                 .into(mRecipeImageView);
 

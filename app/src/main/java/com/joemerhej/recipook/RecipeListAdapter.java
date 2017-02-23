@@ -9,8 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.squareup.picasso.Picasso;
-
+import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 /**
@@ -102,7 +101,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         holder.mRecipeName.setText(recipe.name);
 
         // set the image of the recipe
-        Picasso.with(mContext)
+        Glide.with(mContext)
                 .load(Uri.parse(recipe.imageUri))
                 .into(holder.mRecipeImage);
     }
