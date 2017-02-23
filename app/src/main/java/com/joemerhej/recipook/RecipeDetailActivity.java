@@ -18,8 +18,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
@@ -56,12 +57,12 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     private DetailDirectionListAdapter.OnDirectionButtonsClickListener mDirectionButtonsClickListener;
 
     // views: edit mode views
-    private LinearLayout mEditAddIngredientLinearLayout;
+    private RelativeLayout mEditAddIngredientLayout;
     private TextInputEditText mEditAddIngredientText;
-    private Button mEditAddIngredientButton;
-    private LinearLayout mEditAddDirectionLinearLayout;
+    private ImageButton mEditAddIngredientButton;
+    private RelativeLayout mEditAddDirectionLayout;
     private TextInputEditText mEditAddDirectionText;
-    private Button mEditAddDirectionButton;
+    private ImageButton mEditAddDirectionButton;
     private Button mDeleteRecipeButton;
 
     // views: fam and fabs
@@ -152,16 +153,16 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mDirectionListAdapter.setDirectionButtonsClickListener(mDirectionButtonsClickListener);
 
         // set up edit mode views (visibility GONE by default)
-        mEditAddIngredientLinearLayout = (LinearLayout) findViewById(R.id.detail_ingredient_add_layout);
-        mEditAddIngredientLinearLayout.setVisibility(View.GONE);
+        mEditAddIngredientLayout = (RelativeLayout) findViewById(R.id.detail_ingredient_add_layout);
+        mEditAddIngredientLayout.setVisibility(View.GONE);
         mEditAddIngredientText = (TextInputEditText) findViewById(R.id.detail_ingredient_edit_text);
         //mEditAddIngredientText.addTextChangedListener(new MyAddIngredientEditTextWatcher()); // TODO (see other todo below)
-        mEditAddIngredientButton = (Button) findViewById(R.id.detail_ingredient_add_button);
+        mEditAddIngredientButton = (ImageButton) findViewById(R.id.detail_ingredient_add_button);
 
-        mEditAddDirectionLinearLayout = (LinearLayout) findViewById(R.id.detail_direction_add_layout);
-        mEditAddDirectionLinearLayout.setVisibility(View.GONE);
+        mEditAddDirectionLayout = (RelativeLayout) findViewById(R.id.detail_direction_add_layout);
+        mEditAddDirectionLayout.setVisibility(View.GONE);
         mEditAddDirectionText = (TextInputEditText) findViewById(R.id.detail_direction_edit_text);
-        mEditAddDirectionButton = (Button) findViewById(R.id.detail_direction_add_button);
+        mEditAddDirectionButton = (ImageButton) findViewById(R.id.detail_direction_add_button);
 
         mDeleteRecipeButton = (Button) findViewById(R.id.detail_delete_recipe_button);
         mDeleteRecipeButton.setVisibility(View.GONE);
@@ -356,8 +357,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mMainFab.show();
 
         // make the edit views visible
-        mEditAddIngredientLinearLayout.setVisibility(View.VISIBLE);
-        mEditAddDirectionLinearLayout.setVisibility(View.VISIBLE);
+        mEditAddIngredientLayout.setVisibility(View.VISIBLE);
+        mEditAddDirectionLayout.setVisibility(View.VISIBLE);
         mDeleteRecipeButton.setVisibility(View.VISIBLE);
 
         // notify the recycler view adapters so they make the right changes to theirs views
@@ -380,8 +381,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mAtLeastOneChange = false;
 
         // make the edit views invisible
-        mEditAddIngredientLinearLayout.setVisibility(View.GONE);
-        mEditAddDirectionLinearLayout.setVisibility(View.GONE);
+        mEditAddIngredientLayout.setVisibility(View.GONE);
+        mEditAddDirectionLayout.setVisibility(View.GONE);
         mEditAddDirectionText.getText().clear();
         mEditAddIngredientText.getText().clear();
         mDeleteRecipeButton.setVisibility(View.GONE);

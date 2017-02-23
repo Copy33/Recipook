@@ -17,7 +17,7 @@
         android:layout_height="@dimen/collapsing_toolbar_height"
         android:background="@android:color/transparent"
         android:text="[ CLICK TO EDIT ]"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textColor="@android:color/white"/>
 
 

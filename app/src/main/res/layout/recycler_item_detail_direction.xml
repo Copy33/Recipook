@@ -10,26 +10,26 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
-        android:textSize="18sp"
+        android:layout_toEndOf="@+id/recycler_item_direction_delete_button"
+        android:layout_toRightOf="@+id/recycler_item_direction_delete_button"
         android:text="1."
         android:textColor="@color/colorPrimary"
-        android:layout_toRightOf="@+id/recycler_item_direction_delete_button"
-        android:layout_toEndOf="@+id/recycler_item_direction_delete_button"/>
+        android:textSize="18sp"/>
 
     <EditText
         android:id="@+id/recycler_item_direction_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:inputType="textCapSentences|textMultiLine"
-        android:textColor="@color/textColorPrimary"
-        android:text="Squeeze lemons."
-        android:backgroundTint="@color/windowBackground"
+        android:layout_alignBaseline="@id/recycler_item_direction_number"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_alignBaseline="@+id/recycler_item_direction_number"
-        android:layout_toRightOf="@+id/recycler_item_direction_number"
-        android:layout_toEndOf="@+id/recycler_item_direction_number"/>
+        android:layout_toEndOf="@id/recycler_item_direction_number"
+        android:layout_toRightOf="@id/recycler_item_direction_number"
+        android:background="@color/windowBackground"
+        android:inputType="textCapSentences|textMultiLine"
+        android:text="Squeeze lemons."
+        android:textColor="@color/textColorPrimary"
+        android:textSize="16sp"/>
 
     <ImageButton
         android:id="@+id/recycler_item_direction_delete_button"
@@ -37,8 +37,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
-        android:src="@drawable/ic_delete_red_24dp"
         android:background="@color/windowBackground"
-        android:visibility="gone"/>
+        android:src="@drawable/ic_delete_red_24dp"
+        android:visibility="gone"
+        android:layout_alignBottom="@id/recycler_item_direction_number"/>
 
 </RelativeLayout>
