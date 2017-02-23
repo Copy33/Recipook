@@ -3,6 +3,7 @@ package com.joemerhej.recipook;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -88,7 +89,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mRecipe = RecipeData.Instance().getRecipeList().get(mRecipeIndex); // this is a shallow copy, mRecipe is now pointing at data
 
         // make a deep copy of the recipe to hold for canceling changes
-        mRecipeBeforeEdit = new Recipe(mRecipe.name, mRecipe.imageName, mRecipe.ingredients, mRecipe.directions);
+        mRecipeBeforeEdit = new Recipe(mRecipe.name, mRecipe.imageName, mRecipe.imageUri, mRecipe.ingredients, mRecipe.directions);
 
         // set general variables
         mInEditMode = false;
@@ -203,6 +204,32 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     // BACK BUTTON PRESSED LISTENER
     // ----------------------------------------------------------------------------------------------------------------------------------------------
 
+    private void ResetViewToLastSavedRecipe()
+    {
+        // reset mRecipe variable
+        mRecipe.MakeCopyOf(mRecipeBeforeEdit);
+
+        // reset ingredients
+        mIngredientListAdapter.UpdateDataWith(mRecipe.ingredients);
+        mIngredientListAdapter.notifyDataSetChanged();
+
+        // reset directions
+        mDirectionListAdapter.UpdateDataWith(mRecipe.directions);
+        mDirectionListAdapter.notifyDataSetChanged();
+
+
+        // reset title
+        mCollapsingToolbarLayout.setTitle(mRecipe.name);
+
+        // reset image
+        Picasso.with(this)
+                .load(Uri.parse(mRecipe.imageUri))
+                .into(mCollapsingToolbarImageView);
+
+        // engage view mode
+        engageViewMode();
+    }
+
     // what happens when the back button is pressed
     @Override
     public void onBackPressed()
@@ -236,15 +263,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
-                        // user hits Discard button, reset recipe to last saved recipe
-                        mRecipe.MakeCopyOf(mRecipeBeforeEdit);
-                        mIngredientListAdapter.UpdateDataWith(mRecipe.ingredients);
-                        mDirectionListAdapter.UpdateDataWith(mRecipe.directions);
-
-                        mDirectionListAdapter.notifyDataSetChanged();
-                        mIngredientListAdapter.notifyDataSetChanged();
-
-                        engageViewMode();
+                        ResetViewToLastSavedRecipe();
                     }
                 });
 
@@ -393,7 +412,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
         mAtLeastOneChange = true;
 
-        Ingredient newIngredient = RecipookParser.Instance().GetIngredientFromIngredientString(newIngredientText);
+        Ingredient newIngredient = RecipookTextParser.Instance().GetIngredientFromIngredientString(newIngredientText);
         if (newIngredient != null)
         {
             mRecipe.ingredients.add(newIngredient);
@@ -501,8 +520,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
                 // show the dialog
                 mEditRecipeHeaderDialog = EditRecipeHeaderDialog.Instance(mRecipe.name, mRecipe.imageUri);
                 mEditRecipeHeaderDialog.show(getFragmentManager(), EditRecipeHeaderDialog.class.getName());
-
-                mInputManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                mNewImageUri = Uri.parse(mRecipe.imageUri);
             }
         }
     };
@@ -517,8 +535,14 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mRecipe.name = newTitle;
 
         // get the new image
-        mCollapsingToolbarImageView.setImageURI(mNewImageUri);
         mRecipe.imageUri = mNewImageUri.toString();
+        Picasso.with(this)
+                .load(Uri.parse(mRecipe.imageUri))
+                .into(mCollapsingToolbarImageView);
+
+        // check if smth actually changed in the recipe from this dialog
+        if(!mRecipe.name.equalsIgnoreCase(mRecipeBeforeEdit.name) || !mRecipe.imageUri.equalsIgnoreCase(mRecipeBeforeEdit.imageUri))
+            mAtLeastOneChange = true;
 
         // hide the keyboard
         mInputManager.hideSoftInputFromWindow(dialog.mRecipeNameEditText.getWindowToken(), 0);
@@ -539,13 +563,12 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
         getIntent.setType("image/*");
 
-        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickIntent.setType("image/*");
-
         Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
 
         startActivityForResult(chooserIntent, RESULT_LOAD_IMAGE);
+
+//        Intent chooseImageIntent = RecipookImagePicker.getPickImageIntent(this);
+//        startActivityForResult(chooseImageIntent, RESULT_LOAD_IMAGE);
     }
 
     // this method will be called when intents triggered with "startActivityForResult" come back to this activity

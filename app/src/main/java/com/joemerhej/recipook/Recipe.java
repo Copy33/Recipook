@@ -24,11 +24,11 @@ public class Recipe
     }
 
     // constructor makes deep copy
-    Recipe(String Name, String ImageName, ArrayList<Ingredient> Ingredients, ArrayList<String> Directions)
+    Recipe(String Name, String ImageName, String ImageUri, ArrayList<Ingredient> Ingredients, ArrayList<String> Directions)
     {
         name = Name;
         imageName = ImageName;
-        imageUri = "android.resource://com.joemerhej.recipook/drawable/" + ImageName;
+        imageUri = ImageUri;
 
         ingredients = new ArrayList<>();
         for(int i = 0; i < Ingredients.size(); ++i)

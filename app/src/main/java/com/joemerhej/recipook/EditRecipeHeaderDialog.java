@@ -81,7 +81,7 @@ public class EditRecipeHeaderDialog extends DialogFragment
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_edit_recipe_header, null);
 
         builder.setView(view)
-                .setPositiveButton("Save", new DialogInterface.OnClickListener()
+                .setPositiveButton("Apply", new DialogInterface.OnClickListener()
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
