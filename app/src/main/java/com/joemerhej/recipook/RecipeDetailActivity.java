@@ -18,6 +18,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -553,6 +554,17 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     {
         // hide the keyboard
         mInputManager.hideSoftInputFromWindow(dialog.mRecipeNameEditText.getWindowToken(), 0);
+    }
+
+    // user clicks on remove image button in the edit header dialog
+    @Override
+    public void onEditHeaderDialogRemoveImageClick(EditRecipeHeaderDialog dialog)
+    {
+        mNewImageUri = Uri.EMPTY;
+
+        Glide.with(this)
+                .load(mNewImageUri)
+                .into(mEditRecipeHeaderDialog.mRecipeImageView);
     }
 
     // user clicks on choose image button in the edit header dialog

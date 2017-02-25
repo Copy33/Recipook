@@ -10,6 +10,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
@@ -28,13 +29,17 @@ public class EditRecipeHeaderDialog extends DialogFragment
         void onEditHeaderDialogNegativeClick(EditRecipeHeaderDialog dialog);
 
         void onEditHeaderDialogChooseImageClick(EditRecipeHeaderDialog dialog);
+
+        void onEditHeaderDialogRemoveImageClick(EditRecipeHeaderDialog dialog);
     }
 
     // use this instance of the interface to deliver action events
     DetailEditRecipeHeaderDialogListener mListener;
 
+    // views of the dialog
     public ImageView mRecipeImageView;
     public Button mChooseImageButton;
+    public ImageButton mRemoveImageButton;
     public TextInputEditText mRecipeNameEditText;
 
 
@@ -43,6 +48,7 @@ public class EditRecipeHeaderDialog extends DialogFragment
 
     }
 
+    // instance puts the paramters in an argument bundle in the dialog
     public static EditRecipeHeaderDialog Instance(String recipeTitle, String recipeImageUri)
     {
         EditRecipeHeaderDialog dialog = new EditRecipeHeaderDialog();
@@ -53,7 +59,7 @@ public class EditRecipeHeaderDialog extends DialogFragment
         return dialog;
     }
 
-    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
+    // Override the Fragment.onAttach() method to instantiate the DetailEditRecipeHeaderDialogListener
     @Override
     public void onAttach(Context context)
     {
@@ -72,6 +78,7 @@ public class EditRecipeHeaderDialog extends DialogFragment
         }
     }
 
+    // when the dialog is created
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
@@ -100,7 +107,8 @@ public class EditRecipeHeaderDialog extends DialogFragment
 
         // hook up the views
         mRecipeNameEditText = (TextInputEditText) view.findViewById(R.id.dialog_recipe_name_edit_text);
-        mChooseImageButton = (Button) view.findViewById(R.id.dialog_choose_image_button);
+        mChooseImageButton = (Button) view.findViewById(R.id.dialog_edit_image_button);
+        mRemoveImageButton = (ImageButton) view.findViewById(R.id.dialog_remove_image_button);
         mRecipeImageView = (ImageView) view.findViewById(R.id.dialog_recipe_image_view);
 
         // set the text to the recipe name that is in the arguments of the dialog instance called
@@ -122,6 +130,16 @@ public class EditRecipeHeaderDialog extends DialogFragment
             public void onClick(View v)
             {
                 mListener.onEditHeaderDialogChooseImageClick(EditRecipeHeaderDialog.this);
+            }
+        });
+
+        // hook up the listener for the remove image button
+        mRemoveImageButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                mListener.onEditHeaderDialogRemoveImageClick(EditRecipeHeaderDialog.this);
             }
         });
 
