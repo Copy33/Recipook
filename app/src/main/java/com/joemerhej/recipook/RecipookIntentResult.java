@@ -6,5 +6,5 @@ package com.joemerhej.recipook;
 
 public class RecipookIntentResult
 {
-    public static int RESULT_DELETED = 300;
+    public static int RESULT_RECIPE_DELETED = 300;
 };

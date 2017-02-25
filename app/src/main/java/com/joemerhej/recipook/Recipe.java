@@ -9,8 +9,10 @@ import java.util.ArrayList;
 
 public class Recipe
 {
+    // recipe variables
     String name;
     String imageName;
+    String imageUri;
     ArrayList<Ingredient> ingredients;
     ArrayList<String> directions;
 
@@ -22,10 +24,11 @@ public class Recipe
     }
 
     // constructor makes deep copy
-    Recipe(String Name, String ImageName, ArrayList<Ingredient> Ingredients, ArrayList<String> Directions)
+    Recipe(String Name, String ImageName, String ImageUri, ArrayList<Ingredient> Ingredients, ArrayList<String> Directions)
     {
         name = Name;
         imageName = ImageName;
+        imageUri = ImageUri;
 
         ingredients = new ArrayList<>();
         for(int i = 0; i < Ingredients.size(); ++i)
@@ -41,6 +44,7 @@ public class Recipe
     {
         name = CopyFrom.name;
         imageName = CopyFrom.imageName;
+        imageUri = CopyFrom.imageUri;
 
         ingredients = new ArrayList<>();
         for(int i = 0; i < CopyFrom.ingredients.size(); ++i)

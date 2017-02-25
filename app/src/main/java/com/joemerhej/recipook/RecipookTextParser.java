@@ -7,9 +7,9 @@ import java.util.Arrays;
  * Created by Joe Merhej on 1/29/17.
  */
 
-public final class RecipookParser
+public final class RecipookTextParser
 {
-    private static RecipookParser Instance = null;
+    private static RecipookTextParser Instance = null;
 
     private static ArrayList<String> mSupportedUnitTexts = new ArrayList<>(
             Arrays.asList("oz", "ounce", "ounces", "lb","lbs", "pd", "pds", "pound", "pounds", "pint", "pints", "pt", "pts", "cup", "cups",
@@ -20,10 +20,10 @@ public final class RecipookParser
             );
 
 
-    public static RecipookParser Instance()
+    public static RecipookTextParser Instance()
     {
         if(Instance == null)
-            Instance = new RecipookParser();
+            Instance = new RecipookTextParser();
 
         return Instance;
     }

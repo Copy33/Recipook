@@ -99,7 +99,7 @@ public class RecipeListTabFragment extends Fragment
             }
 
             // check if it's the intent to change the toolbar image
-            if (requestCode == RECIPE_DETAIL_RESULT_CODE && resultCode == RecipookIntentResult.RESULT_DELETED && data != null)
+            if (requestCode == RECIPE_DETAIL_RESULT_CODE && resultCode == RecipookIntentResult.RESULT_RECIPE_DELETED && data != null)
             {
                 int recipePosition = data.getIntExtra("recipePosition", 0);
                 mRecipeListAdapter.notifyItemRemoved(recipePosition);
