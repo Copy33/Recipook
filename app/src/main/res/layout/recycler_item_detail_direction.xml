@@ -12,7 +12,7 @@
         android:layout_marginStart="10dp"
         android:layout_toEndOf="@+id/recycler_item_direction_delete_button"
         android:layout_toRightOf="@+id/recycler_item_direction_delete_button"
-        android:text="1."
+        android:text="@string/detail_edit_recycler_item_direction_number_default"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"/>
 
@@ -27,7 +27,7 @@
         android:layout_toRightOf="@id/recycler_item_direction_number"
         android:background="@color/windowBackground"
         android:inputType="textCapSentences|textMultiLine"
-        android:text="Squeeze lemons."
+        android:text="@string/detail_edit_recycler_item_direction_text_default"
         android:textColor="@color/textColorPrimary"
         android:textSize="16sp"/>
 

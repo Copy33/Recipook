@@ -1,16 +1,26 @@
 <resources>
+
+    <!--Android Studio IDE rendering needs this for the InputTextEdit and InputTextLayout-->
+    <item name="visible" type="id"/>
+    <item name="masked" type="id"/>
+
     <!--General variables for the app-->
     <string name="app_name">Recipook</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
-    <!--This is for the recipe detail page-->
-    <string name="detail_ingredients_title">Ingredients</string>
-    <string name="detail_directions_title">Directions</string>
-
-    <!--This is for the image picker-->
-    <string name="pick_image_intent_text">Choose an image</string>
-
-    <!--This is for the InputTextEdit and InputTextLayout so the preview layout doesn't give warnings in rendering-->
-    <item name="visible" type="id"/>
-    <item name="masked" type="id"/>
+    <!--Recipe detail page-->
+    <string name="detail_ingredients_list_title">Ingredients</string>
+    <string name="detail_edit_add_ingredient_textinput_hint">Add Ingredient (ex: 1 tsp salt)</string>
+    <string name="detail_edit_add_direction_textinput_hint">Add Direction</string>
+    <string name="detail_directions_list_title">Directions</string>
+    <string name="detail_edit_delete_recipe_button_text">Delete Recipe</string>
+    <!--Ingredient recycler view item-->
+    <string name="detail_edit_recycler_item_ingredient_quantity_default">2 lbs</string>
+    <string name="detail_edit_recycler_item_ingredient_name_default">sliced chicken breast</string>
+    <!--Direction recycler view item-->
+    <string name="detail_edit_recycler_item_direction_number_default">1.</string>
+    <string name="detail_edit_recycler_item_direction_text_default">Squeeze lemons and add it to the mix.</string>
+    <!--Edit recipe header dialog-->
+    <string name="dialog_edit_recipe_header_edit_image_button_text">Edit</string>
+    <string name="dialog_edit_recipe_header_recipe_name_textinput_hint">Recipe Name</string>
 </resources>

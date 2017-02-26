@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/dialog_recipe_image_view"
-        android:hint="Recipe Name">
+        android:hint="@string/dialog_edit_recipe_header_recipe_name_textinput_hint">
         <android.support.design.widget.TextInputEditText
             android:id="@+id/dialog_recipe_name_edit_text"
             android:layout_width="match_parent"
@@ -40,7 +40,7 @@
             android:paddingStart="12dp"
             android:drawableLeft="@drawable/ic_camera_white_24dp"
             android:drawableStart="@drawable/ic_camera_white_24dp"
-            android:text="Edit"
+            android:text="@string/dialog_edit_recipe_header_edit_image_button_text"
             android:textColor="@android:color/white"/>
 
         <View
