@@ -3,12 +3,14 @@ package com.joemerhej.recipook;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -21,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
@@ -46,15 +49,20 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
     // views: categories
     private LinearLayout mCategoryAppetizerLayout;
-    private ImageButton mCategoryAppetizerButton;
+    private ImageView mCategoryAppetizerButton;
+    private TextView mCategoryAppetizerText;
     private LinearLayout mCategoryMainCourseLayout;
-    private ImageButton mCategoryMainCourseButton;
+    private ImageView mCategoryMainCourseButton;
+    private TextView mCategoryMainCourseText;
     private LinearLayout mCategorySideDishLayout;
-    private ImageButton mCategorySideDishButton;
+    private ImageView mCategorySideDishButton;
+    private TextView mCategorySideDishText;
     private LinearLayout mCategoryDessertLayout;
-    private ImageButton mCategoryDessertButton;
+    private ImageView mCategoryDessertButton;
+    private TextView mCategoryDessertText;
     private LinearLayout mCategoryBeverageLayout;
-    private ImageButton mCategoryBeverageButton;
+    private ImageView mCategoryBeverageButton;
+    private TextView mCategoryBeverageText;
 
     // views: ingredients, directions
     private RecyclerView mIngredientsRecyclerView;
@@ -82,9 +90,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     private com.github.clans.fab.FloatingActionButton mShareFab;
     private com.github.clans.fab.FloatingActionButton mAddToShoppingListFab;
 
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
     // ACTIVITY CREATE FUNCTION
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -106,15 +114,21 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
         // set up category views
         mCategoryAppetizerLayout = (LinearLayout) findViewById(R.id.detail_category_appetizer_layout);
-        mCategoryAppetizerButton = (ImageButton) findViewById(R.id.detail_category_appetizer_button);
+        mCategoryAppetizerButton = (ImageView) findViewById(R.id.detail_category_appetizer_button);
+        mCategoryAppetizerText = (TextView) findViewById(R.id.detail_category_appetizer_text);
         mCategoryMainCourseLayout = (LinearLayout) findViewById(R.id.detail_category_main_course_layout);
-        mCategoryMainCourseButton = (ImageButton) findViewById(R.id.detail_category_main_course_button);
+        mCategoryMainCourseButton = (ImageView) findViewById(R.id.detail_category_main_course_button);
+        mCategoryMainCourseText = (TextView) findViewById(R.id.detail_category_main_course_text);
         mCategorySideDishLayout = (LinearLayout) findViewById(R.id.detail_category_side_dish_layout);
-        mCategorySideDishButton = (ImageButton) findViewById(R.id.detail_category_side_dish_button);
+        mCategorySideDishButton = (ImageView) findViewById(R.id.detail_category_side_dish_button);
+        mCategorySideDishText = (TextView) findViewById(R.id.detail_category_side_dish_text);
         mCategoryDessertLayout = (LinearLayout) findViewById(R.id.detail_category_dessert_layout);
-        mCategoryDessertButton = (ImageButton) findViewById(R.id.detail_category_dessert_button);
+        mCategoryDessertButton = (ImageView) findViewById(R.id.detail_category_dessert_button);
+        mCategoryDessertText = (TextView) findViewById(R.id.detail_category_dessert_text);
         mCategoryBeverageLayout = (LinearLayout) findViewById(R.id.detail_category_beverage_layout);
-        mCategoryBeverageButton = (ImageButton) findViewById(R.id.detail_category_beverage_button);
+        mCategoryBeverageButton = (ImageView) findViewById(R.id.detail_category_beverage_button);
+        mCategoryBeverageText = (TextView) findViewById(R.id.detail_category_beverage_text);
+
 
         // set up ingredients and directions views/adapters/listeners
         mIngredientsRecyclerView = (RecyclerView) findViewById(R.id.detail_ingredients_list);
@@ -214,9 +228,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     }
 
 
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
     // BACK BUTTON PRESSED LISTENER
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
 
     private void ResetViewToLastSavedRecipe()
     {
@@ -300,9 +314,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     }
 
 
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
     // MAIN FAM AND CHILD FABS LISTENERS AND METHODS
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
 
     // click listener for the main fam icon
     private com.github.clans.fab.FloatingActionMenu.OnMenuToggleListener mFAMToggleListener = new com.github.clans.fab.FloatingActionMenu.OnMenuToggleListener()
@@ -363,9 +377,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     }
 
 
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
     // EDIT MODE AND VIEW MODE METHODS
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
 
     // what happens when the activity is in edit mode
     public void engageEditMode()
@@ -431,68 +445,82 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     // method that will set the right category views in view mode
     public void handleCategoryViewsInViewMode()
     {
+        int green = ContextCompat.getColor(this, R.color.colorPrimaryDark);
+        int grey = ContextCompat.getColor(this, R.color.categoryColorDisabled);
+
+
         // only show category if it's contained in the recipe
         if(mRecipe.categories.contains(Category.Appetizer))
         {
             mCategoryAppetizerLayout.setVisibility(View.VISIBLE);
             mCategoryAppetizerButton.setImageResource(R.drawable.ic_category_appetizer_green_32dp);
+            mCategoryAppetizerText.setTextColor(green);
         }
         else
         {
             mCategoryAppetizerLayout.setVisibility(View.GONE);
             mCategoryAppetizerButton.setImageResource(R.drawable.ic_category_appetizer_grey_32dp);
+            mCategoryAppetizerText.setTextColor(grey);
         }
 
         if(mRecipe.categories.contains(Category.MainCourse))
         {
             mCategoryMainCourseLayout.setVisibility(View.VISIBLE);
             mCategoryMainCourseButton.setImageResource(R.drawable.ic_category_main_course_green_32dp);
+            mCategoryMainCourseText.setTextColor(green);
         }
         else
         {
             mCategoryMainCourseLayout.setVisibility(View.GONE);
             mCategoryMainCourseButton.setImageResource(R.drawable.ic_category_main_course_grey_32dp);
+            mCategoryMainCourseText.setTextColor(grey);
         }
 
         if(mRecipe.categories.contains(Category.SideDish))
         {
             mCategorySideDishLayout.setVisibility(View.VISIBLE);
             mCategorySideDishButton.setImageResource(R.drawable.ic_category_side_dish_green_32dp);
+            mCategorySideDishText.setTextColor(green);
         }
         else
         {
             mCategorySideDishLayout.setVisibility(View.GONE);
             mCategorySideDishButton.setImageResource(R.drawable.ic_category_side_dish_grey_32dp);
+            mCategorySideDishText.setTextColor(grey);
         }
 
         if(mRecipe.categories.contains(Category.Dessert))
         {
             mCategoryDessertLayout.setVisibility(View.VISIBLE);
             mCategoryDessertButton.setImageResource(R.drawable.ic_category_dessert_green_32dp);
+            mCategoryDessertText.setTextColor(green);
         }
         else
         {
             mCategoryDessertLayout.setVisibility(View.GONE);
             mCategoryDessertButton.setImageResource(R.drawable.ic_category_dessert_grey_32dp);
+            mCategoryDessertText.setTextColor(grey);
         }
 
         if(mRecipe.categories.contains(Category.Beverage))
         {
             mCategoryBeverageLayout.setVisibility(View.VISIBLE);
             mCategoryBeverageButton.setImageResource(R.drawable.ic_category_beverage_green_32dp);
+            mCategoryBeverageText.setTextColor(green);
         }
         else
         {
             mCategoryBeverageLayout.setVisibility(View.GONE);
             mCategoryBeverageButton.setImageResource(R.drawable.ic_category_beverage_grey_32dp);
+            mCategoryBeverageText.setTextColor(grey);
         }
 
     }
 
 
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
     // CALLBACKS ADDED FROM THE LAYOUT XML (Add Ingredient Button, Add Direction Button, Delete Recipe Button)
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
 
     // method to be called when add ingredient button pressed
     public void onClickDetailAddIngredient(View view)
@@ -568,6 +596,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
     }
 
+    // method to be called when the appetizer category layout is clicked
     public void onClickDetailCategoryAppetizer(View view)
     {
         if(mInEditMode)
@@ -576,15 +605,18 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             {
                 mRecipe.categories.remove(Category.Appetizer);
                 mCategoryAppetizerButton.setImageResource(R.drawable.ic_category_appetizer_grey_32dp);
+                mCategoryAppetizerText.setTextColor(ContextCompat.getColor(this, R.color.categoryColorDisabled));
             }
             else
             {
                 mRecipe.categories.add(Category.Appetizer);
                 mCategoryAppetizerButton.setImageResource(R.drawable.ic_category_appetizer_green_32dp);
+                mCategoryAppetizerText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
             }
         }
     }
 
+    // method to be called when the main course category layout is clicked
     public void onClickDetailCategoryMainCourse(View view)
     {
         if(mInEditMode)
@@ -593,15 +625,18 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             {
                 mRecipe.categories.remove(Category.MainCourse);
                 mCategoryMainCourseButton.setImageResource(R.drawable.ic_category_main_course_grey_32dp);
+                mCategoryMainCourseText.setTextColor(ContextCompat.getColor(this, R.color.categoryColorDisabled));
             }
             else
             {
                 mRecipe.categories.add(Category.MainCourse);
                 mCategoryMainCourseButton.setImageResource(R.drawable.ic_category_main_course_green_32dp);
+                mCategoryMainCourseText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
             }
         }
     }
 
+    // method to be called when the side dish category layout is clicked
     public void onClickDetailCategorySideDish(View view)
     {
         if(mInEditMode)
@@ -610,15 +645,18 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             {
                 mRecipe.categories.remove(Category.SideDish);
                 mCategorySideDishButton.setImageResource(R.drawable.ic_category_side_dish_grey_32dp);
+                mCategorySideDishText.setTextColor(ContextCompat.getColor(this, R.color.categoryColorDisabled));
             }
             else
             {
                 mRecipe.categories.add(Category.SideDish);
                 mCategorySideDishButton.setImageResource(R.drawable.ic_category_side_dish_green_32dp);
+                mCategorySideDishText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
             }
         }
     }
 
+    // method to be called when the dessert category layout is clicked
     public void onClickDetailCategoryDessert(View view)
     {
         if(mInEditMode)
@@ -627,15 +665,18 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             {
                 mRecipe.categories.remove(Category.Dessert);
                 mCategoryDessertButton.setImageResource(R.drawable.ic_category_dessert_grey_32dp);
+                mCategoryDessertText.setTextColor(ContextCompat.getColor(this, R.color.categoryColorDisabled));
             }
             else
             {
                 mRecipe.categories.add(Category.Dessert);
                 mCategoryDessertButton.setImageResource(R.drawable.ic_category_dessert_green_32dp);
+                mCategoryDessertText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
             }
         }
     }
 
+    // method to be called when the beverage category layout is clicked
     public void onClickDetailCategoryBeverage(View view)
     {
         if(mInEditMode)
@@ -644,19 +685,21 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             {
                 mRecipe.categories.remove(Category.Beverage);
                 mCategoryBeverageButton.setImageResource(R.drawable.ic_category_beverage_grey_32dp);
+                mCategoryBeverageText.setTextColor(ContextCompat.getColor(this, R.color.categoryColorDisabled));
             }
             else
             {
                 mRecipe.categories.add(Category.Beverage);
                 mCategoryBeverageButton.setImageResource(R.drawable.ic_category_beverage_green_32dp);
+                mCategoryBeverageText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
             }
         }
     }
 
 
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
     // ADD INGREDIENT TEXTWATCHER TODO: Implement text watcher for add ingredient textinput.
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
 
 //    // text watcher to be attached to the add ingredient editText
 //    public class MyAddIngredientEditTextWatcher implements TextWatcher
@@ -683,9 +726,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 //    }
 
 
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
     // COLLAPSING TOOLBAR LISTENER AND CUSTOM DIALOG
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
 
     // method to be called when the collapsing toolbar layout is clicked
     private View.OnClickListener mCollapsingToolbarLayoutClickListener = new View.OnClickListener()

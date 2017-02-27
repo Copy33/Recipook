@@ -2,8 +2,6 @@ package com.joemerhej.recipook;
 
 import java.util.ArrayList;
 
-import static android.R.attr.category;
-
 /**
  * Created by Joe Merhej on 1/21/17.
  */
@@ -15,7 +13,7 @@ enum Category
     SideDish,
     Dessert,
     Beverage,
-    Other
+    All
 }
 
 public class Recipe
@@ -33,7 +31,7 @@ public class Recipe
     Recipe()
     {
         categories = new ArrayList<>();
-        categories.add(Category.Other); // all recipes will have 'Other' category
+        categories.add(Category.All); // all recipes will have 'All' category
         ingredients = new ArrayList<>();
         directions = new ArrayList<>();
     }

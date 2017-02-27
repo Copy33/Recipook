@@ -68,19 +68,21 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:onClick="onClickDetailCategoryAppetizer">
 
-                    <ImageButton
+                    <ImageView
                         android:id="@+id/detail_category_appetizer_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@android:color/transparent"
                         android:padding="10dp"
-                        android:src="@drawable/ic_category_appetizer_grey_32dp"
-                        android:onClick="onClickDetailCategoryAppetizer"/>
+                        android:src="@drawable/ic_category_appetizer_grey_32dp"/>
 
                     <TextView
+                        android:id="@+id/detail_category_appetizer_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/detail_edit_category_appetizer"
@@ -93,19 +95,21 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:onClick="onClickDetailCategoryMainCourse">
 
-                    <ImageButton
+                    <ImageView
                         android:id="@+id/detail_category_main_course_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@android:color/transparent"
                         android:padding="10dp"
-                        android:src="@drawable/ic_category_main_course_grey_32dp"
-                        android:onClick="onClickDetailCategoryMainCourse"/>
+                        android:src="@drawable/ic_category_main_course_grey_32dp"/>
 
                     <TextView
+                        android:id="@+id/detail_category_main_course_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/detail_edit_category_main_course"
@@ -118,19 +122,21 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:onClick="onClickDetailCategorySideDish">
 
-                    <ImageButton
+                    <ImageView
                         android:id="@+id/detail_category_side_dish_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@android:color/transparent"
                         android:padding="10dp"
-                        android:src="@drawable/ic_category_side_dish_grey_32dp"
-                        android:onClick="onClickDetailCategorySideDish"/>
+                        android:src="@drawable/ic_category_side_dish_grey_32dp"/>
 
                     <TextView
+                        android:id="@+id/detail_category_side_dish_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/detail_edit_category_side_dish"
@@ -143,19 +149,21 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:onClick="onClickDetailCategoryDessert">
 
-                    <ImageButton
+                    <ImageView
                         android:id="@+id/detail_category_dessert_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@android:color/transparent"
                         android:padding="10dp"
-                        android:src="@drawable/ic_category_dessert_grey_32dp"
-                        android:onClick="onClickDetailCategoryDessert"/>
+                        android:src="@drawable/ic_category_dessert_grey_32dp"/>
 
                     <TextView
+                        android:id="@+id/detail_category_dessert_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/detail_edit_category_dessert"
@@ -168,19 +176,21 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:onClick="onClickDetailCategoryBeverage">
 
-                    <ImageButton
+                    <ImageView
                         android:id="@+id/detail_category_beverage_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@android:color/transparent"
                         android:padding="10dp"
-                        android:src="@drawable/ic_category_beverage_grey_32dp"
-                        android:onClick="onClickDetailCategoryBeverage"/>
+                        android:src="@drawable/ic_category_beverage_grey_32dp"/>
 
                     <TextView
+                        android:id="@+id/detail_category_beverage_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/detail_edit_category_beverage"
