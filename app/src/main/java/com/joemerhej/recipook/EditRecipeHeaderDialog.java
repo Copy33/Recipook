@@ -120,9 +120,6 @@ public class EditRecipeHeaderDialog extends DialogFragment
                 .load(Uri.parse(getArguments().getString("mRecipeImage")))
                 .into(mRecipeImageView);
 
-        // set the color of the button text
-        // TODO: set color of button text based on imageview palette (need to retrieve imageview src)
-
         // hook up the listener for the choose image button
         mChooseImageButton.setOnClickListener(new View.OnClickListener()
         {

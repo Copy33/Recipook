@@ -191,9 +191,14 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
 
         // update the listener position so it knows which EditText to listen to for each view, and set that text
         holder.mIngredientNameEditTextListener.updateIngredientPosition(position);
+
         holder.mIngredientText.setText(ingredient.name);
+        holder.mIngredientText.setSelection(holder.mIngredientText.getText().length());
+
         holder.mIngredientQuantityEditTextListener.updateIngredientPosition(position);
+
         holder.mIngredientQuantity.setText(ingredientQuantity + " " + ingredientUnit);
+        holder.mIngredientQuantity.setSelection(holder.mIngredientQuantity.getText().length());
 
         // show the right views depending on edit mode
         if(((RecipeDetailActivity)mContext).mInEditMode)

@@ -1,26 +1,33 @@
 <resources>
 
-    <!--Android Studio IDE rendering needs this for the InputTextEdit and InputTextLayout-->
+    <!-- Android Studio IDE rendering needs this for the InputTextEdit and InputTextLayout -->
     <item name="visible" type="id"/>
     <item name="masked" type="id"/>
 
-    <!--General variables for the app-->
+    <!-- General variables for the app -->
     <string name="app_name">Recipook</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
-    <!--Recipe detail page-->
+    <!-- Recipe detail page -->
     <string name="detail_ingredients_list_title">Ingredients</string>
     <string name="detail_edit_add_ingredient_textinput_hint">Add Ingredient (ex: 1 tsp salt)</string>
     <string name="detail_edit_add_direction_textinput_hint">Add Direction</string>
     <string name="detail_directions_list_title">Directions</string>
     <string name="detail_edit_delete_recipe_button_text">Delete Recipe</string>
-    <!--Ingredient recycler view item-->
+    <!-- Category selector view -->
+    <string name="detail_edit_category_appetizer">Appetizer</string>
+    <string name="detail_edit_category_main_course">Main Course</string>
+    <string name="detail_edit_category_side_dish">Side Dish</string>
+    <string name="detail_edit_category_dessert">Dessert</string>
+    <string name="detail_edit_category_beverage">Beverage</string>
+    <!-- Ingredient recycler view item -->
     <string name="detail_edit_recycler_item_ingredient_quantity_default">2 lbs</string>
     <string name="detail_edit_recycler_item_ingredient_name_default">sliced chicken breast</string>
-    <!--Direction recycler view item-->
+    <!-- Direction recycler view item -->
     <string name="detail_edit_recycler_item_direction_number_default">1.</string>
     <string name="detail_edit_recycler_item_direction_text_default">Squeeze lemons and add it to the mix.</string>
-    <!--Edit recipe header dialog-->
+    <!-- Edit recipe header dialog -->
     <string name="dialog_edit_recipe_header_edit_image_button_text">Edit</string>
     <string name="dialog_edit_recipe_header_recipe_name_textinput_hint">Recipe Name</string>
+
 </resources>

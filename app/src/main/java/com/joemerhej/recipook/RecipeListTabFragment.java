@@ -27,9 +27,6 @@ public class RecipeListTabFragment extends Fragment
     // adapter of the recipe list
     public RecipeListAdapter mRecipeListAdapter;
 
-    // will return from RecipeDetailActivity
-    private int RECIPE_DETAIL_RESULT_CODE;
-
 
     // every fragment requires a default constructor and a newInstance method
     public RecipeListTabFragment()
@@ -80,7 +77,7 @@ public class RecipeListTabFragment extends Fragment
             // clicking a recipe item will launch the recipe detail activity
             Intent intent = new Intent(getContext(), RecipeDetailActivity.class);
             intent.putExtra(RecipeDetailActivity.EXTRA_RECIPE_ID, position);
-            startActivityForResult(intent, RECIPE_DETAIL_RESULT_CODE);
+            startActivityForResult(intent, RecipookIntentResult.RESULT_RECIPE_MODIFIED);
         }
     };
 
@@ -92,14 +89,14 @@ public class RecipeListTabFragment extends Fragment
         try
         {
             // check if it's the intent to change the toolbar image
-            if (requestCode == RECIPE_DETAIL_RESULT_CODE && resultCode == RESULT_OK && data != null)
+            if (requestCode == RecipookIntentResult.RESULT_RECIPE_MODIFIED && resultCode == RESULT_OK && data != null)
             {
                 int recipePosition = data.getIntExtra("recipePosition", 0);
                 mRecipeListAdapter.notifyItemChanged(recipePosition);
             }
 
             // check if it's the intent to change the toolbar image
-            if (requestCode == RECIPE_DETAIL_RESULT_CODE && resultCode == RecipookIntentResult.RESULT_RECIPE_DELETED && data != null)
+            if (requestCode == RecipookIntentResult.RESULT_RECIPE_MODIFIED && resultCode == RecipookIntentResult.RESULT_RECIPE_DELETED && data != null)
             {
                 int recipePosition = data.getIntExtra("recipePosition", 0);
                 mRecipeListAdapter.notifyItemRemoved(recipePosition);

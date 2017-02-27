@@ -1,6 +1,9 @@
 package com.joemerhej.recipook;
 
+import android.util.ArraySet;
+
 import java.util.ArrayList;
+import java.util.Set;
 
 
 /**
@@ -9,11 +12,26 @@ import java.util.ArrayList;
 
 public class RecipeData
 {
+    // Instance
     private static RecipeData Instance = null;
 
+    // list of all recipes
     private static ArrayList<Recipe> mRecipelist = null;
 
-    public static String[] recipeListNames =
+    // list of all ingredients
+    private static ArrayList<ArrayList<Ingredient>> mAllIngredients;
+
+    // list of recipes per category
+    private static ArrayList<Integer> mAppetizerList = null;
+    private static ArrayList<Integer> mMainCourseList = null;
+    private static ArrayList<Integer> mSideDishList = null;
+    private static ArrayList<Integer> mDessertList = null;
+    private static ArrayList<Integer> mBeverageList = null;
+
+
+
+    // mock data
+    private static String[] recipeListNames =
             {
                     "Buffalo Drumsticks",
                     "Chicken Pasta",
@@ -24,7 +42,7 @@ public class RecipeData
                     "Toasted Almonds with Rosemary"
             };
 
-    public static String[][] recipeListDirections =
+    private static String[][] recipeListDirections =
             {
                     // Buffalo Drumsticks
                     {
@@ -81,25 +99,54 @@ public class RecipeData
             };
 
 
-    public static ArrayList<ArrayList<Ingredient>> AllIngredients;
-    public static ArrayList<Ingredient> BuffaloDrumsticksIngredients;
-    public static ArrayList<Ingredient> ChickenPastaIngredients;
-    public static ArrayList<Ingredient> GreenVegetableSoupIngredients;
-    public static ArrayList<Ingredient> HerbedOliveSpiralsIngredients;
-    public static ArrayList<Ingredient> PestoProvoloneTerrineIngredients;
-    public static ArrayList<Ingredient> RaspberryPieIngredients;
-    public static ArrayList<Ingredient> ToastedAlmondsWithRosemaryIngredients;
+    private static Category[][] recipeListCategories =
+            {
+                    // Buffalo Drumsticks
+                    {
+                            Category.MainCourse, Category.SideDish
+                    },
+
+                    // Chicken Pasta
+                    {
+                            Category.MainCourse
+                    },
+
+                    // Green Vegetable Soup
+                    {
+                            Category.MainCourse, Category.Appetizer
+                    },
+
+                    // Herbed Olive Spirals
+                    {
+                            Category.Appetizer, Category.SideDish
+                    },
+
+                    // Pesto Provolone Terrine
+                    {
+                            Category.Appetizer
+                    },
+
+                    // Raspberry Pie
+                    {
+                            Category.Dessert
+                    },
+
+                    // Toasted Almonds with Rosemary
+                    {
+                            Category.Appetizer, Category.SideDish
+                    }
+            };
 
     private static void setupIngredientsArrayLists()
     {
-        AllIngredients = new ArrayList<ArrayList<Ingredient>>();
-        BuffaloDrumsticksIngredients = new ArrayList<>();
-        ChickenPastaIngredients = new ArrayList<>();
-        GreenVegetableSoupIngredients = new ArrayList<>();
-        HerbedOliveSpiralsIngredients = new ArrayList<>();
-        PestoProvoloneTerrineIngredients = new ArrayList<>();
-        RaspberryPieIngredients = new ArrayList<>();
-        ToastedAlmondsWithRosemaryIngredients = new ArrayList<>();
+        mAllIngredients = new ArrayList<ArrayList<Ingredient>>();
+        ArrayList<Ingredient> BuffaloDrumsticksIngredients = new ArrayList<>();
+        ArrayList<Ingredient> ChickenPastaIngredients = new ArrayList<>();
+        ArrayList<Ingredient> GreenVegetableSoupIngredients = new ArrayList<>();
+        ArrayList<Ingredient> HerbedOliveSpiralsIngredients = new ArrayList<>();
+        ArrayList<Ingredient> PestoProvoloneTerrineIngredients = new ArrayList<>();
+        ArrayList<Ingredient> RaspberryPieIngredients = new ArrayList<>();
+        ArrayList<Ingredient> ToastedAlmondsWithRosemaryIngredients = new ArrayList<>();
 
         BuffaloDrumsticksIngredients.add(new Ingredient(16, Unit.unit, "chicken drumsticks"));
         BuffaloDrumsticksIngredients.add(new Ingredient(1, Unit.unit, "16 ounce bottle buffalo wing hot sauce"));
@@ -172,13 +219,34 @@ public class RecipeData
         ToastedAlmondsWithRosemaryIngredients.add(new Ingredient(0.25, Unit.tsp, "ground red pepper"));
 
 
-        AllIngredients.add(BuffaloDrumsticksIngredients);
-        AllIngredients.add(ChickenPastaIngredients);
-        AllIngredients.add(GreenVegetableSoupIngredients);
-        AllIngredients.add(HerbedOliveSpiralsIngredients);
-        AllIngredients.add(PestoProvoloneTerrineIngredients);
-        AllIngredients.add(RaspberryPieIngredients);
-        AllIngredients.add(ToastedAlmondsWithRosemaryIngredients);
+        mAllIngredients.add(BuffaloDrumsticksIngredients);
+        mAllIngredients.add(ChickenPastaIngredients);
+        mAllIngredients.add(GreenVegetableSoupIngredients);
+        mAllIngredients.add(HerbedOliveSpiralsIngredients);
+        mAllIngredients.add(PestoProvoloneTerrineIngredients);
+        mAllIngredients.add(RaspberryPieIngredients);
+        mAllIngredients.add(ToastedAlmondsWithRosemaryIngredients);
+    }
+
+    private static void setupCategoriesArrayLists()
+    {
+        mAppetizerList = new ArrayList<>();
+        mMainCourseList = new ArrayList<>();
+        mSideDishList = new ArrayList<>();
+        mDessertList = new ArrayList<>();
+        mBeverageList = new ArrayList<>();
+
+        mAppetizerList.add(2);
+        mAppetizerList.add(3);
+        mAppetizerList.add(4);
+        mAppetizerList.add(6);
+        mMainCourseList.add(0);
+        mMainCourseList.add(1);
+        mMainCourseList.add(2);
+        mSideDishList.add(0);
+        mSideDishList.add(3);
+        mSideDishList.add(6);
+        mDessertList.add(5);
     }
 
 
@@ -191,6 +259,7 @@ public class RecipeData
             mRecipelist = new ArrayList<>();
 
             setupIngredientsArrayLists();
+            setupCategoriesArrayLists();
 
             for (int i = 0; i < recipeListNames.length; ++i)
             {
@@ -199,14 +268,19 @@ public class RecipeData
                 recipe.imageName = recipeListNames[i].replaceAll("\\s+", "").toLowerCase();
                 recipe.imageUri = "android.resource://com.joemerhej.recipook/drawable/" + recipe.imageName;
 
-                for (int j = 0; j < recipeListDirections[i].length; ++j)
+                for(int j = 0; j < recipeListCategories[i].length; ++j)
+                {
+                    recipe.categories.add(recipeListCategories[i][j]);
+                }
+
+                for(int j = 0; j < recipeListDirections[i].length; ++j)
                 {
                     recipe.directions.add(recipeListDirections[i][j]);
                 }
 
-                for (int k = 0; k < AllIngredients.get(i).size(); ++k)
+                for(int j = 0; j < mAllIngredients.get(i).size(); ++j)
                 {
-                    recipe.ingredients.add(AllIngredients.get(i).get(k));
+                    recipe.ingredients.add(mAllIngredients.get(i).get(j));
                 }
 
                 mRecipelist.add(recipe);
@@ -228,52 +302,6 @@ public class RecipeData
     public void removeRecipe(int recipeIndex)
     {
         mRecipelist.remove(recipeIndex);
-    }
-
-    // method to add ingredient at a given index to a given recipe
-    public void addIngredient(int recipeIndex, Ingredient ingredient, int ingredientIndex)
-    {
-        mRecipelist.get(recipeIndex).ingredients.add(ingredientIndex, ingredient);
-    }
-
-    // method to add ingredient to a certain recipe (at the end)
-    public void addIngredient(int recipeIndex, Ingredient ingredient)
-    {
-        mRecipelist.get(recipeIndex).ingredients.add(ingredient);
-    }
-
-    // method to remove ingredient at the given index from a certain recipe
-    public void removeIngredient(int recipeIndex, int ingredientIndex)
-    {
-        int size = mRecipelist.get(recipeIndex).ingredients.size();
-
-        if(ingredientIndex < 0 || ingredientIndex > size-1)
-            return;
-
-        mRecipelist.get(recipeIndex).ingredients.remove(ingredientIndex);
-    }
-
-    // method to add direction to a certain recipe (at the end)
-    public void addDirection(int recipeIndex, String direction)
-    {
-        mRecipelist.get(recipeIndex).directions.add(direction);
-    }
-
-    // method to add direction at the given index to a certain recipe
-    public void addDirection(int recipeIndex, String direction, int directionIndex)
-    {
-        mRecipelist.get(recipeIndex).directions.add(directionIndex, direction);
-    }
-
-    // method to remove direction at the given index
-    public void removeDirection(int recipeIndex, int directionIndex)
-    {
-        int size = mRecipelist.get(recipeIndex).directions.size();
-
-        if(directionIndex < 0 || directionIndex > size-1)
-            return;
-
-        mRecipelist.get(recipeIndex).directions.remove(directionIndex);
     }
 }
 

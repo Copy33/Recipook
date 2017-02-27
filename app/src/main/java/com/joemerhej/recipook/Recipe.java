@@ -1,64 +1,72 @@
 package com.joemerhej.recipook;
 
-import android.content.Context;
 import java.util.ArrayList;
+
+import static android.R.attr.category;
 
 /**
  * Created by Joe Merhej on 1/21/17.
  */
 
+enum Category
+{
+    Appetizer,
+    MainCourse,
+    SideDish,
+    Dessert,
+    Beverage,
+    Other
+}
+
 public class Recipe
 {
     // recipe variables
     String name;
-    String imageName;
-    String imageUri;
+    ArrayList<Category> categories;
     ArrayList<Ingredient> ingredients;
     ArrayList<String> directions;
+    String imageName;
+    String imageUri;
+
 
     // default constructor
     Recipe()
     {
+        categories = new ArrayList<>();
+        categories.add(Category.Other); // all recipes will have 'Other' category
         ingredients = new ArrayList<>();
         directions = new ArrayList<>();
-    }
-
-    // constructor makes deep copy
-    Recipe(String Name, String ImageName, String ImageUri, ArrayList<Ingredient> Ingredients, ArrayList<String> Directions)
-    {
-        name = Name;
-        imageName = ImageName;
-        imageUri = ImageUri;
-
-        ingredients = new ArrayList<>();
-        for(int i = 0; i < Ingredients.size(); ++i)
-            ingredients.add(Ingredients.get(i));
-
-        directions = new ArrayList<>();
-        for(int d = 0; d < Directions.size(); ++d)
-            directions.add(Directions.get(d));
     }
 
     // makes deep copy of recipe elements
-    public void MakeCopyOf(Recipe CopyFrom)
+    void MakeCopyOf(Recipe CopyFrom)
     {
         name = CopyFrom.name;
         imageName = CopyFrom.imageName;
         imageUri = CopyFrom.imageUri;
 
+        categories = new ArrayList<>();
+        for(Category c : CopyFrom.categories)
+            categories.add(c);
+
         ingredients = new ArrayList<>();
-        for(int i = 0; i < CopyFrom.ingredients.size(); ++i)
-            ingredients.add(CopyFrom.ingredients.get(i));
+        for(Ingredient i : CopyFrom.ingredients)
+            ingredients.add(i);
 
         directions = new ArrayList<>();
-        for(int d = 0; d < CopyFrom.directions.size(); ++d)
-            directions.add(CopyFrom.directions.get(d));
+        for(String d : CopyFrom.directions)
+            directions.add(d);
     }
 
-    // used to get the image resource id of every recipe
-    public int getImageResourceId(Context context)
+    // check if recipe has same categories as another recipe
+    boolean HasSameCategoriesAs(Recipe recipe)
     {
-        return context.getResources().getIdentifier(this.imageName, "drawable", context.getPackageName());
-    }
+        int result = 0;
+        for(Category c : recipe.categories)
+            result ^= c.ordinal();
+        for(Category c : categories)
+            result ^= c.ordinal();
 
+        return result==0;
+    }
 }
