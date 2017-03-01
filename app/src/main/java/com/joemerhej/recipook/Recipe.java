@@ -1,6 +1,7 @@
 package com.joemerhej.recipook;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Joe Merhej on 1/21/17.
@@ -21,6 +22,8 @@ public class Recipe
     // recipe variables
     String name;
     ArrayList<Category> categories;
+    int preparationTimeMinutes;
+    int cookingTimeMinutes;
     ArrayList<Ingredient> ingredients;
     ArrayList<String> directions;
     String imageName;
@@ -42,6 +45,8 @@ public class Recipe
         name = CopyFrom.name;
         imageName = CopyFrom.imageName;
         imageUri = CopyFrom.imageUri;
+        preparationTimeMinutes = CopyFrom.preparationTimeMinutes;
+        cookingTimeMinutes = CopyFrom.cookingTimeMinutes;
 
         categories = new ArrayList<>();
         for(Category c : CopyFrom.categories)

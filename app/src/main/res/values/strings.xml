@@ -15,17 +15,20 @@
     <string name="detail_directions_list_title">Directions</string>
     <string name="detail_edit_delete_recipe_button_text">Delete Recipe</string>
     <!-- Category selector view -->
-    <string name="detail_edit_category_appetizer">Appetizer</string>
-    <string name="detail_edit_category_main_course">Main Course</string>
-    <string name="detail_edit_category_side_dish">Side Dish</string>
-    <string name="detail_edit_category_dessert">Dessert</string>
-    <string name="detail_edit_category_beverage">Beverage</string>
+    <string name="detail_category_appetizer">Appetizer</string>
+    <string name="detail_category_main_course">Main Course</string>
+    <string name="detail_category_side_dish">Side Dish</string>
+    <string name="detail_category_dessert">Dessert</string>
+    <string name="detail_category_beverage">Beverage</string>
+    <!-- Preparation/Cooking time view -->
+    <string name="detail_preparation_text_default">1h 20m</string>
+    <string name="detail_cooking_text_default">1h 45m</string>
     <!-- Ingredient recycler view item -->
-    <string name="detail_edit_recycler_item_ingredient_quantity_default">2 lbs</string>
-    <string name="detail_edit_recycler_item_ingredient_name_default">sliced chicken breast</string>
+    <string name="detail_recycler_item_ingredient_quantity_default">2 lbs</string>
+    <string name="detail_recycler_item_ingredient_name_default">sliced chicken breast</string>
     <!-- Direction recycler view item -->
-    <string name="detail_edit_recycler_item_direction_number_default">1.</string>
-    <string name="detail_edit_recycler_item_direction_text_default">Squeeze lemons and add it to the mix.</string>
+    <string name="detail_recycler_item_direction_number_default">1.</string>
+    <string name="detail_recycler_item_direction_text_default">Squeeze lemons and add it to the mix.</string>
     <!-- Edit recipe header dialog -->
     <string name="dialog_edit_recipe_header_edit_image_button_text">Edit</string>
     <string name="dialog_edit_recipe_header_recipe_name_textinput_hint">Recipe Name</string>

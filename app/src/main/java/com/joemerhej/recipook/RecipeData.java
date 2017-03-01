@@ -137,6 +137,9 @@ public class RecipeData
                     }
             };
 
+    private static int[] preparationTimes = {90, 120, 100, 60, 75, 30, 25};
+    private static int[] cookingTimes = {20, 45, 140, 242, 12, 10, 5};
+
     private static void setupIngredientsArrayLists()
     {
         mAllIngredients = new ArrayList<ArrayList<Ingredient>>();
@@ -267,6 +270,8 @@ public class RecipeData
                 recipe.name = recipeListNames[i];
                 recipe.imageName = recipeListNames[i].replaceAll("\\s+", "").toLowerCase();
                 recipe.imageUri = "android.resource://com.joemerhej.recipook/drawable/" + recipe.imageName;
+                recipe.preparationTimeMinutes = preparationTimes[i];
+                recipe.cookingTimeMinutes = cookingTimes[i];
 
                 for(int j = 0; j < recipeListCategories[i].length; ++j)
                 {

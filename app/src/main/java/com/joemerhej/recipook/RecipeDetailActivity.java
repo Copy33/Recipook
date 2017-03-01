@@ -19,6 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,12 +43,12 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     public Uri mNewImageUri;                    // need this to save the image uri returned from the pick image intent
     private InputMethodManager mInputManager;   // input manager to show/hide keyboard
 
-    // views: toolbar area
+    // views : toolbar area
     private ImageView mCollapsingToolbarImageView;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private EditRecipeHeaderDialog mEditRecipeHeaderDialog;
 
-    // views: categories
+    // views : categories
     private LinearLayout mCategoryAppetizerLayout;
     private ImageView mCategoryAppetizerButton;
     private TextView mCategoryAppetizerText;
@@ -64,17 +65,23 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     private ImageView mCategoryBeverageButton;
     private TextView mCategoryBeverageText;
 
-    // views: ingredients, directions
+    // views : preparation and cooking times
+    private LinearLayout mPreparationTimeLayout;
+    private TextView mPreparationTimeText;
+    private LinearLayout mCookingTimeLayout;
+    private TextView mCookingTimeText;
+
+    // views : ingredients, directions recycler views
     private RecyclerView mIngredientsRecyclerView;
     private DetailIngredientListAdapter mIngredientListAdapter;
     private RecyclerView mDirectionsRecyclerView;
     private DetailDirectionListAdapter mDirectionListAdapter;
 
-    // listeners : delete (ingredients, directions)
+    // listeners : ingredient row buttons, direction row buttons
     private DetailIngredientListAdapter.OnIngredientButtonsClickListener mIngredientButtonsClickListener;
     private DetailDirectionListAdapter.OnDirectionButtonsClickListener mDirectionButtonsClickListener;
 
-    // views: edit mode views
+    // views : edit mode views
     private RelativeLayout mEditAddIngredientLayout;
     private TextInputEditText mEditAddIngredientText;
     private ImageButton mEditAddIngredientButton;
@@ -83,7 +90,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     private ImageButton mEditAddDirectionButton;
     private Button mDeleteRecipeButton;
 
-    // views: fam and fabs
+    // views : fam and fabs
     private FloatingActionButton mMainFab;
     private com.github.clans.fab.FloatingActionMenu mMainFAM;
     private com.github.clans.fab.FloatingActionButton mEditFab;
@@ -129,6 +136,11 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mCategoryBeverageButton = (ImageView) findViewById(R.id.detail_category_beverage_button);
         mCategoryBeverageText = (TextView) findViewById(R.id.detail_category_beverage_text);
 
+        // set up preparation time and cooking time views
+        mPreparationTimeLayout = (LinearLayout) findViewById(R.id.detail_preparation_time_layout);
+        mPreparationTimeText = (TextView) findViewById(R.id.detail_preparation_time_text);
+        mCookingTimeLayout = (LinearLayout) findViewById(R.id.detail_cooking_time_layout);
+        mCookingTimeText = (TextView) findViewById(R.id.detail_cooking_time_text);
 
         // set up ingredients and directions views/adapters/listeners
         mIngredientsRecyclerView = (RecyclerView) findViewById(R.id.detail_ingredients_list);
@@ -519,7 +531,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
 
     // -----------------------------------------------------------------------------------------------------------------------------------------------
-    // CALLBACKS ADDED FROM THE LAYOUT XML (Add Ingredient Button, Add Direction Button, Delete Recipe Button)
+    // CLICK LISTENERS FROM XML : Add Ingredient Button, Add Direction Button, Delete Recipe Button)
     // -----------------------------------------------------------------------------------------------------------------------------------------------
 
     // method to be called when add ingredient button pressed
@@ -595,6 +607,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         dialog.show();
 
     }
+
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // CLICK LISTENERS FROM XML : Categories
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
 
     // method to be called when the appetizer category layout is clicked
     public void onClickDetailCategoryAppetizer(View view)
@@ -693,6 +709,26 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
                 mCategoryBeverageButton.setImageResource(R.drawable.ic_category_beverage_green_32dp);
                 mCategoryBeverageText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
             }
+        }
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // CLICK LISTENERS FROM XML : Preparation time, Cooking time
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
+
+    public void onClickCookingTimeLayout(View view)
+    {
+        if(mInEditMode)
+        {
+
+        }
+    }
+
+    public void onClickPreparationTimeLayout(View view)
+    {
+        if(mInEditMode)
+        {
+
         }
     }
 

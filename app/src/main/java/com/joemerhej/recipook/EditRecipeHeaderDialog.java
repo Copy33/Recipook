@@ -95,7 +95,7 @@ public class EditRecipeHeaderDialog extends DialogFragment
                         mListener.onEditHeaderDialogPositiveClick(EditRecipeHeaderDialog.this);
                     }
                 })
-                .setNegativeButton("Discard", new DialogInterface.OnClickListener()
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
@@ -106,10 +106,10 @@ public class EditRecipeHeaderDialog extends DialogFragment
 
 
         // hook up the views
-        mRecipeNameEditText = (TextInputEditText) view.findViewById(R.id.dialog_recipe_name_edit_text);
-        mChooseImageButton = (Button) view.findViewById(R.id.dialog_edit_image_button);
-        mRemoveImageButton = (ImageButton) view.findViewById(R.id.dialog_remove_image_button);
-        mRecipeImageView = (ImageView) view.findViewById(R.id.dialog_recipe_image_view);
+        mRecipeNameEditText = (TextInputEditText) view.findViewById(R.id.dialog_edit_header_recipe_name_edit_text);
+        mChooseImageButton = (Button) view.findViewById(R.id.dialog_edit_header_edit_image_button);
+        mRemoveImageButton = (ImageButton) view.findViewById(R.id.dialog_edit_header_remove_image_button);
+        mRecipeImageView = (ImageView) view.findViewById(R.id.dialog_edit_header_recipe_image_view);
 
         // set the text to the recipe name that is in the arguments of the dialog instance called
         mRecipeNameEditText.setText(getArguments().getString("recipeTitle"));
