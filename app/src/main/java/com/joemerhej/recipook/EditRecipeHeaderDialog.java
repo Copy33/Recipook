@@ -21,7 +21,7 @@ import com.bumptech.glide.Glide;
 public class EditRecipeHeaderDialog extends DialogFragment
 {
     // the activity that creates an instance of this dialog fragment must implement this.
-    // each method passes the dialog fragment in case the host needs to query it.
+    // each method passes the dialog fragment in case the host needs to query it or use its variables.
     public interface DetailEditRecipeHeaderDialogListener
     {
         void onEditHeaderDialogPositiveClick(EditRecipeHeaderDialog dialog);
@@ -48,7 +48,7 @@ public class EditRecipeHeaderDialog extends DialogFragment
 
     }
 
-    // instance puts the paramters in an argument bundle in the dialog
+    // instance puts the parameters in an argument bundle in the dialog
     public static EditRecipeHeaderDialog Instance(String recipeTitle, String recipeImageUri)
     {
         EditRecipeHeaderDialog dialog = new EditRecipeHeaderDialog();
@@ -59,22 +59,22 @@ public class EditRecipeHeaderDialog extends DialogFragment
         return dialog;
     }
 
-    // Override the Fragment.onAttach() method to instantiate the DetailEditRecipeHeaderDialogListener
+    // override the Fragment.onAttach() method to instantiate the DetailEditRecipeHeaderDialogListener
     @Override
     public void onAttach(Context context)
     {
         super.onAttach(context);
 
-        // Verify that the host activity implements the callback interface
+        // verify that the host activity implements the callback interface
         try
         {
-            // Instantiate the NoticeDialogListener so we can send events to the host
+            // instantiate the NoticeDialogListener so we can send events to the host
             mListener = (DetailEditRecipeHeaderDialogListener) context;
         }
         catch (ClassCastException e)
         {
-            // The activity doesn't implement the interface, throw exception
-            throw new ClassCastException(context.toString() + " must implement NoticeDialogListener");
+            // the activity doesn't implement the interface, throw exception
+            throw new ClassCastException(context.toString() + " must implement DetailEditRecipeHeaderDialogListener");
         }
     }
 
@@ -86,6 +86,7 @@ public class EditRecipeHeaderDialog extends DialogFragment
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_edit_recipe_header, null);
 
+        // hook up the  main view and the positive/negative buttons click listeners
         builder.setView(view)
                 .setPositiveButton("Apply", new DialogInterface.OnClickListener()
                 {
@@ -105,7 +106,7 @@ public class EditRecipeHeaderDialog extends DialogFragment
                 });
 
 
-        // hook up the views
+        // hook up the child views
         mRecipeNameEditText = (TextInputEditText) view.findViewById(R.id.dialog_edit_header_recipe_name_edit_text);
         mChooseImageButton = (Button) view.findViewById(R.id.dialog_edit_header_edit_image_button);
         mRemoveImageButton = (ImageButton) view.findViewById(R.id.dialog_edit_header_remove_image_button);

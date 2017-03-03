@@ -232,7 +232,7 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:paddingStart="10dp"
-                        android:text="@string/detail_preparation_text_default"
+                        android:text="@string/detail_preparation_time_text_default"
                         android:textAlignment="center"
                         android:textSize="12sp"/>
                 </LinearLayout>
@@ -262,7 +262,7 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:paddingStart="10dp"
-                        android:text="@string/detail_cooking_text_default"
+                        android:text="@string/detail_cooking_time_text_default"
                         android:textAlignment="center"
                         android:textSize="12sp"/>
                 </LinearLayout>

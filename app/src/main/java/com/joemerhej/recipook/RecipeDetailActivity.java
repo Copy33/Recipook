@@ -3,7 +3,6 @@ package com.joemerhej.recipook;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -19,17 +18,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 
+import static com.joemerhej.recipook.EditRecipeDurationsDialog.RecipeDurationDialogType.COOKING_TIME_DIALOG;
 
-public class RecipeDetailActivity extends AppCompatActivity implements EditRecipeHeaderDialog.DetailEditRecipeHeaderDialogListener
+
+public class RecipeDetailActivity extends AppCompatActivity implements EditRecipeHeaderDialog.DetailEditRecipeHeaderDialogListener, EditRecipeDurationsDialog.DetailEditRecipeDurationsDialogListener
 {
     // intent extra
     public static final String EXTRA_RECIPE_ID = "recipe_id";
@@ -70,6 +71,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     private TextView mPreparationTimeText;
     private LinearLayout mCookingTimeLayout;
     private TextView mCookingTimeText;
+    private EditRecipeDurationsDialog mEditRecipeDurationsDialog;
 
     // views : ingredients, directions recycler views
     private RecyclerView mIngredientsRecyclerView;
@@ -258,7 +260,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
                 .into(mCollapsingToolbarImageView);
 
         // reset categories
-        handleCategoryViewsInViewMode();
+        handleCategoryViews();
 
         // reset ingredients
         mIngredientListAdapter.UpdateDataWith(mRecipe.ingredients);
@@ -386,6 +388,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 //        RelativeLayout a  = (RelativeLayout)mIngredientsRecyclerView.getLayoutManager().findViewByPosition(0);
 //        a.findViewById(R.id.recycler_item_ingredient_text).requestFocus();
 
+        mCookingTimeLayout.setFocusable(true);
+        mCookingTimeLayout.setFocusableInTouchMode(true);
+        mCookingTimeLayout.requestFocus();
+
     }
 
 
@@ -437,7 +443,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mAtLeastOneChange = false;
 
         // handle category views
-        handleCategoryViewsInViewMode();
+        handleCategoryViews();
+
+        // handle durations views
+        handleDurationsViews();
 
         // make the edit views invisible
         mEditAddIngredientLayout.setVisibility(View.GONE);
@@ -455,14 +464,14 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     }
 
     // method that will set the right category views in view mode
-    public void handleCategoryViewsInViewMode()
+    public void handleCategoryViews()
     {
         int green = ContextCompat.getColor(this, R.color.colorPrimaryDark);
         int grey = ContextCompat.getColor(this, R.color.categoryColorDisabled);
 
 
         // only show category if it's contained in the recipe
-        if(mRecipe.categories.contains(Category.Appetizer))
+        if (mRecipe.categories.contains(Category.Appetizer))
         {
             mCategoryAppetizerLayout.setVisibility(View.VISIBLE);
             mCategoryAppetizerButton.setImageResource(R.drawable.ic_category_appetizer_green_32dp);
@@ -475,7 +484,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             mCategoryAppetizerText.setTextColor(grey);
         }
 
-        if(mRecipe.categories.contains(Category.MainCourse))
+        if (mRecipe.categories.contains(Category.MainCourse))
         {
             mCategoryMainCourseLayout.setVisibility(View.VISIBLE);
             mCategoryMainCourseButton.setImageResource(R.drawable.ic_category_main_course_green_32dp);
@@ -488,7 +497,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             mCategoryMainCourseText.setTextColor(grey);
         }
 
-        if(mRecipe.categories.contains(Category.SideDish))
+        if (mRecipe.categories.contains(Category.SideDish))
         {
             mCategorySideDishLayout.setVisibility(View.VISIBLE);
             mCategorySideDishButton.setImageResource(R.drawable.ic_category_side_dish_green_32dp);
@@ -501,7 +510,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             mCategorySideDishText.setTextColor(grey);
         }
 
-        if(mRecipe.categories.contains(Category.Dessert))
+        if (mRecipe.categories.contains(Category.Dessert))
         {
             mCategoryDessertLayout.setVisibility(View.VISIBLE);
             mCategoryDessertButton.setImageResource(R.drawable.ic_category_dessert_green_32dp);
@@ -514,7 +523,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             mCategoryDessertText.setTextColor(grey);
         }
 
-        if(mRecipe.categories.contains(Category.Beverage))
+        if (mRecipe.categories.contains(Category.Beverage))
         {
             mCategoryBeverageLayout.setVisibility(View.VISIBLE);
             mCategoryBeverageButton.setImageResource(R.drawable.ic_category_beverage_green_32dp);
@@ -526,9 +535,42 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             mCategoryBeverageButton.setImageResource(R.drawable.ic_category_beverage_grey_32dp);
             mCategoryBeverageText.setTextColor(grey);
         }
-
     }
 
+    // method that will set the right durations in the view in view mode
+    public void handleDurationsViews()
+    {
+        mPreparationTimeText.setText(String.valueOf(mRecipe.preparationTimeMinutes / 60) + "h " + String.valueOf(mRecipe.preparationTimeMinutes % 60) + "m");
+        mCookingTimeText.setText(String.valueOf(mRecipe.cookingTimeMinutes / 60) + "h " + String.valueOf(mRecipe.cookingTimeMinutes % 60) + "m");
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // ADD INGREDIENT TEXTWATCHER TODO: Implement text watcher for add ingredient textinput.
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
+
+//    // text watcher to be attached to the add ingredient editText
+//    public class MyAddIngredientEditTextWatcher implements TextWatcher
+//    {
+//        //boolean editing = false;
+//
+//        @Override
+//        public void beforeTextChanged(CharSequence s, int start, int count, int after)
+//        {
+//
+//        }
+//
+//        @Override
+//        public void onTextChanged(CharSequence s, int start, int before, int count)
+//        {
+//
+//        }
+//
+//        @Override
+//        public void afterTextChanged(Editable s)
+//        {
+//
+//        }
+//    }
 
     // -----------------------------------------------------------------------------------------------------------------------------------------------
     // CLICK LISTENERS FROM XML : Add Ingredient Button, Add Direction Button, Delete Recipe Button)
@@ -545,7 +587,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
         mAtLeastOneChange = true;
 
-        Ingredient newIngredient = RecipookTextParser.Instance().GetIngredientFromIngredientString(newIngredientText);
+        Ingredient newIngredient = RecipookTextUtils.Instance().GetIngredientFromIngredientString(newIngredientText);
         if (newIngredient != null)
         {
             mRecipe.ingredients.add(newIngredient);
@@ -615,7 +657,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     // method to be called when the appetizer category layout is clicked
     public void onClickDetailCategoryAppetizer(View view)
     {
-        if(mInEditMode)
+        if (mInEditMode)
         {
             if (mRecipe.categories.contains(Category.Appetizer))
             {
@@ -635,7 +677,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     // method to be called when the main course category layout is clicked
     public void onClickDetailCategoryMainCourse(View view)
     {
-        if(mInEditMode)
+        if (mInEditMode)
         {
             if (mRecipe.categories.contains(Category.MainCourse))
             {
@@ -655,7 +697,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     // method to be called when the side dish category layout is clicked
     public void onClickDetailCategorySideDish(View view)
     {
-        if(mInEditMode)
+        if (mInEditMode)
         {
             if (mRecipe.categories.contains(Category.SideDish))
             {
@@ -675,7 +717,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     // method to be called when the dessert category layout is clicked
     public void onClickDetailCategoryDessert(View view)
     {
-        if(mInEditMode)
+        if (mInEditMode)
         {
             if (mRecipe.categories.contains(Category.Dessert))
             {
@@ -695,7 +737,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     // method to be called when the beverage category layout is clicked
     public void onClickDetailCategoryBeverage(View view)
     {
-        if(mInEditMode)
+        if (mInEditMode)
         {
             if (mRecipe.categories.contains(Category.Beverage))
             {
@@ -716,54 +758,138 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     // CLICK LISTENERS FROM XML : Preparation time, Cooking time
     // -----------------------------------------------------------------------------------------------------------------------------------------------
 
+    // what happens when the user clicks the cooking time layout in edit mode
     public void onClickCookingTimeLayout(View view)
     {
-        if(mInEditMode)
+        if (mInEditMode)
         {
-
+            int cookingTimeHours = mRecipe.cookingTimeMinutes / 60;
+            int cookingTimeMinutes = mRecipe.cookingTimeMinutes % 60;
+            mEditRecipeDurationsDialog = EditRecipeDurationsDialog.Instance(COOKING_TIME_DIALOG,
+                    getResources().getString(R.string.detail_cooking_time_title),
+                    cookingTimeHours,
+                    cookingTimeMinutes);
+            mEditRecipeDurationsDialog.show(getFragmentManager(), EditRecipeDurationsDialog.class.getName());
         }
     }
 
+    // what happens when the user clicks the preparatino time layout in edit mode
     public void onClickPreparationTimeLayout(View view)
     {
-        if(mInEditMode)
+        if (mInEditMode)
         {
-
+            int preparationTimeHours = mRecipe.preparationTimeMinutes / 60;
+            int preparationTimeMinutes = mRecipe.preparationTimeMinutes % 60;
+            mEditRecipeDurationsDialog = EditRecipeDurationsDialog.Instance(EditRecipeDurationsDialog.RecipeDurationDialogType.PREPARATION_TIME_DIALOG,
+                    getResources().getString(R.string.detail_preparation_time_title),
+                    preparationTimeHours,
+                    preparationTimeMinutes);
+            mEditRecipeDurationsDialog.show(getFragmentManager(), EditRecipeDurationsDialog.class.getName());
         }
     }
 
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // EDIT DURATIONS DIALOG INTERFACE IMPLEMENTATION
+    // -----------------------------------------------------------------------------------------------------------------------------------------------
+
+    // what happens when the user clicks the positive button of the edit duration dialog
+    @Override
+    public void onEditDurationsDialogPositiveClick(EditRecipeDurationsDialog dialog, EditRecipeDurationsDialog.RecipeDurationDialogType dialogType)
+    {
+        // get the new times from dialog
+        int newHours = Integer.valueOf(dialog.mHoursText.getText().toString());
+        int newMinutes = Integer.valueOf(dialog.mMinutesText.getText().toString());
+        int newTotalInMinutes = (newHours * 60) + newMinutes;
+
+        // depending on dialog type, save the mRecipe values, also handle mAtLeastOneChange
+        switch (dialogType)
+        {
+            case PREPARATION_TIME_DIALOG:
+            {
+                if (newTotalInMinutes != mRecipe.preparationTimeMinutes)
+                {
+                    mAtLeastOneChange = true;
+                    mRecipe.preparationTimeMinutes = newTotalInMinutes;
+                }
+            }
+            break;
+
+            case COOKING_TIME_DIALOG:
+            {
+                if (newTotalInMinutes != mRecipe.cookingTimeMinutes)
+                {
+                    mAtLeastOneChange = true;
+                    mRecipe.cookingTimeMinutes = newTotalInMinutes;
+                }
+            }
+            break;
+        }
+
+        // reset the views
+        handleDurationsViews();
+    }
+
+    // what happens when the user clicks the negative button of the edit duration dialog
+    @Override
+    public void onEditDurationsDialogNegativeClick(EditRecipeDurationsDialog dialog, EditRecipeDurationsDialog.RecipeDurationDialogType dialogType)
+    {
+        // nothing happens here but we need this implementation
+    }
+
+    // what happens when the user clicks the backspace button of the edit duration dialog
+    @Override
+    public void onEditDurationsDialogBackspaceClick(EditRecipeDurationsDialog dialog)
+    {
+        int hours = Integer.valueOf(dialog.mHoursText.getText().toString());
+        int minutes = Integer.valueOf(dialog.mMinutesText.getText().toString());
+
+        int hoursFirstDigit = hours / 10;
+        int hoursSecondDigit = hours % 10;
+
+        int minutesFirstDigit = minutes / 10;
+        int minutesSecondDigit;
+
+        minutesSecondDigit = minutesFirstDigit;
+        minutesFirstDigit = hoursSecondDigit;
+        hoursSecondDigit = hoursFirstDigit;
+        hoursFirstDigit = 0;
+
+        int newMinutes = (minutesFirstDigit * 10) + minutesSecondDigit;
+        int newHours = (hoursFirstDigit * 10) + hoursSecondDigit;
+
+        dialog.setTimeInView(newHours, newMinutes);
+    }
+
+    // what happens when the user clicks a number button of the edit duration dialog
+    @Override
+    public void onEditHeaderDialogNumberClick(EditRecipeDurationsDialog dialog, int digit)
+    {
+        int hours = Integer.valueOf(dialog.mHoursText.getText().toString());
+        int minutes = Integer.valueOf(dialog.mMinutesText.getText().toString());
+
+        int hoursFirstDigit = hours / 10;
+        int hoursSecondDigit = hours % 10;
+
+        int minutesFirstDigit = minutes / 10;
+        int minutesSecondDigit = minutes % 10;
+
+        // return if the view is full
+        if(hoursFirstDigit > 0)
+            return;
+
+        hoursFirstDigit = hoursSecondDigit;
+        hoursSecondDigit = minutesFirstDigit;
+        minutesFirstDigit = minutesSecondDigit;
+        minutesSecondDigit = digit;
+
+        int newMinutes = (minutesFirstDigit * 10) + minutesSecondDigit;
+        int newHours = (hoursFirstDigit * 10) + hoursSecondDigit;
+
+        dialog.setTimeInView(newHours, newMinutes);
+    }
 
     // -----------------------------------------------------------------------------------------------------------------------------------------------
-    // ADD INGREDIENT TEXTWATCHER TODO: Implement text watcher for add ingredient textinput.
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
-
-//    // text watcher to be attached to the add ingredient editText
-//    public class MyAddIngredientEditTextWatcher implements TextWatcher
-//    {
-//        //boolean editing = false;
-//
-//        @Override
-//        public void beforeTextChanged(CharSequence s, int start, int count, int after)
-//        {
-//
-//        }
-//
-//        @Override
-//        public void onTextChanged(CharSequence s, int start, int before, int count)
-//        {
-//
-//        }
-//
-//        @Override
-//        public void afterTextChanged(Editable s)
-//        {
-//
-//        }
-//    }
-
-
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
-    // COLLAPSING TOOLBAR LISTENER AND CUSTOM DIALOG
+    // COLLAPSING TOOLBAR LISTENER AND EDIT HEADER DIALOG INTERFACE IMPLEMENTATION
     // -----------------------------------------------------------------------------------------------------------------------------------------------
 
     // method to be called when the collapsing toolbar layout is clicked
@@ -798,7 +924,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
                 .into(mCollapsingToolbarImageView);
 
         // check if smth actually changed in the recipe from this dialog
-        if(!mRecipe.name.equalsIgnoreCase(mRecipeBeforeEdit.name) || !mRecipe.imageUri.equalsIgnoreCase(mRecipeBeforeEdit.imageUri))
+        if (!mRecipe.name.equalsIgnoreCase(mRecipeBeforeEdit.name) || !mRecipe.imageUri.equalsIgnoreCase(mRecipeBeforeEdit.imageUri))
             mAtLeastOneChange = true;
 
         // hide the keyboard

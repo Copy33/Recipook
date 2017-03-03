@@ -21,8 +21,10 @@
     <string name="detail_category_dessert">Dessert</string>
     <string name="detail_category_beverage">Beverage</string>
     <!-- Preparation/Cooking time view -->
-    <string name="detail_preparation_text_default">1h 20m</string>
-    <string name="detail_cooking_text_default">1h 45m</string>
+    <string name="detail_preparation_time_title">Preparation Time</string>
+    <string name="detail_preparation_time_text_default">1h 20m</string>
+    <string name="detail_cooking_time_title">Cooking Time</string>
+    <string name="detail_cooking_time_text_default">1h 45m</string>
     <!-- Ingredient recycler view item -->
     <string name="detail_recycler_item_ingredient_quantity_default">2 lbs</string>
     <string name="detail_recycler_item_ingredient_name_default">sliced chicken breast</string>

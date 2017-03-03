@@ -3,14 +3,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_margin="16dp">
-    <!--====================================== TITLE =======================================-->
-    <TextView
-        android:id="@+id/dialog_edit_duration_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Preparation time"
-        android:textSize="16sp"/>
+                android:paddingLeft="16dp"
+                android:paddingStart="16dp"
+                android:paddingRight="16dp"
+                android:paddingEnd="16dp">
 
     <!--===================================== TIME VIEW ====================================-->
     <LinearLayout
@@ -23,9 +19,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="end"
-            android:paddingRight="18dp"
-            android:paddingEnd="18dp">
+            android:gravity="end">
 
             <TextView
                 android:id="@+id/dialog_edit_duration_hours"
@@ -61,11 +55,12 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:clickable="true"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center"
-            android:paddingLeft="36dp"
-            android:paddingStart="36dp"
-            android:paddingRight="36dp"
-            android:paddingEnd="36dp">
+            android:paddingLeft="30dp"
+            android:paddingStart="30dp"
+            android:paddingRight="30dp"
+            android:paddingEnd="30dp">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -95,7 +90,8 @@
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:gravity="center"
-            android:clickable="true">
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -109,7 +105,8 @@
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:gravity="center"
-            android:clickable="true">
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -123,7 +120,8 @@
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:gravity="center"
-            android:clickable="true">
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -145,7 +143,8 @@
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:gravity="center"
-            android:clickable="true">
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -159,7 +158,8 @@
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:gravity="center"
-            android:clickable="true">
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -173,7 +173,8 @@
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:gravity="center"
-            android:clickable="true">
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -195,7 +196,8 @@
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:gravity="center"
-            android:clickable="true">
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -209,7 +211,8 @@
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:gravity="center"
-            android:clickable="true">
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -223,7 +226,8 @@
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:gravity="center"
-            android:clickable="true">
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -252,7 +256,8 @@
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:gravity="center"
-            android:clickable="true">
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

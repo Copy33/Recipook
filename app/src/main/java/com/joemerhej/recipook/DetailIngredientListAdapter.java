@@ -92,8 +92,8 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         @Override
         public void afterTextChanged(Editable s)
         {
-            mIngredientsList.get(mIngredientPosition).quantity = RecipookTextParser.Instance().GetQuantityFromQuantityString(s.toString());
-            mIngredientsList.get(mIngredientPosition).unit = RecipookTextParser.Instance().GetUnitFromQuantityString(s.toString());
+            mIngredientsList.get(mIngredientPosition).quantity = RecipookTextUtils.Instance().GetQuantityFromQuantityString(s.toString());
+            mIngredientsList.get(mIngredientPosition).unit = RecipookTextUtils.Instance().GetUnitFromQuantityString(s.toString());
         }
     }
 
@@ -186,8 +186,8 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         Ingredient ingredient = mIngredientsList.get(position);
 
         // parse ingredient unit and quantity with the correct handling
-        String ingredientUnit = RecipookTextParser.Instance().GetUnitStringFromIngredient(ingredient);
-        String ingredientQuantity = RecipookTextParser.Instance().GetQuantityStringFromIngredient(ingredient);
+        String ingredientUnit = RecipookTextUtils.Instance().GetUnitStringFromIngredient(ingredient);
+        String ingredientQuantity = RecipookTextUtils.Instance().GetQuantityStringFromIngredient(ingredient);
 
         // update the listener position so it knows which EditText to listen to for each view, and set that text
         holder.mIngredientNameEditTextListener.updateIngredientPosition(position);
