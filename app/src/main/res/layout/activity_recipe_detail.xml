@@ -393,22 +393,21 @@
     </android.support.v4.widget.NestedScrollView>
 
     <!--================================ MAIN FAB TOP RIGHT ================================-->
-    <android.support.design.widget.FloatingActionButton
+    <com.github.clans.fab.FloatingActionButton
         android:id="@+id/recipe_detail_main_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        app:layout_anchor="@id/collapsing_toolbar_layout"
-        app:layout_anchorGravity="bottom|end"/>
+        app:layout_anchor="@+id/detail_scroll_view"
+        app:layout_anchorGravity="bottom|end"
+        android:visibility="visible"/>
 
     <!--=============================== FLOATING ACTION MENU ===============================-->
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/recipe_detail_main_fam"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:padding="@dimen/fab_margin"
         app:menu_backgroundColor="#ccffffff"
         app:menu_colorNormal="#DA4336"
         app:menu_colorPressed="#E75043"

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.content.ContextCompat;
@@ -93,7 +92,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     private Button mDeleteRecipeButton;
 
     // views : fam and fabs
-    private FloatingActionButton mMainFab;
+    private com.github.clans.fab.FloatingActionButton mMainFab;
     private com.github.clans.fab.FloatingActionMenu mMainFAM;
     private com.github.clans.fab.FloatingActionButton mEditFab;
     private com.github.clans.fab.FloatingActionButton mShareFab;
@@ -208,7 +207,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mDeleteRecipeButton = (Button) findViewById(R.id.detail_delete_recipe_button);
 
         // set up the main fab (top right of the screen)
-        mMainFab = (FloatingActionButton) findViewById(R.id.recipe_detail_main_fab);
+        mMainFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.recipe_detail_main_fab);
         mMainFab.setOnClickListener(mClickDetailFabsListener);
 
         // set up the main fam and its children fabs
@@ -409,7 +408,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
         // set the main fab icon to save and show it
         mMainFab.setImageResource(R.drawable.ic_save_white_24dp);
-        mMainFab.show();
+        mMainFab.show(false);
 
         // show all categories
         mCategoryAppetizerLayout.setVisibility(View.VISIBLE);
@@ -432,7 +431,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     public void engageViewMode()
     {
         // hide the main fab, show the main fam
-        mMainFab.hide();
+        mMainFab.hide(false);
         mMainFAM.showMenu(false);
 
         // save a copy of the new edited recipe on user validation
