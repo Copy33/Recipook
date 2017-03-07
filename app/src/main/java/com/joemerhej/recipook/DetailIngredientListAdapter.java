@@ -31,6 +31,7 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
     public interface OnIngredientButtonsClickListener
     {
         void onIngredientDeleteButtonClick(View view, int position);
+
         void onIngredientAddToShoppingListButtonClick(View view, int position);
     }
 
@@ -137,12 +138,12 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         @Override
         public void onClick(View v)
         {
-            if(mIngredientButtonsClickListeners != null)
+            if (mIngredientButtonsClickListeners != null)
             {
-                if(v.getId() == mEditDeleteIngredientButton.getId())
+                if (v.getId() == mEditDeleteIngredientButton.getId())
                     mIngredientButtonsClickListeners.onIngredientDeleteButtonClick(v, getLayoutPosition());
 
-                if(v.getId() == mAddToShoppingListButton.getId())
+                if (v.getId() == mAddToShoppingListButton.getId())
                     mIngredientButtonsClickListeners.onIngredientAddToShoppingListButtonClick(v, getLayoutPosition());
             }
         }
@@ -201,7 +202,7 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         holder.mIngredientQuantity.setSelection(holder.mIngredientQuantity.getText().length());
 
         // show the right views depending on edit mode
-        if(((RecipeDetailActivity)mContext).mInEditMode)
+        if (((RecipeDetailActivity) mContext).mInEditMode)
         {
             holder.mIngredientQuantity.setEnabled(true);
             holder.mIngredientText.setEnabled(true);

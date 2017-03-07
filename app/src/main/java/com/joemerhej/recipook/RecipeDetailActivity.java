@@ -17,7 +17,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -26,22 +25,21 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
-import static com.joemerhej.recipook.EditRecipeDurationsDialog.RecipeDurationDialogType.COOKING_TIME_DIALOG;
 
-
-public class RecipeDetailActivity extends AppCompatActivity implements EditRecipeHeaderDialog.DetailEditRecipeHeaderDialogListener, EditRecipeDurationsDialog.DetailEditRecipeDurationsDialogListener
+public class RecipeDetailActivity extends AppCompatActivity implements EditRecipeHeaderDialog.DetailEditRecipeHeaderDialogListener,
+                                                                       EditRecipeDurationsDialog.DetailEditRecipeDurationsDialogListener
 {
     // intent extra
     public static final String EXTRA_RECIPE_ID = "recipe_id";
 
     // General Variables
-    public Recipe mRecipe;                      // recipe in question
-    public int mRecipeIndex;                    // index of recipe in question
-    public Recipe mRecipeBeforeEdit;            // save a copy for undo edit changes
-    public boolean mInEditMode;                 // if the activity is now in edit mode
-    public boolean mAtLeastOneChange;           // so the app won't ask for discard/save changes if that didn't happen
-    public Uri mNewImageUri;                    // need this to save the image uri returned from the pick image intent
-    private InputMethodManager mInputManager;   // input manager to show/hide keyboard
+    public Recipe mRecipe;                          // recipe in question
+    public int mRecipeIndex;                        // index of recipe in question
+    public Recipe mRecipeBeforeEdit;                // save a copy for undo edit changes
+    public boolean mInEditMode;                     // if the activity is now in edit mode
+    public boolean mAtLeastOneChange;               // so the app won't ask for discard/save changes if that didn't happen
+    public Uri mNewImageUri;                        // need this to save the image uri returned from the pick image intent
+    private InputMethodManager mInputManager;       // input manager to show/hide keyboard
 
     // views : toolbar area
     private ImageView mCollapsingToolbarImageView;
@@ -78,17 +76,11 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     private RecyclerView mDirectionsRecyclerView;
     private DetailDirectionListAdapter mDirectionListAdapter;
 
-    // listeners : ingredient row buttons, direction row buttons
-    private DetailIngredientListAdapter.OnIngredientButtonsClickListener mIngredientButtonsClickListener;
-    private DetailDirectionListAdapter.OnDirectionButtonsClickListener mDirectionButtonsClickListener;
-
     // views : edit mode views
     private RelativeLayout mEditAddIngredientLayout;
     private TextInputEditText mEditAddIngredientText;
-    private ImageButton mEditAddIngredientButton;
     private RelativeLayout mEditAddDirectionLayout;
     private TextInputEditText mEditAddDirectionText;
-    private ImageButton mEditAddDirectionButton;
     private Button mDeleteRecipeButton;
 
     // views : fam and fabs
@@ -98,9 +90,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     private com.github.clans.fab.FloatingActionButton mShareFab;
     private com.github.clans.fab.FloatingActionButton mAddToShoppingListFab;
 
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // ACTIVITY CREATE FUNCTION
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -147,63 +139,27 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mIngredientsRecyclerView = (RecyclerView) findViewById(R.id.detail_ingredients_list);
         mDirectionsRecyclerView = (RecyclerView) findViewById(R.id.detail_directions_list);
 
-        // Ingredient list adapter needs the ingredient buttons click listener to be implemented
-        mIngredientButtonsClickListener = new DetailIngredientListAdapter.OnIngredientButtonsClickListener()
-        {
-            @Override
-            public void onIngredientDeleteButtonClick(View view, int position)
-            {
-                mRecipe.ingredients.remove(position);
-                mIngredientListAdapter.notifyItemRemoved(position);
-                mEditAddIngredientText.requestFocus();
-                mAtLeastOneChange = true;
-            }
-
-            @Override
-            public void onIngredientAddToShoppingListButtonClick(View view, int position)
-            {
-                //TODO: logic to add ingredient to shopping list
-                Snackbar.make(view, "Added " + mRecipe.ingredients.get(position).name + " to the Shopping List.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-            }
-        };
-
-        //Direction list adapter needs the direction buttons click listener to be implemented
-        mDirectionButtonsClickListener = new DetailDirectionListAdapter.OnDirectionButtonsClickListener()
-        {
-            @Override
-            public void onDirectionDeleteButtonClick(View view, int position)
-            {
-                mRecipe.directions.remove(position);
-                mDirectionListAdapter.notifyItemRemoved(position);
-                mDirectionListAdapter.notifyItemRangeChanged(position, mDirectionListAdapter.getItemCount());   // this updates the numbers
-                mEditAddDirectionText.requestFocus();
-                mAtLeastOneChange = true;
-            }
-        };
-
         // create recycler views adapters, layout managers, and set item dividers
         mIngredientListAdapter = new DetailIngredientListAdapter(this, mRecipe.ingredients);
         mIngredientsRecyclerView.setAdapter(mIngredientListAdapter);
         mIngredientsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mIngredientsRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        mIngredientsRecyclerView.setItemAnimator(null);
         mIngredientListAdapter.setIngredientButtonsClickListener(mIngredientButtonsClickListener);
 
         mDirectionListAdapter = new DetailDirectionListAdapter(this, mRecipe.directions);
         mDirectionsRecyclerView.setAdapter(mDirectionListAdapter);
         mDirectionsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mDirectionsRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        mDirectionsRecyclerView.setItemAnimator(null);
         mDirectionListAdapter.setDirectionButtonsClickListener(mDirectionButtonsClickListener);
 
         // set up edit mode views (visibility GONE by default)
         mEditAddIngredientLayout = (RelativeLayout) findViewById(R.id.detail_ingredient_add_layout);
         mEditAddIngredientText = (TextInputEditText) findViewById(R.id.detail_ingredient_edit_text);
         //mEditAddIngredientText.addTextChangedListener(new MyAddIngredientEditTextWatcher()); // TODO (see other todo below)
-        mEditAddIngredientButton = (ImageButton) findViewById(R.id.detail_ingredient_add_button);
-
         mEditAddDirectionLayout = (RelativeLayout) findViewById(R.id.detail_direction_add_layout);
         mEditAddDirectionText = (TextInputEditText) findViewById(R.id.detail_direction_edit_text);
-        mEditAddDirectionButton = (ImageButton) findViewById(R.id.detail_direction_add_button);
-
         mDeleteRecipeButton = (Button) findViewById(R.id.detail_delete_recipe_button);
 
         // set up the main fab (top right of the screen)
@@ -227,23 +183,23 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mAddToShoppingListFab.setOnClickListener(mClickDetailFabsListener);
         mAddToShoppingListFab.setEnabled(false); //TODO: implement adding to shopping list and enable this button
 
+        // set up input manager
+        mInputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
         // load recipe title and image
         mCollapsingToolbarLayout.setTitle(mRecipe.name);
         Glide.with(this)
                 .load(Uri.parse(mRecipe.imageUri))
                 .into(mCollapsingToolbarImageView);
 
-        // set up input manager
-        mInputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-
         // activity starts in view mode
         engageViewMode();
     }
 
 
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // BACK BUTTON PRESSED LISTENER
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     private void ResetViewToLastSavedRecipe()
     {
@@ -327,9 +283,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     }
 
 
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // MAIN FAM AND CHILD FABS LISTENERS AND METHODS
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     // click listener for the main fam icon
     private com.github.clans.fab.FloatingActionMenu.OnMenuToggleListener mFAMToggleListener = new com.github.clans.fab.FloatingActionMenu.OnMenuToggleListener()
@@ -394,9 +350,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     }
 
 
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // EDIT MODE AND VIEW MODE METHODS
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     // what happens when the activity is in edit mode
     public void engageEditMode()
@@ -543,9 +499,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mCookingTimeText.setText(String.valueOf(mRecipe.cookingTimeMinutes / 60) + "h " + String.valueOf(mRecipe.cookingTimeMinutes % 60) + "m");
     }
 
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // ADD INGREDIENT TEXTWATCHER TODO: Implement text watcher for add ingredient textinput.
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //    // text watcher to be attached to the add ingredient editText
 //    public class MyAddIngredientEditTextWatcher implements TextWatcher
@@ -571,9 +528,47 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 //        }
 //    }
 
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
-    // CLICK LISTENERS FROM XML : Add Ingredient Button, Add Direction Button, Delete Recipe Button)
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // INGREDIENT/DIRECTION RECYCLERVIEW ADAPTERS INTERFACE IMPLEMENTATION
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    // Ingredient list adapter needs the ingredient buttons click listener to be implemented
+    private DetailIngredientListAdapter.OnIngredientButtonsClickListener mIngredientButtonsClickListener = new DetailIngredientListAdapter.OnIngredientButtonsClickListener()
+    {
+        @Override
+        public void onIngredientDeleteButtonClick(View view, int position)
+        {
+            mRecipe.ingredients.remove(position);
+            mIngredientListAdapter.notifyItemRemoved(position);
+            mAtLeastOneChange = true;
+        }
+
+        @Override
+        public void onIngredientAddToShoppingListButtonClick(View view, int position)
+        {
+            //TODO: logic to add ingredient to shopping list
+            Snackbar.make(view, "Added " + mRecipe.ingredients.get(position).name + " to the Shopping List.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+        }
+    };
+
+    //Direction list adapter needs the direction buttons click listener to be implemented
+    private DetailDirectionListAdapter.OnDirectionButtonsClickListener mDirectionButtonsClickListener = new DetailDirectionListAdapter.OnDirectionButtonsClickListener()
+    {
+        @Override
+        public void onDirectionDeleteButtonClick(View view, int position)
+        {
+            mRecipe.directions.remove(position);
+            mDirectionListAdapter.notifyItemRemoved(position);
+            mDirectionListAdapter.notifyItemRangeChanged(position, mDirectionListAdapter.getItemCount());   // this updates the numbers
+            mAtLeastOneChange = true;
+        }
+    };
+
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // CLICK LISTENERS FROM XML : Add Ingredient Button, Add Direction Button, Delete Recipe Button
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     // method to be called when add ingredient button pressed
     public void onClickDetailAddIngredient(View view)
@@ -584,8 +579,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         if (newIngredientText.isEmpty())
             return;
 
-        mAtLeastOneChange = true;
-
         Ingredient newIngredient = RecipookTextUtils.Instance().GetIngredientFromIngredientString(newIngredientText);
         if (newIngredient != null)
         {
@@ -593,6 +586,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             mIngredientListAdapter.notifyItemInserted(mRecipe.ingredients.size() - 1);
 
             mEditAddIngredientText.getText().clear();
+
+            mAtLeastOneChange = true;
         }
     }
 
@@ -604,12 +599,12 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         if (newDirectionText.isEmpty())
             return;
 
-        mAtLeastOneChange = true;
-
         mRecipe.directions.add(newDirectionText);
         mDirectionListAdapter.notifyItemInserted(mRecipe.directions.size() - 1);
 
         mEditAddDirectionText.getText().clear();
+
+        mAtLeastOneChange = true;
     }
 
     // method to be called when delete recipe button pressed
@@ -649,9 +644,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
     }
 
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // CLICK LISTENERS FROM XML : Categories
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     // method to be called when the appetizer category layout is clicked
     public void onClickDetailCategoryAppetizer(View view)
@@ -753,9 +749,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         }
     }
 
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // CLICK LISTENERS FROM XML : Preparation time, Cooking time
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     // what happens when the user clicks the cooking time layout in edit mode
     public void onClickCookingTimeLayout(View view)
@@ -764,7 +760,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         {
             int cookingTimeHours = mRecipe.cookingTimeMinutes / 60;
             int cookingTimeMinutes = mRecipe.cookingTimeMinutes % 60;
-            mEditRecipeDurationsDialog = EditRecipeDurationsDialog.Instance(COOKING_TIME_DIALOG,
+            mEditRecipeDurationsDialog = EditRecipeDurationsDialog.Instance(EditRecipeDurationsDialog.RecipeDurationDialogType.COOKING_TIME_DIALOG,
                     getResources().getString(R.string.detail_cooking_time_title),
                     cookingTimeHours,
                     cookingTimeMinutes);
@@ -787,9 +783,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         }
     }
 
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // EDIT DURATIONS DIALOG INTERFACE IMPLEMENTATION
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     // what happens when the user clicks the positive button of the edit duration dialog
     @Override
@@ -873,7 +869,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         int minutesSecondDigit = minutes % 10;
 
         // return if the view is full
-        if(hoursFirstDigit > 0)
+        if (hoursFirstDigit > 0)
             return;
 
         hoursFirstDigit = hoursSecondDigit;
@@ -887,9 +883,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         dialog.setTimeInView(newHours, newMinutes);
     }
 
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // COLLAPSING TOOLBAR LISTENER AND EDIT HEADER DIALOG INTERFACE IMPLEMENTATION
-    // -----------------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     // method to be called when the collapsing toolbar layout is clicked
     private View.OnClickListener mCollapsingToolbarLayoutClickListener = new View.OnClickListener()
