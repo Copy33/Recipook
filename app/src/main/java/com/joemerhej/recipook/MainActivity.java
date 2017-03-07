@@ -38,18 +38,6 @@ public class MainActivity extends AppCompatActivity
         // set up the TabLayout with the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
-        // set up the FloatingActionButton and set a listener that will show the Snackbar when it's clicked
-        com.github.clans.fab.FloatingActionButton fab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.main_fab);
-        fab.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Snackbar.make(view, "Switched to Grid view.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-                RecipeListTabFragment.mStaggeredLayoutManager.setSpanCount(2);
-            }
-        });
     }
 
 }

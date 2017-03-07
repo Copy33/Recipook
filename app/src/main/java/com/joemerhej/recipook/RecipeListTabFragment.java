@@ -2,6 +2,7 @@ package com.joemerhej.recipook;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -64,6 +65,18 @@ public class RecipeListTabFragment extends Fragment
         mRecipeListAdapter = new RecipeListAdapter(activity);
         recyclerView.setAdapter(mRecipeListAdapter);
         mRecipeListAdapter.setOnRecipeItemClickListener(onRecipeItemClickListener, RecipeData.Instance().getRecipeList());
+
+        // set up the FloatingActionButton and set a listener that will show the Snackbar when it's clicked
+        com.github.clans.fab.FloatingActionButton fab = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.main_fab);
+        fab.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Snackbar.make(view, "Switched to Grid view.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                mStaggeredLayoutManager.setSpanCount(2);
+            }
+        });
 
         return view;
     }
