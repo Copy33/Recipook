@@ -60,8 +60,7 @@
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                           android:layout_width="match_parent"
                           android:layout_height="match_parent"
-                          android:orientation="horizontal"
-                          android:paddingTop="20dp">
+                          android:orientation="horizontal">
 
                 <LinearLayout
                     android:id="@+id/detail_category_appetizer_layout"
@@ -78,7 +77,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@android:color/transparent"
-                        android:padding="10dp"
+                        android:padding="@dimen/detail_category_image_padding"
                         android:src="@drawable/ic_category_appetizer_grey_32dp"/>
 
                     <TextView
@@ -87,7 +86,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/detail_category_appetizer"
                         android:textAlignment="center"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/detail_category_name_size"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -105,7 +104,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@android:color/transparent"
-                        android:padding="10dp"
+                        android:padding="@dimen/detail_category_image_padding"
                         android:src="@drawable/ic_category_main_course_grey_32dp"/>
 
                     <TextView
@@ -114,7 +113,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/detail_category_main_course"
                         android:textAlignment="center"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/detail_category_name_size"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -132,7 +131,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@android:color/transparent"
-                        android:padding="10dp"
+                        android:padding="@dimen/detail_category_image_padding"
                         android:src="@drawable/ic_category_side_dish_grey_32dp"/>
 
                     <TextView
@@ -141,7 +140,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/detail_category_side_dish"
                         android:textAlignment="center"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/detail_category_name_size"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -159,7 +158,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@android:color/transparent"
-                        android:padding="10dp"
+                        android:padding="@dimen/detail_category_image_padding"
                         android:src="@drawable/ic_category_dessert_grey_32dp"/>
 
                     <TextView
@@ -168,7 +167,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/detail_category_dessert"
                         android:textAlignment="center"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/detail_category_name_size"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -186,7 +185,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@android:color/transparent"
-                        android:padding="10dp"
+                        android:padding="@dimen/detail_category_image_padding"
                         android:src="@drawable/ic_category_beverage_grey_32dp"/>
 
                     <TextView
@@ -195,7 +194,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/detail_category_beverage"
                         android:textAlignment="center"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/detail_category_name_size"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -204,8 +203,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:id="@+id/detail_preparation_time_layout"
@@ -214,8 +212,7 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="onClickPreparationTimeLayout"
-                    android:padding="10dp">
+                    android:onClick="onClickPreparationTimeLayout">
 
                     <TextView
                         android:id="@+id/detail_preparation_time_text"
@@ -228,6 +225,7 @@
                         android:paddingStart="10dp"
                         android:text="@string/detail_preparation_time_text_default"
                         android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="12sp"/>
 
                     <ImageView
@@ -239,11 +237,12 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/ic_chronometer_green_32dp"
-                    android:layout_gravity="center"/>
+                    android:src="@drawable/ic_chronometer_green_32dp"/>
 
                 <LinearLayout
                     android:id="@+id/detail_cooking_time_layout"
@@ -252,8 +251,7 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="onClickCookingTimeLayout"
-                    android:padding="10dp">
+                    android:onClick="onClickCookingTimeLayout">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -272,6 +270,7 @@
                         android:paddingStart="10dp"
                         android:text="@string/detail_cooking_time_text_default"
                         android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="12sp"/>
                 </LinearLayout>
 
@@ -283,13 +282,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/detail_ingredients_list_title"
                 android:textColor="@color/colorPrimary"
-                android:textSize="20sp"/>
+                android:textSize="@dimen/detail_list_title"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/detail_ingredients_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false">
+                android:layout_height="wrap_content">
             </android.support.v7.widget.RecyclerView>
 
             <!--================================ ADD INGREDIENT VIEW ===============================-->
@@ -297,8 +295,10 @@
                             android:id="@+id/detail_ingredient_add_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="@dimen/detail_edit_add_layout_vertical_margin"
+                            android:layout_marginLeft="@dimen/detail_edit_add_layout_vertical_margin"
+                            android:layout_marginRight="@dimen/detail_edit_add_layout_vertical_margin"
+                            android:layout_marginStart="@dimen/detail_edit_add_layout_vertical_margin"
                             android:orientation="horizontal">
 
                 <ImageButton
@@ -315,8 +315,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginStart="16dp"
                     android:layout_toEndOf="@id/detail_ingredient_add_button"
                     android:layout_toRightOf="@id/detail_ingredient_add_button"
                     android:hint="@string/detail_edit_add_ingredient_textinput_hint">
@@ -326,7 +324,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textMultiLine"
-                        android:textSize="16sp"/>
+                        android:textSize="@dimen/detail_edit_add_layout_text_size"/>
                 </android.support.design.widget.TextInputLayout>
 
             </RelativeLayout>
@@ -338,13 +336,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/detail_directions_list_title"
                 android:textColor="@color/colorPrimary"
-                android:textSize="20sp"/>
+                android:textSize="@dimen/detail_list_title"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/detail_directions_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false">
+                android:layout_height="wrap_content">
             </android.support.v7.widget.RecyclerView>
 
             <!--================================ ADD DIRECTION VIEW ================================-->
@@ -352,8 +349,10 @@
                             android:id="@+id/detail_direction_add_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="@dimen/detail_edit_add_layout_vertical_margin"
+                            android:layout_marginLeft="@dimen/detail_edit_add_layout_vertical_margin"
+                            android:layout_marginRight="@dimen/detail_edit_add_layout_vertical_margin"
+                            android:layout_marginStart="@dimen/detail_edit_add_layout_vertical_margin"
                             android:orientation="horizontal">
 
                 <ImageButton
@@ -370,8 +369,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginStart="16dp"
                     android:layout_toEndOf="@id/detail_direction_add_button"
                     android:layout_toRightOf="@id/detail_direction_add_button"
                     android:hint="@string/detail_edit_add_direction_textinput_hint">
@@ -381,7 +378,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textMultiLine"
-                        android:textSize="16sp"/>
+                        android:textSize="@dimen/detail_edit_add_layout_text_size"/>
                 </android.support.design.widget.TextInputLayout>
 
             </RelativeLayout>
@@ -400,15 +397,15 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-    <!--================================ MAIN FAB TOP RIGHT ================================-->
+    <!--=========================== MAIN FAB THAT REPLACES MENU ============================-->
     <com.github.clans.fab.FloatingActionButton
         android:id="@+id/recipe_detail_main_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
+        android:visibility="visible"
         app:layout_anchor="@+id/detail_scroll_view"
-        app:layout_anchorGravity="bottom|end"
-        android:visibility="visible"/>
+        app:layout_anchorGravity="bottom|end"/>
 
     <!--=============================== FLOATING ACTION MENU ===============================-->
     <com.github.clans.fab.FloatingActionMenu
@@ -421,8 +418,6 @@
         app:menu_colorPressed="#E75043"
         app:menu_colorRipple="#E75043"
         app:menu_icon="@drawable/ic_restaurant_menu_white_24dp"
-        app:menu_labels_ellipsize="end"
-        app:menu_labels_singleLine="true"
         app:menu_openDirection="up">
 
         <com.github.clans.fab.FloatingActionButton
@@ -430,7 +425,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_edit_white_24dp"
-            app:fab_label="Edit"
+            app:fab_label="@string/detail_fab_item_edit_label"
             app:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
@@ -438,7 +433,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_share_white_24dp"
-            app:fab_label="Share"
+            app:fab_label="@string/detail_fab_item_share_label"
             app:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
@@ -446,7 +441,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add_shopping_cart_white_24dp"
-            app:fab_label="Add All to Shopping List"
+            app:fab_label="@string/detail_fab_item_add_to_shopping_list_label"
             app:fab_size="mini"/>
 
     </com.github.clans.fab.FloatingActionMenu>

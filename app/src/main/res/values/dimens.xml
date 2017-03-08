@@ -3,11 +3,9 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
 
     <!-- Globals -->
     <dimen name="text_margin">16dp</dimen>
-    <dimen name="collapsing_toolbar_height">180dp</dimen>
 
     <!-- Recipe recycler item details -->
     <dimen name="recycler_card_elevation">3dp</dimen>
@@ -15,8 +13,18 @@
     <dimen name="recycler_title_height">45dp</dimen>
     <dimen name="recycler_title_padding_left">10dp</dimen>
 
-    <!-- Recipe detail content -->
-    <dimen name="detail_ingredients_title_height">50dp</dimen>
-    <dimen name="detail_directions_title_height">50dp</dimen>
+
+
+
+
+
+
+    <dimen name="collapsing_toolbar_height">180dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="detail_category_image_padding">10dp</dimen>
+    <dimen name="detail_category_name_size">12sp</dimen>
+    <dimen name="detail_list_title">20sp</dimen>
+    <dimen name="detail_edit_add_layout_vertical_margin">10dp</dimen>
+    <dimen name="detail_edit_add_layout_text_size">16sp</dimen>
 
 </resources>
