@@ -49,6 +49,12 @@
         android:id="@+id/detail_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/detail_scrollview_horizontal_margin"
+        android:layout_marginEnd="@dimen/detail_scrollview_vertical_margin"
+        android:layout_marginLeft="@dimen/detail_scrollview_vertical_margin"
+        android:layout_marginRight="@dimen/detail_scrollview_vertical_margin"
+        android:layout_marginStart="@dimen/detail_scrollview_vertical_margin"
+        android:layout_marginTop="@dimen/detail_scrollview_horizontal_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -60,7 +66,13 @@
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                           android:layout_width="match_parent"
                           android:layout_height="match_parent"
-                          android:orientation="horizontal">
+                          android:orientation="horizontal"
+                          android:paddingBottom="@dimen/detail_category_layout_horizontal_padding"
+                          android:paddingEnd="@dimen/detail_category_layout_vertical_padding"
+                          android:paddingLeft="@dimen/detail_category_layout_vertical_padding"
+                          android:paddingRight="@dimen/detail_category_layout_vertical_padding"
+                          android:paddingStart="@dimen/detail_category_layout_vertical_padding"
+                          android:paddingTop="@dimen/detail_category_layout_horizontal_padding">
 
                 <LinearLayout
                     android:id="@+id/detail_category_appetizer_layout"
@@ -219,14 +231,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:paddingEnd="10dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:paddingStart="10dp"
+                        android:paddingEnd="@dimen/detail_durations_layout_text_vertical_padding"
+                        android:paddingLeft="@dimen/detail_durations_layout_text_vertical_padding"
+                        android:paddingRight="@dimen/detail_durations_layout_text_vertical_padding"
+                        android:paddingStart="@dimen/detail_durations_layout_text_vertical_padding"
                         android:text="@string/detail_preparation_time_text_default"
                         android:textAlignment="center"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/detail_durations_layout_text_size"/>
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -264,14 +276,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:paddingEnd="10dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:paddingStart="10dp"
+                        android:paddingEnd="@dimen/detail_durations_layout_text_vertical_padding"
+                        android:paddingLeft="@dimen/detail_durations_layout_text_vertical_padding"
+                        android:paddingRight="@dimen/detail_durations_layout_text_vertical_padding"
+                        android:paddingStart="@dimen/detail_durations_layout_text_vertical_padding"
                         android:text="@string/detail_cooking_time_text_default"
                         android:textAlignment="center"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/detail_durations_layout_text_size"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -280,9 +292,11 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/detail_list_title_horizontal_padding"
+                android:paddingTop="@dimen/detail_list_title_horizontal_padding"
                 android:text="@string/detail_ingredients_list_title"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/detail_list_title"/>
+                android:textSize="@dimen/detail_list_title_size"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/detail_ingredients_list"
@@ -295,10 +309,6 @@
                             android:id="@+id/detail_ingredient_add_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/detail_edit_add_layout_vertical_margin"
-                            android:layout_marginLeft="@dimen/detail_edit_add_layout_vertical_margin"
-                            android:layout_marginRight="@dimen/detail_edit_add_layout_vertical_margin"
-                            android:layout_marginStart="@dimen/detail_edit_add_layout_vertical_margin"
                             android:orientation="horizontal">
 
                 <ImageButton
@@ -334,9 +344,11 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/detail_list_title_horizontal_padding"
+                android:paddingTop="@dimen/detail_list_title_horizontal_padding"
                 android:text="@string/detail_directions_list_title"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/detail_list_title"/>
+                android:textSize="@dimen/detail_list_title_size"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/detail_directions_list"
@@ -349,10 +361,6 @@
                             android:id="@+id/detail_direction_add_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/detail_edit_add_layout_vertical_margin"
-                            android:layout_marginLeft="@dimen/detail_edit_add_layout_vertical_margin"
-                            android:layout_marginRight="@dimen/detail_edit_add_layout_vertical_margin"
-                            android:layout_marginStart="@dimen/detail_edit_add_layout_vertical_margin"
                             android:orientation="horizontal">
 
                 <ImageButton
@@ -388,6 +396,8 @@
                 android:id="@+id/detail_delete_recipe_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/detail_delete_button_horizontal_margin"
+                android:layout_marginTop="@dimen/detail_delete_button_horizontal_margin"
                 android:background="@android:color/holo_red_light"
                 android:onClick="onClickDetailDeleteRecipe"
                 android:text="@string/detail_edit_delete_recipe_button_text"

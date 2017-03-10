@@ -20,11 +20,28 @@
 
 
     <dimen name="collapsing_toolbar_height">180dp</dimen>
+
+    <dimen name="detail_scrollview_vertical_margin">16dp</dimen>
+    <dimen name="detail_scrollview_horizontal_margin">16dp</dimen>
+
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="detail_category_layout_vertical_padding">0dp</dimen>
+    <dimen name="detail_category_layout_horizontal_padding">0dp</dimen>
     <dimen name="detail_category_image_padding">10dp</dimen>
     <dimen name="detail_category_name_size">12sp</dimen>
-    <dimen name="detail_list_title">20sp</dimen>
-    <dimen name="detail_edit_add_layout_vertical_margin">10dp</dimen>
+
+    <dimen name="detail_durations_layout_vertical_padding">0dp</dimen>
+    <dimen name="detail_durations_layout_horizontal_padding">0dp</dimen>
+    <dimen name="detail_durations_layout_text_vertical_padding">10dp</dimen>
+    <dimen name="detail_durations_layout_text_size">12sp</dimen>
+
+    <dimen name="detail_list_title_horizontal_padding">0dp</dimen>
+    <dimen name="detail_list_title_size">20sp</dimen>
+
     <dimen name="detail_edit_add_layout_text_size">16sp</dimen>
+    <!-- CONTINUE HERE -->
+
+    <dimen name="detail_delete_button_horizontal_margin">10dp</dimen>
 
 </resources>
