@@ -1,17 +1,16 @@
 package com.joemerhej.recipook;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import static android.R.attr.dialogTitle;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static com.joemerhej.recipook.R.id.dialog_edit_duration_number_0_layout;
 import static com.joemerhej.recipook.R.id.dialog_edit_duration_number_1_layout;
 import static com.joemerhej.recipook.R.id.dialog_edit_duration_number_2_layout;
@@ -114,6 +113,29 @@ public class EditRecipeDurationsDialog extends DialogFragment
         {
             // the activity doesn't implement the interface, throw exception
             throw new ClassCastException(context.toString() + " must implement DetailEditRecipeDurationsDialogListener");
+        }
+    }
+
+    // same onAttach() as above but with different function declaration to support older SDKs
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+        {
+            // verify that the host activity implements the callback interface
+            try
+            {
+                // instantiate the NoticeDialogListener so we can send events to the host
+                mListener = (DetailEditRecipeDurationsDialogListener) activity;
+            }
+            catch (ClassCastException e)
+            {
+                // the activity doesn't implement the interface, throw exception
+                throw new ClassCastException(activity.toString() + " must implement DetailEditRecipeDurationsDialogListener");
+            }
         }
     }
 

@@ -11,7 +11,6 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -22,7 +21,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 
 
@@ -80,6 +78,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     private RelativeLayout mEditAddIngredientLayout;
     private TextInputEditText mEditAddIngredientText;
     private RelativeLayout mEditAddDirectionLayout;
+    private TextView mEditAddDirectionNumber;
     private TextInputEditText mEditAddDirectionText;
     private Button mDeleteRecipeButton;
 
@@ -143,22 +142,21 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mIngredientListAdapter = new DetailIngredientListAdapter(this, mRecipe.ingredients);
         mIngredientsRecyclerView.setAdapter(mIngredientListAdapter);
         mIngredientsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mIngredientsRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mIngredientsRecyclerView.setItemAnimator(null);
         mIngredientListAdapter.setIngredientButtonsClickListener(mIngredientButtonsClickListener);
 
         mDirectionListAdapter = new DetailDirectionListAdapter(this, mRecipe.directions);
         mDirectionsRecyclerView.setAdapter(mDirectionListAdapter);
         mDirectionsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mDirectionsRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mDirectionsRecyclerView.setItemAnimator(null);
         mDirectionListAdapter.setDirectionButtonsClickListener(mDirectionButtonsClickListener);
 
-        // set up edit mode views (visibility GONE by default)
+        // set up edit mode views
         mEditAddIngredientLayout = (RelativeLayout) findViewById(R.id.detail_ingredient_add_layout);
         mEditAddIngredientText = (TextInputEditText) findViewById(R.id.detail_ingredient_edit_text);
         //mEditAddIngredientText.addTextChangedListener(new MyAddIngredientEditTextWatcher()); // TODO (see other todo below)
         mEditAddDirectionLayout = (RelativeLayout) findViewById(R.id.detail_direction_add_layout);
+        mEditAddDirectionNumber = (TextView) findViewById(R.id.detail_direction_edit_number);
         mEditAddDirectionText = (TextInputEditText) findViewById(R.id.detail_direction_edit_text);
         mDeleteRecipeButton = (Button) findViewById(R.id.detail_delete_recipe_button);
 
@@ -308,7 +306,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             switch (v.getId())
             {
                 case R.id.recipe_detail_main_fab:
-                    handleMainFabClicked(); // the main fab is the one at the top right
+                    handleMainFabClicked();
                     break;
 
                 case R.id.recipe_detail_edit_fab:
@@ -376,11 +374,12 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         // make the edit views visible
         mEditAddIngredientLayout.setVisibility(View.VISIBLE);
         mEditAddDirectionLayout.setVisibility(View.VISIBLE);
+        mEditAddDirectionNumber.setText(String.valueOf(mRecipe.directions.size()+1) + ".");
         mDeleteRecipeButton.setVisibility(View.VISIBLE);
 
         // notify the recycler view adapters so they make the right changes to theirs views
-        mIngredientListAdapter.notifyDataSetChanged();
-        mDirectionListAdapter.notifyDataSetChanged();
+        mIngredientListAdapter.notifyItemRangeChanged(0, mRecipe.ingredients.size());
+        mDirectionListAdapter.notifyItemRangeChanged(0, mRecipe.directions.size());
     }
 
     // what happens when the activity is view mode
@@ -411,8 +410,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mDeleteRecipeButton.setVisibility(View.GONE);
 
         // notify the recycler view adapters so they make the right changes to theirs views
-        mIngredientListAdapter.notifyDataSetChanged();
-        mDirectionListAdapter.notifyDataSetChanged();
+        mIngredientListAdapter.notifyItemRangeChanged(0, mRecipe.ingredients.size());
+        mDirectionListAdapter.notifyItemRangeChanged(0, mRecipe.directions.size());
 
         // hide the keyboard
         mInputManager.hideSoftInputFromWindow(this.findViewById(android.R.id.content).getWindowToken(), 0);
@@ -495,8 +494,16 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     // method that will set the right durations in the view in view mode
     public void handleDurationsViews()
     {
-        mPreparationTimeText.setText(String.valueOf(mRecipe.preparationTimeMinutes / 60) + "h " + String.valueOf(mRecipe.preparationTimeMinutes % 60) + "m");
-        mCookingTimeText.setText(String.valueOf(mRecipe.cookingTimeMinutes / 60) + "h " + String.valueOf(mRecipe.cookingTimeMinutes % 60) + "m");
+        // show hours only if they exist, otherwise show only minutes
+        if(mRecipe.preparationTimeMinutes/60 != 0)
+            mPreparationTimeText.setText(String.valueOf(mRecipe.preparationTimeMinutes / 60) + "h " + String.valueOf(mRecipe.preparationTimeMinutes % 60) + "m");
+        else
+            mPreparationTimeText.setText(String.valueOf(mRecipe.preparationTimeMinutes % 60) + "m");
+
+        if(mRecipe.cookingTimeMinutes/60 != 0)
+            mCookingTimeText.setText(String.valueOf(mRecipe.cookingTimeMinutes / 60) + "h " + String.valueOf(mRecipe.cookingTimeMinutes % 60) + "m");
+        else
+            mCookingTimeText.setText(String.valueOf(mRecipe.cookingTimeMinutes % 60) + "m");
     }
 
 
@@ -561,6 +568,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             mRecipe.directions.remove(position);
             mDirectionListAdapter.notifyItemRemoved(position);
             mDirectionListAdapter.notifyItemRangeChanged(position, mDirectionListAdapter.getItemCount());   // this updates the numbers
+            mEditAddDirectionNumber.setText(String.valueOf(mRecipe.directions.size()+1) + ".");
             mAtLeastOneChange = true;
         }
     };
@@ -603,6 +611,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mDirectionListAdapter.notifyItemInserted(mRecipe.directions.size() - 1);
 
         mEditAddDirectionText.getText().clear();
+        mEditAddDirectionNumber.setText(String.valueOf(mRecipe.directions.size()+1) + ".");
 
         mAtLeastOneChange = true;
     }

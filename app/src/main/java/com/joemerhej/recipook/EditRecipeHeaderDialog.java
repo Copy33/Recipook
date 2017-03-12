@@ -1,10 +1,12 @@
 package com.joemerhej.recipook;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
 import com.bumptech.glide.Glide;
 
 /**
@@ -75,6 +78,29 @@ public class EditRecipeHeaderDialog extends DialogFragment
         {
             // the activity doesn't implement the interface, throw exception
             throw new ClassCastException(context.toString() + " must implement DetailEditRecipeHeaderDialogListener");
+        }
+    }
+
+    // same onAttach() as above but with different function declaration to support older SDKs
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+        {
+            // verify that the host activity implements the callback interface
+            try
+            {
+                // instantiate the NoticeDialogListener so we can send events to the host
+                mListener = (DetailEditRecipeHeaderDialogListener) activity;
+            }
+            catch (ClassCastException e)
+            {
+                // the activity doesn't implement the interface, throw exception
+                throw new ClassCastException(activity.toString() + " must implement DetailEditRecipeHeaderDialogListener");
+            }
         }
     }
 

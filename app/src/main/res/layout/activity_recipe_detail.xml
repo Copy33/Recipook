@@ -11,7 +11,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/collapsing_toolbar_height"
+        android:layout_height="@dimen/detail_collapsing_toolbar_height"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -48,19 +48,19 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/detail_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/detail_scrollview_horizontal_margin"
-        android:layout_marginEnd="@dimen/detail_scrollview_vertical_margin"
-        android:layout_marginLeft="@dimen/detail_scrollview_vertical_margin"
-        android:layout_marginRight="@dimen/detail_scrollview_vertical_margin"
-        android:layout_marginStart="@dimen/detail_scrollview_vertical_margin"
-        android:layout_marginTop="@dimen/detail_scrollview_horizontal_margin"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/detail_scrollview_horizontal_padding"
+            android:paddingEnd="@dimen/detail_scrollview_vertical_padding"
+            android:paddingLeft="@dimen/detail_scrollview_vertical_padding"
+            android:paddingRight="@dimen/detail_scrollview_vertical_padding"
+            android:paddingStart="@dimen/detail_scrollview_vertical_padding"
+            android:paddingTop="@dimen/detail_scrollview_horizontal_padding">
 
             <!--================================= CATEGORY CHECKBOX ================================-->
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -71,8 +71,7 @@
                           android:paddingEnd="@dimen/detail_category_layout_vertical_padding"
                           android:paddingLeft="@dimen/detail_category_layout_vertical_padding"
                           android:paddingRight="@dimen/detail_category_layout_vertical_padding"
-                          android:paddingStart="@dimen/detail_category_layout_vertical_padding"
-                          android:paddingTop="@dimen/detail_category_layout_horizontal_padding">
+                          android:paddingStart="@dimen/detail_category_layout_vertical_padding">
 
                 <LinearLayout
                     android:id="@+id/detail_category_appetizer_layout"
@@ -215,7 +214,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/detail_durations_layout_horizontal_padding"
+                android:paddingEnd="@dimen/detail_durations_layout_vertical_padding"
+                android:paddingLeft="@dimen/detail_durations_layout_vertical_padding"
+                android:paddingRight="@dimen/detail_durations_layout_vertical_padding"
+                android:paddingStart="@dimen/detail_durations_layout_vertical_padding"
+                android:paddingTop="@dimen/detail_durations_layout_horizontal_padding">
 
                 <LinearLayout
                     android:id="@+id/detail_preparation_time_layout"
@@ -289,19 +294,25 @@
             </LinearLayout>
 
             <!--================================== INGREDIENT LIST =================================-->
-            <TextView
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/detail_list_title_horizontal_padding"
-                android:paddingTop="@dimen/detail_list_title_horizontal_padding"
-                android:text="@string/detail_ingredients_list_title"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/detail_list_title_size"/>
+                android:paddingTop="@dimen/detail_list_title_horizontal_padding">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/detail_list_title_layout_height"
+                    android:gravity="center_vertical"
+                    android:text="@string/detail_ingredients_list_title"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/detail_list_title_size"/>
+            </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/detail_ingredients_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false">
             </android.support.v7.widget.RecyclerView>
 
             <!--================================ ADD INGREDIENT VIEW ===============================-->
@@ -315,9 +326,15 @@
                     android:id="@+id/detail_ingredient_add_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_alignBottom="@+id/detail_ingredient_edit_text_layout"
                     android:background="@color/windowBackground"
                     android:onClick="onClickDetailAddIngredient"
+                    android:paddingBottom="@dimen/detail_list_add_action_button_horizontal_padding"
+                    android:paddingEnd="@dimen/detail_list_add_action_button_vertical_padding"
+                    android:paddingLeft="@dimen/detail_list_add_action_button_vertical_padding"
+                    android:paddingRight="@dimen/detail_list_add_action_button_vertical_padding"
+                    android:paddingStart="@dimen/detail_list_add_action_button_vertical_padding"
+                    android:paddingTop="@dimen/detail_list_add_action_button_horizontal_padding"
                     android:src="@drawable/ic_add_green_24dp"/>
 
                 <android.support.design.widget.TextInputLayout
@@ -327,33 +344,43 @@
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@id/detail_ingredient_add_button"
                     android:layout_toRightOf="@id/detail_ingredient_add_button"
-                    android:hint="@string/detail_edit_add_ingredient_textinput_hint">
+                    android:hint="@string/detail_edit_add_ingredient_textinput_hint"
+                    android:paddingBottom="@dimen/detail_list_add_content_text_horizontal_padding"
+                    android:paddingEnd="@dimen/detail_list_add_content_text_vertical_padding"
+                    android:paddingRight="@dimen/detail_list_add_content_text_vertical_padding"
+                    android:paddingTop="@dimen/detail_list_add_content_text_horizontal_padding">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/detail_ingredient_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textMultiLine"
-                        android:textSize="@dimen/detail_edit_add_layout_text_size"/>
+                        android:textSize="@dimen/detail_list_content_text_size"/>
                 </android.support.design.widget.TextInputLayout>
 
             </RelativeLayout>
 
             <!--================================== DIRECTION LIST ==================================-->
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/detail_list_title_horizontal_padding"
-                android:paddingTop="@dimen/detail_list_title_horizontal_padding"
-                android:text="@string/detail_directions_list_title"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/detail_list_title_size"/>
+                android:paddingTop="@dimen/detail_list_title_horizontal_padding">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/detail_list_title_layout_height"
+                    android:gravity="center_vertical"
+                    android:text="@string/detail_directions_list_title"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/detail_list_title_size"/>
+            </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/detail_directions_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false">
             </android.support.v7.widget.RecyclerView>
 
             <!--================================ ADD DIRECTION VIEW ================================-->
@@ -367,26 +394,54 @@
                     android:id="@+id/detail_direction_add_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_alignBottom="@+id/detail_direction_edit_text_layout"
                     android:background="@color/windowBackground"
                     android:onClick="onClickDetailAddDirection"
+                    android:paddingBottom="@dimen/detail_list_add_action_button_horizontal_padding"
+                    android:paddingEnd="@dimen/detail_list_add_action_button_vertical_padding"
+                    android:paddingLeft="@dimen/detail_list_add_action_button_vertical_padding"
+                    android:paddingRight="@dimen/detail_list_add_action_button_vertical_padding"
+                    android:paddingStart="@dimen/detail_list_add_action_button_vertical_padding"
+                    android:paddingTop="@dimen/detail_list_add_action_button_horizontal_padding"
                     android:src="@drawable/ic_add_green_24dp"/>
+
+                <TextView
+                    android:id="@+id/detail_direction_edit_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/detail_direction_edit_text_layout"
+                    android:layout_toEndOf="@+id/detail_direction_add_button"
+                    android:layout_toRightOf="@+id/detail_direction_add_button"
+                    android:background="@android:color/transparent"
+                    android:paddingBottom="@dimen/detail_list_content_text_horizontal_padding"
+                    android:paddingEnd="@dimen/detail_list_action_button_vertical_padding"
+                    android:paddingLeft="@dimen/detail_list_action_button_vertical_padding"
+                    android:paddingRight="@dimen/detail_list_action_button_vertical_padding"
+                    android:paddingStart="@dimen/detail_list_action_button_vertical_padding"
+                    android:paddingTop="@dimen/detail_list_action_button_horizontal_padding"
+                    android:text="@string/detail_recycler_item_direction_number_default"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/detail_list_number_text_size"/>
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/detail_direction_edit_text_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toEndOf="@id/detail_direction_add_button"
-                    android:layout_toRightOf="@id/detail_direction_add_button"
-                    android:hint="@string/detail_edit_add_direction_textinput_hint">
+                    android:layout_toEndOf="@id/detail_direction_edit_number"
+                    android:layout_toRightOf="@id/detail_direction_edit_number"
+                    android:hint="@string/detail_edit_add_direction_textinput_hint"
+                    android:paddingBottom="@dimen/detail_list_add_content_text_horizontal_padding"
+                    android:paddingEnd="@dimen/detail_list_add_content_text_vertical_padding"
+                    android:paddingRight="@dimen/detail_list_add_content_text_vertical_padding"
+                    android:paddingTop="@dimen/detail_list_add_content_text_horizontal_padding">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/detail_direction_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textMultiLine"
-                        android:textSize="@dimen/detail_edit_add_layout_text_size"/>
+                        android:textSize="@dimen/detail_list_content_text_size"/>
                 </android.support.design.widget.TextInputLayout>
 
             </RelativeLayout>
@@ -396,7 +451,6 @@
                 android:id="@+id/detail_delete_recipe_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/detail_delete_button_horizontal_margin"
                 android:layout_marginTop="@dimen/detail_delete_button_horizontal_margin"
                 android:background="@android:color/holo_red_light"
                 android:onClick="onClickDetailDeleteRecipe"

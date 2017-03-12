@@ -1,6 +1,8 @@
 package com.joemerhej.recipook;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,6 +28,11 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
 
     // click listener for the ingredient buttons that activity will implement and assign
     private OnIngredientButtonsClickListener mIngredientButtonsClickListeners;
+
+    // hold the original drawable of the EditTexts
+    private ArrayList<Drawable> mOriginalIngredientTextEditTextBackground = new ArrayList<>();
+    private ArrayList<Drawable> mOriginalIngredientQuantityEditTextBackground = new ArrayList<>();
+
 
     // interface for ingredient buttons listeners
     public interface OnIngredientButtonsClickListener
@@ -122,6 +129,10 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
             mEditDeleteIngredientButton = (ImageButton) itemView.findViewById(R.id.recycler_item_ingredient_delete_button);
             mAddToShoppingListButton = (ImageButton) itemView.findViewById(R.id.recycler_item_ingredient_add_to_shopping_list_button);
 
+            // get the original background drawable for the text edits
+            mOriginalIngredientTextEditTextBackground.add(mIngredientText.getBackground());
+            mOriginalIngredientQuantityEditTextBackground.add(mIngredientQuantity.getBackground());
+
             // bind listeners : delete item fab
             mEditDeleteIngredientButton.setOnClickListener(this);
             mAddToShoppingListButton.setOnClickListener(this);
@@ -206,13 +217,19 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         {
             holder.mIngredientQuantity.setEnabled(true);
             holder.mIngredientText.setEnabled(true);
+            holder.mIngredientText.setBackground(mOriginalIngredientTextEditTextBackground.get(position));
+            holder.mIngredientQuantity.setBackground(mOriginalIngredientQuantityEditTextBackground.get(position));
             holder.mEditDeleteIngredientButton.setVisibility(View.VISIBLE);
+            holder.mAddToShoppingListButton.setVisibility(View.INVISIBLE);
         }
         else
         {
             holder.mIngredientQuantity.setEnabled(false);
             holder.mIngredientText.setEnabled(false);
+            holder.mIngredientText.setBackgroundColor(Color.TRANSPARENT);
+            holder.mIngredientQuantity.setBackgroundColor(Color.TRANSPARENT);
             holder.mEditDeleteIngredientButton.setVisibility(View.INVISIBLE);
+            holder.mAddToShoppingListButton.setVisibility(View.VISIBLE);
         }
     }
 

@@ -14,7 +14,7 @@
     <string name="detail_edit_add_ingredient_textinput_hint">Add Ingredient (ex: 1 tsp salt)</string>
     <string name="detail_edit_add_direction_textinput_hint">Add Direction</string>
     <string name="detail_directions_list_title">Directions</string>
-    <string name="detail_edit_delete_recipe_button_text">Delete Recipe</string>
+    <string name="detail_edit_delete_recipe_button_text">DELETE RECIPE</string>
 
     <!-- Category selector view -->
     <string name="detail_category_appetizer">Appetizer</string>

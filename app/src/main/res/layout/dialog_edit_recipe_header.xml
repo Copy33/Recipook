@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/dialog_edit_header_recipe_image_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/collapsing_toolbar_height"
+        android:layout_height="@dimen/detail_collapsing_toolbar_height"
         android:scaleType="centerCrop"
         android:src="@drawable/buffalodrumsticks"/>
 
