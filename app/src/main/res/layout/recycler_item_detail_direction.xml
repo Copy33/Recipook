@@ -28,8 +28,6 @@
         android:layout_alignBaseline="@id/detail_direction_edit_number"
         android:layout_marginEnd="@dimen/detail_list_content_text_vertical_padding"
         android:layout_marginRight="@dimen/detail_list_content_text_vertical_padding"
-        android:layout_marginLeft="@dimen/detail_list_content_text_vertical_padding"
-        android:layout_marginStart="@dimen/detail_list_content_text_vertical_padding"
         android:layout_toEndOf="@id/detail_direction_edit_number"
         android:layout_toRightOf="@id/detail_direction_edit_number"
         android:inputType="textCapSentences|textMultiLine"

@@ -6,13 +6,14 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-
 import java.util.ArrayList;
+
 
 /**
  * Created by Joe Merhej on 1/25/17.
@@ -133,6 +134,8 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
             mOriginalIngredientTextEditTextBackground.add(mIngredientText.getBackground());
             mOriginalIngredientQuantityEditTextBackground.add(mIngredientQuantity.getBackground());
 
+            Log.d("DetailIngredientHolder", "Increased position by 1 --- New size is: " + mOriginalIngredientQuantityEditTextBackground.size());
+
             // bind listeners : delete item fab
             mEditDeleteIngredientButton.setOnClickListener(this);
             mAddToShoppingListButton.setOnClickListener(this);
@@ -169,10 +172,20 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
     }
 
     // method to update the data used when canceling/discarding changes (like constructor)
-    public void UpdateDataWith(ArrayList<Ingredient> ingredients)
+    public void updateDataWith(ArrayList<Ingredient> ingredients)
     {
         mIngredientsList = ingredients;
     }
+
+    // TODO: fix this memory leak (see onenote for details)
+//    // method to remove original background of element from the arrays
+//    public void removeBackgroundsOfIngredient(int position)
+//    {
+//        mOriginalIngredientQuantityEditTextBackground.remove(position);
+//        mOriginalIngredientTextEditTextBackground.remove(position);
+//
+//        Log.d("Removed" ,"Removed at position: " + position + " --- New size is : " + mOriginalIngredientQuantityEditTextBackground.size());
+//    }
 
     // setter for the fab click listener
     public void setIngredientButtonsClickListener(final OnIngredientButtonsClickListener ingredientButtonsClickListener)
@@ -194,6 +207,8 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
     @Override
     public void onBindViewHolder(DetailIngredientListAdapter.DetailIngredientHolder holder, int position)
     {
+        Log.d("onBindViewHolder", "Binding position: " + position + " --- Size is: " + mOriginalIngredientQuantityEditTextBackground.size());
+
         // fill the views with data
         Ingredient ingredient = mIngredientsList.get(position);
 
