@@ -1,10 +1,12 @@
 package com.joemerhej.recipook;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
 import com.bumptech.glide.Glide;
 
 /**
@@ -21,7 +24,7 @@ import com.bumptech.glide.Glide;
 public class EditRecipeHeaderDialog extends DialogFragment
 {
     // the activity that creates an instance of this dialog fragment must implement this.
-    // each method passes the dialog fragment in case the host needs to query it.
+    // each method passes the dialog fragment in case the host needs to query it or use its variables.
     public interface DetailEditRecipeHeaderDialogListener
     {
         void onEditHeaderDialogPositiveClick(EditRecipeHeaderDialog dialog);
@@ -48,7 +51,7 @@ public class EditRecipeHeaderDialog extends DialogFragment
 
     }
 
-    // instance puts the paramters in an argument bundle in the dialog
+    // instance puts the parameters in an argument bundle in the dialog
     public static EditRecipeHeaderDialog Instance(String recipeTitle, String recipeImageUri)
     {
         EditRecipeHeaderDialog dialog = new EditRecipeHeaderDialog();
@@ -59,22 +62,45 @@ public class EditRecipeHeaderDialog extends DialogFragment
         return dialog;
     }
 
-    // Override the Fragment.onAttach() method to instantiate the DetailEditRecipeHeaderDialogListener
+    // override the Fragment.onAttach() method to instantiate the DetailEditRecipeHeaderDialogListener
     @Override
     public void onAttach(Context context)
     {
         super.onAttach(context);
 
-        // Verify that the host activity implements the callback interface
+        // verify that the host activity implements the callback interface
         try
         {
-            // Instantiate the NoticeDialogListener so we can send events to the host
+            // instantiate the NoticeDialogListener so we can send events to the host
             mListener = (DetailEditRecipeHeaderDialogListener) context;
         }
         catch (ClassCastException e)
         {
-            // The activity doesn't implement the interface, throw exception
-            throw new ClassCastException(context.toString() + " must implement NoticeDialogListener");
+            // the activity doesn't implement the interface, throw exception
+            throw new ClassCastException(context.toString() + " must implement DetailEditRecipeHeaderDialogListener");
+        }
+    }
+
+    // same onAttach() as above but with different function declaration to support older SDKs
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+        {
+            // verify that the host activity implements the callback interface
+            try
+            {
+                // instantiate the NoticeDialogListener so we can send events to the host
+                mListener = (DetailEditRecipeHeaderDialogListener) activity;
+            }
+            catch (ClassCastException e)
+            {
+                // the activity doesn't implement the interface, throw exception
+                throw new ClassCastException(activity.toString() + " must implement DetailEditRecipeHeaderDialogListener");
+            }
         }
     }
 
@@ -86,6 +112,7 @@ public class EditRecipeHeaderDialog extends DialogFragment
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_edit_recipe_header, null);
 
+        // hook up the  main view and the positive/negative buttons click listeners
         builder.setView(view)
                 .setPositiveButton("Apply", new DialogInterface.OnClickListener()
                 {
@@ -95,7 +122,7 @@ public class EditRecipeHeaderDialog extends DialogFragment
                         mListener.onEditHeaderDialogPositiveClick(EditRecipeHeaderDialog.this);
                     }
                 })
-                .setNegativeButton("Discard", new DialogInterface.OnClickListener()
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
@@ -105,11 +132,11 @@ public class EditRecipeHeaderDialog extends DialogFragment
                 });
 
 
-        // hook up the views
-        mRecipeNameEditText = (TextInputEditText) view.findViewById(R.id.dialog_recipe_name_edit_text);
-        mChooseImageButton = (Button) view.findViewById(R.id.dialog_edit_image_button);
-        mRemoveImageButton = (ImageButton) view.findViewById(R.id.dialog_remove_image_button);
-        mRecipeImageView = (ImageView) view.findViewById(R.id.dialog_recipe_image_view);
+        // hook up the child views
+        mRecipeNameEditText = (TextInputEditText) view.findViewById(R.id.dialog_edit_header_recipe_name_edit_text);
+        mChooseImageButton = (Button) view.findViewById(R.id.dialog_edit_header_edit_image_button);
+        mRemoveImageButton = (ImageButton) view.findViewById(R.id.dialog_edit_header_remove_image_button);
+        mRecipeImageView = (ImageView) view.findViewById(R.id.dialog_edit_header_recipe_image_view);
 
         // set the text to the recipe name that is in the arguments of the dialog instance called
         mRecipeNameEditText.setText(getArguments().getString("recipeTitle"));
@@ -119,9 +146,6 @@ public class EditRecipeHeaderDialog extends DialogFragment
         Glide.with(builder.getContext())
                 .load(Uri.parse(getArguments().getString("mRecipeImage")))
                 .into(mRecipeImageView);
-
-        // set the color of the button text
-        // TODO: set color of button text based on imageview palette (need to retrieve imageview src)
 
         // hook up the listener for the choose image button
         mChooseImageButton.setOnClickListener(new View.OnClickListener()

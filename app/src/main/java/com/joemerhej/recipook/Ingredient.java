@@ -19,7 +19,13 @@ enum Unit
     ml,
     unit,
     quart,
-    dash
+    dash,
+
+/*  TODO:add support for dozen -> doz
+    envelope -> env
+    carton/container -> ctn
+    package -> pkg
+    gallon -> gal*/
 }
 
 public class Ingredient

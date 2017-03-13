@@ -5,41 +5,50 @@
                 android:layout_gravity="center">
 
     <TextView
-        android:id="@+id/recycler_item_direction_number"
+        android:id="@+id/detail_direction_edit_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
         android:layout_toEndOf="@+id/recycler_item_direction_delete_button"
         android:layout_toRightOf="@+id/recycler_item_direction_delete_button"
-        android:text="1."
+        android:background="@android:color/transparent"
+        android:paddingBottom="@dimen/detail_list_content_text_horizontal_padding"
+        android:paddingEnd="@dimen/detail_list_action_button_vertical_padding"
+        android:paddingLeft="@dimen/detail_list_action_button_vertical_padding"
+        android:paddingRight="@dimen/detail_list_action_button_vertical_padding"
+        android:paddingStart="@dimen/detail_list_action_button_vertical_padding"
+        android:paddingTop="@dimen/detail_list_action_button_horizontal_padding"
+        android:text="@string/detail_recycler_item_direction_number_default"
         android:textColor="@color/colorPrimary"
-        android:textSize="18sp"/>
+        android:textSize="@dimen/detail_list_number_text_size"/>
 
     <EditText
         android:id="@+id/recycler_item_direction_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/recycler_item_direction_number"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_toEndOf="@id/recycler_item_direction_number"
-        android:layout_toRightOf="@id/recycler_item_direction_number"
-        android:background="@color/windowBackground"
+        android:layout_alignBaseline="@id/detail_direction_edit_number"
+        android:layout_marginEnd="@dimen/detail_list_content_text_vertical_padding"
+        android:layout_marginRight="@dimen/detail_list_content_text_vertical_padding"
+        android:layout_toEndOf="@id/detail_direction_edit_number"
+        android:layout_toRightOf="@id/detail_direction_edit_number"
         android:inputType="textCapSentences|textMultiLine"
-        android:text="Squeeze lemons."
+        android:paddingBottom="@dimen/detail_list_content_text_horizontal_padding"
+        android:paddingTop="@dimen/detail_list_content_text_horizontal_padding"
+        android:text="@string/detail_recycler_item_direction_text_default"
         android:textColor="@color/textColorPrimary"
-        android:textSize="16sp"/>
+        android:textSize="@dimen/detail_list_content_text_size"/>
 
     <ImageButton
         android:id="@+id/recycler_item_direction_delete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:background="@color/windowBackground"
-        android:src="@drawable/ic_delete_red_24dp"
-        android:visibility="gone"
-        android:layout_alignBottom="@id/recycler_item_direction_number"/>
+        android:layout_alignBottom="@id/detail_direction_edit_number"
+        android:background="@android:color/transparent"
+        android:paddingBottom="@dimen/detail_list_content_text_horizontal_padding"
+        android:paddingEnd="@dimen/detail_list_action_button_vertical_padding"
+        android:paddingLeft="@dimen/detail_list_action_button_vertical_padding"
+        android:paddingRight="@dimen/detail_list_action_button_vertical_padding"
+        android:paddingStart="@dimen/detail_list_action_button_vertical_padding"
+        android:paddingTop="@dimen/detail_list_action_button_horizontal_padding"
+        android:src="@drawable/ic_delete_red_24dp"/>
 
 </RelativeLayout>

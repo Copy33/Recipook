@@ -1,6 +1,8 @@
 package com.joemerhej.recipook;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,6 +29,10 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
 
     // click listener for the fabs that activity will deal with
     private OnDirectionButtonsClickListener mDirectionButtonsClickListener;
+
+    // hold the original drawable of the EditTexts
+    private ArrayList<Drawable> mOriginalDirectionEditTextBackground = new ArrayList<>();
+
 
     // interface that activities that use this need to implement
     public interface OnDirectionButtonsClickListener
@@ -80,9 +86,12 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
             super(itemView);
 
             // bind the views
-            mDirectionNumber = (TextView) itemView.findViewById(R.id.recycler_item_direction_number);
+            mDirectionNumber = (TextView) itemView.findViewById(R.id.detail_direction_edit_number);
             mDirectionText = (EditText) itemView.findViewById(R.id.recycler_item_direction_text);
             mEditDeleteDirectionButton = (ImageButton) itemView.findViewById(R.id.recycler_item_direction_delete_button);
+
+            // get the original background drawable for the text edits
+            mOriginalDirectionEditTextBackground.add(mDirectionText.getBackground());
 
             // bind listeners : delete direction button
             mEditDeleteDirectionButton.setOnClickListener(this);
@@ -149,11 +158,13 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
         {
             holder.mEditDeleteDirectionButton.setVisibility(View.VISIBLE);
             holder.mDirectionText.setEnabled(true);
+            holder.mDirectionText.setBackground(mOriginalDirectionEditTextBackground.get(position));
         }
         else
         {
             holder.mEditDeleteDirectionButton.setVisibility(View.GONE);
             holder.mDirectionText.setEnabled(false);
+            holder.mDirectionText.setBackgroundColor(Color.TRANSPARENT);
         }
     }
 

@@ -49,7 +49,7 @@ public class MainTabsFragmentAdapter extends FragmentPagerAdapter
             case 0:
                 return "Recipe List";
             case 1:
-                return "SECTION 2";
+                return "Shopping List";
             case 2:
                 return "SECTION 3";
             default:

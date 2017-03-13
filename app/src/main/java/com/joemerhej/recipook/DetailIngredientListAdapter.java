@@ -1,16 +1,19 @@
 package com.joemerhej.recipook;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-
 import java.util.ArrayList;
+
 
 /**
  * Created by Joe Merhej on 1/25/17.
@@ -27,10 +30,16 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
     // click listener for the ingredient buttons that activity will implement and assign
     private OnIngredientButtonsClickListener mIngredientButtonsClickListeners;
 
+    // hold the original drawable of the EditTexts
+    private ArrayList<Drawable> mOriginalIngredientTextEditTextBackground = new ArrayList<>();
+    private ArrayList<Drawable> mOriginalIngredientQuantityEditTextBackground = new ArrayList<>();
+
+
     // interface for ingredient buttons listeners
     public interface OnIngredientButtonsClickListener
     {
         void onIngredientDeleteButtonClick(View view, int position);
+
         void onIngredientAddToShoppingListButtonClick(View view, int position);
     }
 
@@ -92,8 +101,8 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         @Override
         public void afterTextChanged(Editable s)
         {
-            mIngredientsList.get(mIngredientPosition).quantity = RecipookTextParser.Instance().GetQuantityFromQuantityString(s.toString());
-            mIngredientsList.get(mIngredientPosition).unit = RecipookTextParser.Instance().GetUnitFromQuantityString(s.toString());
+            mIngredientsList.get(mIngredientPosition).quantity = RecipookTextUtils.Instance().GetQuantityFromQuantityString(s.toString());
+            mIngredientsList.get(mIngredientPosition).unit = RecipookTextUtils.Instance().GetUnitFromQuantityString(s.toString());
         }
     }
 
@@ -121,6 +130,12 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
             mEditDeleteIngredientButton = (ImageButton) itemView.findViewById(R.id.recycler_item_ingredient_delete_button);
             mAddToShoppingListButton = (ImageButton) itemView.findViewById(R.id.recycler_item_ingredient_add_to_shopping_list_button);
 
+            // get the original background drawable for the text edits
+            mOriginalIngredientTextEditTextBackground.add(mIngredientText.getBackground());
+            mOriginalIngredientQuantityEditTextBackground.add(mIngredientQuantity.getBackground());
+
+            Log.d("DetailIngredientHolder", "Increased position by 1 --- New size is: " + mOriginalIngredientQuantityEditTextBackground.size());
+
             // bind listeners : delete item fab
             mEditDeleteIngredientButton.setOnClickListener(this);
             mAddToShoppingListButton.setOnClickListener(this);
@@ -137,12 +152,12 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         @Override
         public void onClick(View v)
         {
-            if(mIngredientButtonsClickListeners != null)
+            if (mIngredientButtonsClickListeners != null)
             {
-                if(v.getId() == mEditDeleteIngredientButton.getId())
+                if (v.getId() == mEditDeleteIngredientButton.getId())
                     mIngredientButtonsClickListeners.onIngredientDeleteButtonClick(v, getLayoutPosition());
 
-                if(v.getId() == mAddToShoppingListButton.getId())
+                if (v.getId() == mAddToShoppingListButton.getId())
                     mIngredientButtonsClickListeners.onIngredientAddToShoppingListButtonClick(v, getLayoutPosition());
             }
         }
@@ -157,10 +172,20 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
     }
 
     // method to update the data used when canceling/discarding changes (like constructor)
-    public void UpdateDataWith(ArrayList<Ingredient> ingredients)
+    public void updateDataWith(ArrayList<Ingredient> ingredients)
     {
         mIngredientsList = ingredients;
     }
+
+    // TODO: fix this memory leak (see onenote for details)
+//    // method to remove original background of element from the arrays
+//    public void removeBackgroundsOfIngredient(int position)
+//    {
+//        mOriginalIngredientQuantityEditTextBackground.remove(position);
+//        mOriginalIngredientTextEditTextBackground.remove(position);
+//
+//        Log.d("Removed" ,"Removed at position: " + position + " --- New size is : " + mOriginalIngredientQuantityEditTextBackground.size());
+//    }
 
     // setter for the fab click listener
     public void setIngredientButtonsClickListener(final OnIngredientButtonsClickListener ingredientButtonsClickListener)
@@ -182,31 +207,44 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
     @Override
     public void onBindViewHolder(DetailIngredientListAdapter.DetailIngredientHolder holder, int position)
     {
+        Log.d("onBindViewHolder", "Binding position: " + position + " --- Size is: " + mOriginalIngredientQuantityEditTextBackground.size());
+
         // fill the views with data
         Ingredient ingredient = mIngredientsList.get(position);
 
         // parse ingredient unit and quantity with the correct handling
-        String ingredientUnit = RecipookTextParser.Instance().GetUnitStringFromIngredient(ingredient);
-        String ingredientQuantity = RecipookTextParser.Instance().GetQuantityStringFromIngredient(ingredient);
+        String ingredientUnit = RecipookTextUtils.Instance().GetUnitStringFromIngredient(ingredient);
+        String ingredientQuantity = RecipookTextUtils.Instance().GetQuantityStringFromIngredient(ingredient);
 
         // update the listener position so it knows which EditText to listen to for each view, and set that text
         holder.mIngredientNameEditTextListener.updateIngredientPosition(position);
+
         holder.mIngredientText.setText(ingredient.name);
+        holder.mIngredientText.setSelection(holder.mIngredientText.getText().length());
+
         holder.mIngredientQuantityEditTextListener.updateIngredientPosition(position);
+
         holder.mIngredientQuantity.setText(ingredientQuantity + " " + ingredientUnit);
+        holder.mIngredientQuantity.setSelection(holder.mIngredientQuantity.getText().length());
 
         // show the right views depending on edit mode
-        if(((RecipeDetailActivity)mContext).mInEditMode)
+        if (((RecipeDetailActivity) mContext).mInEditMode)
         {
             holder.mIngredientQuantity.setEnabled(true);
             holder.mIngredientText.setEnabled(true);
+            holder.mIngredientText.setBackground(mOriginalIngredientTextEditTextBackground.get(position));
+            holder.mIngredientQuantity.setBackground(mOriginalIngredientQuantityEditTextBackground.get(position));
             holder.mEditDeleteIngredientButton.setVisibility(View.VISIBLE);
+            holder.mAddToShoppingListButton.setVisibility(View.INVISIBLE);
         }
         else
         {
             holder.mIngredientQuantity.setEnabled(false);
             holder.mIngredientText.setEnabled(false);
+            holder.mIngredientText.setBackgroundColor(Color.TRANSPARENT);
+            holder.mIngredientQuantity.setBackgroundColor(Color.TRANSPARENT);
             holder.mEditDeleteIngredientButton.setVisibility(View.INVISIBLE);
+            holder.mAddToShoppingListButton.setVisibility(View.VISIBLE);
         }
     }
 

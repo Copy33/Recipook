@@ -2,6 +2,7 @@ package com.joemerhej.recipook;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,11 +25,12 @@ public class RecipeListTabFragment extends Fragment
     // the layout manager used to change quantity of columns...
     public static StaggeredGridLayoutManager mStaggeredLayoutManager;
 
+    // the recipes list
+    public RecyclerView mRecipesList;
+
+
     // adapter of the recipe list
     public RecipeListAdapter mRecipeListAdapter;
-
-    // will return from RecipeDetailActivity
-    private int RECIPE_DETAIL_RESULT_CODE;
 
 
     // every fragment requires a default constructor and a newInstance method
@@ -39,6 +41,7 @@ public class RecipeListTabFragment extends Fragment
     // returns a RecipeListTabFragment instance
     public static RecipeListTabFragment newInstance()
     {
+        // TODO: this arguments bundle is empty and not needed
         Bundle args = new Bundle();
 
         RecipeListTabFragment fragment = new RecipeListTabFragment();
@@ -57,16 +60,28 @@ public class RecipeListTabFragment extends Fragment
         // get activity (parent) to use as context when setting layout manager of the recycler view
         //                                     and when setting the recipe list adapter
         final Activity activity = getActivity();
-        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recipe_recycler_view);
+        mRecipesList = (RecyclerView) view.findViewById(R.id.recipe_recycler_view);
 
         // set the layout manager
         mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(mStaggeredLayoutManager);
+        mRecipesList.setLayoutManager(mStaggeredLayoutManager);
 
         // set the adapter, and add the click listener
         mRecipeListAdapter = new RecipeListAdapter(activity);
-        recyclerView.setAdapter(mRecipeListAdapter);
+        mRecipesList.setAdapter(mRecipeListAdapter);
         mRecipeListAdapter.setOnRecipeItemClickListener(onRecipeItemClickListener, RecipeData.Instance().getRecipeList());
+
+        // set up the FloatingActionButton and set a listener that will show the Snackbar when it's clicked
+        com.github.clans.fab.FloatingActionButton fab = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.main_fab);
+        fab.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Snackbar.make(view, "Switched to Grid view.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                mStaggeredLayoutManager.setSpanCount(2);
+            }
+        });
 
         return view;
     }
@@ -80,7 +95,7 @@ public class RecipeListTabFragment extends Fragment
             // clicking a recipe item will launch the recipe detail activity
             Intent intent = new Intent(getContext(), RecipeDetailActivity.class);
             intent.putExtra(RecipeDetailActivity.EXTRA_RECIPE_ID, position);
-            startActivityForResult(intent, RECIPE_DETAIL_RESULT_CODE);
+            startActivityForResult(intent, RecipookIntentResult.RESULT_RECIPE_MODIFIED);
         }
     };
 
@@ -92,14 +107,14 @@ public class RecipeListTabFragment extends Fragment
         try
         {
             // check if it's the intent to change the toolbar image
-            if (requestCode == RECIPE_DETAIL_RESULT_CODE && resultCode == RESULT_OK && data != null)
+            if (requestCode == RecipookIntentResult.RESULT_RECIPE_MODIFIED && resultCode == RESULT_OK && data != null)
             {
                 int recipePosition = data.getIntExtra("recipePosition", 0);
                 mRecipeListAdapter.notifyItemChanged(recipePosition);
             }
 
             // check if it's the intent to change the toolbar image
-            if (requestCode == RECIPE_DETAIL_RESULT_CODE && resultCode == RecipookIntentResult.RESULT_RECIPE_DELETED && data != null)
+            if (requestCode == RecipookIntentResult.RESULT_RECIPE_MODIFIED && resultCode == RecipookIntentResult.RESULT_RECIPE_DELETED && data != null)
             {
                 int recipePosition = data.getIntExtra("recipePosition", 0);
                 mRecipeListAdapter.notifyItemRemoved(recipePosition);
