@@ -70,7 +70,7 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
         }
     }
 
-    // view holder class that this adapter needs
+    // VIEW HOLDER ------------------------------------------------------------------------------------------------------------------------------------------------------------
     public class DetailDirectionHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         // the views for every direction
@@ -86,9 +86,9 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
             super(itemView);
 
             // bind the views
-            mDirectionNumber = (TextView) itemView.findViewById(R.id.detail_direction_edit_number);
-            mDirectionText = (EditText) itemView.findViewById(R.id.recycler_item_direction_text);
-            mEditDeleteDirectionButton = (ImageButton) itemView.findViewById(R.id.recycler_item_direction_delete_button);
+            mDirectionNumber = (TextView) itemView.findViewById(R.id.recycler_item_detail_direction_edit_number);
+            mDirectionText = (EditText) itemView.findViewById(R.id.recycler_item_detail_direction_text);
+            mEditDeleteDirectionButton = (ImageButton) itemView.findViewById(R.id.recycler_item_detail_direction_delete_button);
 
             // get the original background drawable for the text edits
             mOriginalDirectionEditTextBackground.add(mDirectionText.getBackground());
@@ -110,6 +110,7 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
             }
         }
     }
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
     // constructor

@@ -106,7 +106,7 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         }
     }
 
-    // view holder class that each adapter needs
+    // VIEW HOLDER ------------------------------------------------------------------------------------------------------------------------------------------------------------
     public class DetailIngredientHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         // the views for every ingredient
@@ -125,10 +125,10 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
             super(itemView);
 
             // bind the views
-            mIngredientQuantity = (EditText) itemView.findViewById(R.id.recycler_item_ingredient_quantity);
-            mIngredientText = (EditText) itemView.findViewById(R.id.recycler_item_ingredient_text);
-            mEditDeleteIngredientButton = (ImageButton) itemView.findViewById(R.id.recycler_item_ingredient_delete_button);
-            mAddToShoppingListButton = (ImageButton) itemView.findViewById(R.id.recycler_item_ingredient_add_to_shopping_list_button);
+            mIngredientQuantity = (EditText) itemView.findViewById(R.id.recycler_item_detail_ingredient_quantity);
+            mIngredientText = (EditText) itemView.findViewById(R.id.recycler_item_detail_ingredient_text);
+            mEditDeleteIngredientButton = (ImageButton) itemView.findViewById(R.id.recycler_item_detail_ingredient_delete_button);
+            mAddToShoppingListButton = (ImageButton) itemView.findViewById(R.id.recycler_item_detail_ingredient_add_to_shopping_list_button);
 
             // get the original background drawable for the text edits
             mOriginalIngredientTextEditTextBackground.add(mIngredientText.getBackground());
@@ -162,6 +162,7 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
             }
         }
     }
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
     // constructor

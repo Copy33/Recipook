@@ -6,12 +6,12 @@
                 android:layout_gravity="center">
 
     <EditText
-        android:id="@+id/recycler_item_ingredient_quantity"
+        android:id="@+id/recycler_item_detail_ingredient_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/recycler_item_ingredient_add_to_shopping_list_button"
-        android:layout_toRightOf="@+id/recycler_item_ingredient_add_to_shopping_list_button"
+        android:layout_toEndOf="@+id/recycler_item_detail_ingredient_add_to_shopping_list_button"
+        android:layout_toRightOf="@+id/recycler_item_detail_ingredient_add_to_shopping_list_button"
         android:backgroundTint="@color/colorPrimary"
         android:inputType="text"
         android:paddingBottom="@dimen/detail_list_content_text_horizontal_padding"
@@ -25,12 +25,12 @@
         android:textSize="@dimen/detail_list_content_text_size"/>
 
     <EditText
-        android:id="@+id/recycler_item_ingredient_text"
+        android:id="@+id/recycler_item_detail_ingredient_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/recycler_item_ingredient_quantity"
-        android:layout_toRightOf="@+id/recycler_item_ingredient_quantity"
+        android:layout_toEndOf="@+id/recycler_item_detail_ingredient_quantity"
+        android:layout_toRightOf="@+id/recycler_item_detail_ingredient_quantity"
         android:inputType="textMultiLine"
         android:paddingBottom="@dimen/detail_list_content_text_horizontal_padding"
         android:layout_marginEnd="@dimen/detail_list_content_text_vertical_padding"
@@ -41,7 +41,7 @@
         android:textSize="@dimen/detail_list_content_text_size"/>
 
     <ImageButton
-        android:id="@+id/recycler_item_ingredient_add_to_shopping_list_button"
+        android:id="@+id/recycler_item_detail_ingredient_add_to_shopping_list_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -55,7 +55,7 @@
         android:src="@drawable/ic_add_circle_filled_green_24dp"/>
 
     <ImageButton
-        android:id="@+id/recycler_item_ingredient_delete_button"
+        android:id="@+id/recycler_item_detail_ingredient_delete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

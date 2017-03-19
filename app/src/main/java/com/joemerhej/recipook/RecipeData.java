@@ -1,5 +1,6 @@
 package com.joemerhej.recipook;
 
+import android.text.Html;
 import android.util.ArraySet;
 
 import java.util.ArrayList;
@@ -18,8 +19,8 @@ public class RecipeData
     // list of all recipes
     private static ArrayList<Recipe> mRecipelist = null;
 
-    // list of all ingredients
-    private static ArrayList<ArrayList<Ingredient>> mAllIngredients;
+    // list of all shopping ingredients
+    private static ArrayList<Ingredient> mShoppingIngredientList = null;
 
     // list of recipes per category
     private static ArrayList<Integer> mAppetizerList = null;
@@ -28,6 +29,8 @@ public class RecipeData
     private static ArrayList<Integer> mDessertList = null;
     private static ArrayList<Integer> mBeverageList = null;
 
+    // list of all ingredients (used in recipes
+    private static ArrayList<ArrayList<Ingredient>> mAllIngredients;
 
 
     // mock data
@@ -252,6 +255,33 @@ public class RecipeData
         mDessertList.add(5);
     }
 
+    private static void setupShoppingIngredientList()
+    {
+        mShoppingIngredientList = new ArrayList<>();
+
+        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "apples"));
+        mShoppingIngredientList.add(new Ingredient(1/2, Unit.cup, "milk"));
+        mShoppingIngredientList.add(new Ingredient(2, Unit.lb, "ground beef"));
+        mShoppingIngredientList.add(new Ingredient(1, Unit.kg, "flour"));
+        mShoppingIngredientList.add(new Ingredient(0.25, Unit.cup, "extra virgin olive oil"));
+        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "onions"));
+        mShoppingIngredientList.add(new Ingredient(15, Unit.oz, "2% milk"));
+        mShoppingIngredientList.add(new Ingredient(1, Unit.unit, "cabbage"));
+        mShoppingIngredientList.add(new Ingredient(6, Unit.cup, "rice"));
+        mShoppingIngredientList.add(new Ingredient(22, Unit.oz, "water"));
+        mShoppingIngredientList.add(new Ingredient(1, Unit.dash, "pepper"));
+        mShoppingIngredientList.add(new Ingredient(5.25, Unit.tsp, "vanilla extract"));
+        mShoppingIngredientList.add(new Ingredient(4, Unit.unit, "carrots"));
+        mShoppingIngredientList.add(new Ingredient(11, Unit.gram, "dried mint"));
+        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "apples"));
+        mShoppingIngredientList.add(new Ingredient(1/2, Unit.cup, "milk"));
+        mShoppingIngredientList.add(new Ingredient(2, Unit.lb, "ground beef"));
+        mShoppingIngredientList.add(new Ingredient(1, Unit.kg, "flour"));
+        mShoppingIngredientList.add(new Ingredient(0.25, Unit.cup, "extra virgin olive oil"));
+        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "onions"));
+        mShoppingIngredientList.add(new Ingredient(15, Unit.oz, "2% milk"));
+    }
+
 
     // instance method will create the instance or return it if it exists
     public static RecipeData Instance()
@@ -263,6 +293,7 @@ public class RecipeData
 
             setupIngredientsArrayLists();
             setupCategoriesArrayLists();
+            setupShoppingIngredientList();
 
             for (int i = 0; i < recipeListNames.length; ++i)
             {
@@ -297,10 +328,16 @@ public class RecipeData
             return Instance;
     }
 
-    // method to get a point to the recipe list
+    // returns recipe list
     public ArrayList<Recipe> getRecipeList()
     {
         return mRecipelist;
+    }
+
+    // returns shopping ingredient list
+    public ArrayList<Ingredient> getShoppingIngredientList()
+    {
+        return mShoppingIngredientList;
     }
 
     // method to remove a recipe at a given index

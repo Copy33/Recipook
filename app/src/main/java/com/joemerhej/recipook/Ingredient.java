@@ -38,10 +38,10 @@ public class Ingredient
     {
     }
 
-    Ingredient(double number_, Unit unit_, String name_)
+    Ingredient(double Number, Unit Unit, String Name)
     {
-        quantity = number_;
-        unit = unit_;
-        name = name_;
+        quantity = Number;
+        unit = Unit;
+        name = Name;
     }
 }

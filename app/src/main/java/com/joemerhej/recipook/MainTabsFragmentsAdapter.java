@@ -9,9 +9,9 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 
 // this is the fragments pager adapter
-public class MainTabsFragmentAdapter extends FragmentPagerAdapter
+public class MainTabsFragmentsAdapter extends FragmentPagerAdapter
 {
-    public MainTabsFragmentAdapter(FragmentManager fm)
+    public MainTabsFragmentsAdapter(FragmentManager fm)
     {
         super(fm);
     }
@@ -23,9 +23,9 @@ public class MainTabsFragmentAdapter extends FragmentPagerAdapter
         switch (position)
         {
             case 0:
-                return RecipeListTabFragment.newInstance();
+                return RecipeListTabFragment.Instance();
             case 1:
-                return PlaceholderFragment.newInstance(position + 1);
+                return ShoppingListTabFragment.Instance();
             case 2:
                 return PlaceholderFragment.newInstance(position + 1);
             default:

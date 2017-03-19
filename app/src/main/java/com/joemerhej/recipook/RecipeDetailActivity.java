@@ -13,7 +13,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -24,6 +23,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
+
+/**
+ * Created by Joe Merhej on 1/22/17.
+ */
 
 public class RecipeDetailActivity extends AppCompatActivity implements EditRecipeHeaderDialog.DetailEditRecipeHeaderDialogListener,
                                                                        EditRecipeDurationsDialog.DetailEditRecipeDurationsDialogListener
@@ -157,7 +160,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mEditAddIngredientText = (TextInputEditText) findViewById(R.id.detail_ingredient_edit_text);
         //mEditAddIngredientText.addTextChangedListener(new MyAddIngredientEditTextWatcher()); // TODO (see other todo below)
         mEditAddDirectionLayout = (RelativeLayout) findViewById(R.id.detail_direction_add_layout);
-        mEditAddDirectionNumber = (TextView) findViewById(R.id.detail_direction_edit_number);
+        mEditAddDirectionNumber = (TextView) findViewById(R.id.recycler_item_detail_direction_edit_number);
         mEditAddDirectionText = (TextInputEditText) findViewById(R.id.detail_direction_edit_text);
         mDeleteRecipeButton = (Button) findViewById(R.id.detail_delete_recipe_button);
 

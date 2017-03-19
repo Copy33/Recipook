@@ -22,24 +22,26 @@ import static android.app.Activity.RESULT_OK;
 
 public class RecipeListTabFragment extends Fragment
 {
+    // parent activity of this fragment
+    public Activity mParentActivity;
+
     // the layout manager used to change quantity of columns...
-    public static StaggeredGridLayoutManager mStaggeredLayoutManager;
+    public StaggeredGridLayoutManager mStaggeredLayoutManager;
 
     // the recipes list
     public RecyclerView mRecipesList;
-
 
     // adapter of the recipe list
     public RecipeListAdapter mRecipeListAdapter;
 
 
-    // every fragment requires a default constructor and a newInstance method
+    // every fragment requires a default constructor and a Instance method
     public RecipeListTabFragment()
     {
     }
 
     // returns a RecipeListTabFragment instance
-    public static RecipeListTabFragment newInstance()
+    public static RecipeListTabFragment Instance()
     {
         // TODO: this arguments bundle is empty and not needed
         Bundle args = new Bundle();
@@ -55,11 +57,13 @@ public class RecipeListTabFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+        // inflate fragment view
         final View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
-        // get activity (parent) to use as context when setting layout manager of the recycler view
-        //                                     and when setting the recipe list adapter
-        final Activity activity = getActivity();
+        // get activity (parent) to use when setting the recipe list adapter
+        mParentActivity = getActivity();
+
+        // set up recipes list recycler view
         mRecipesList = (RecyclerView) view.findViewById(R.id.recipe_recycler_view);
 
         // set the layout manager
@@ -67,9 +71,9 @@ public class RecipeListTabFragment extends Fragment
         mRecipesList.setLayoutManager(mStaggeredLayoutManager);
 
         // set the adapter, and add the click listener
-        mRecipeListAdapter = new RecipeListAdapter(activity);
+        mRecipeListAdapter = new RecipeListAdapter(mParentActivity, RecipeData.Instance().getRecipeList());
         mRecipesList.setAdapter(mRecipeListAdapter);
-        mRecipeListAdapter.setOnRecipeItemClickListener(onRecipeItemClickListener, RecipeData.Instance().getRecipeList());
+        mRecipeListAdapter.setOnRecipeItemClickListener(onRecipeItemClickListener);
 
         // set up the FloatingActionButton and set a listener that will show the Snackbar when it's clicked
         com.github.clans.fab.FloatingActionButton fab = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.main_fab);
@@ -87,7 +91,7 @@ public class RecipeListTabFragment extends Fragment
     }
 
     // Implement the click listener for every recipe list item
-    RecipeListAdapter.OnRecipeItemSelected onRecipeItemClickListener = new RecipeListAdapter.OnRecipeItemSelected()
+    RecipeListAdapter.OnRecipeItemClickListener onRecipeItemClickListener = new RecipeListAdapter.OnRecipeItemClickListener()
     {
         @Override
         public void OnRecipeItemClicked(View view, int position)

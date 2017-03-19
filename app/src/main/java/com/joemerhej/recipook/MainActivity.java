@@ -1,12 +1,9 @@
 package com.joemerhej.recipook;
 
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.View;
 
 
 /**
@@ -16,7 +13,7 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity
 {
     // adapter for the different tab fragments
-    private MainTabsFragmentAdapter mTabFragmentPagerAdapter;
+    private MainTabsFragmentsAdapter mTabFragmentPagerAdapter;
 
     // ViewPager is the view that will hold all the fragments
     private ViewPager mViewPager;
@@ -29,7 +26,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         // create the adapter that will return a fragment for each of the primary sections of the activity.
-        mTabFragmentPagerAdapter = new MainTabsFragmentAdapter(getSupportFragmentManager());
+        mTabFragmentPagerAdapter = new MainTabsFragmentsAdapter(getSupportFragmentManager());
 
         // set up the ViewPager with the adapter.
         mViewPager = (ViewPager) findViewById(R.id.main_view_pager);

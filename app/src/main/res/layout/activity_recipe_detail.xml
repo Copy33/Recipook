@@ -406,7 +406,7 @@
                     android:src="@drawable/ic_add_green_24dp"/>
 
                 <TextView
-                    android:id="@+id/detail_direction_edit_number"
+                    android:id="@+id/recycler_item_detail_direction_edit_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/detail_direction_edit_text_layout"
@@ -428,8 +428,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toEndOf="@id/detail_direction_edit_number"
-                    android:layout_toRightOf="@id/detail_direction_edit_number"
+                    android:layout_toEndOf="@id/recycler_item_detail_direction_edit_number"
+                    android:layout_toRightOf="@id/recycler_item_detail_direction_edit_number"
                     android:hint="@string/detail_edit_add_direction_textinput_hint"
                     android:paddingBottom="@dimen/detail_list_add_content_text_horizontal_padding"
                     android:paddingEnd="@dimen/detail_list_add_content_text_vertical_padding"

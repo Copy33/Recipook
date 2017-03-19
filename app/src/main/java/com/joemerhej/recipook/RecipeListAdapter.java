@@ -19,29 +19,23 @@ import java.util.ArrayList;
 // adapter needed for the recipe list recycler view, it also needs a view holder inside it
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.RecipeListViewHolder>
 {
-    // context
+    // context of the Recipe List
     private Context mContext;
 
     // list of all recipes
     private ArrayList<Recipe> mRecipesList;
 
-    private OnRecipeItemSelected mRecipeItemClickListener;
+    // click listener instance
+    private OnRecipeItemClickListener mRecipeItemClickListener;
 
     // interface for the recipe item click listener that the fragment should implement
-    public interface OnRecipeItemSelected
+    public interface OnRecipeItemClickListener
     {
         void OnRecipeItemClicked(View view, int position);
     }
 
 
-    // constructor of adapter
-    public RecipeListAdapter(Context context)
-    {
-        this.mContext = context;
-    }
-
-
-    // this is the needed ViewHolder
+    // VIEW HOLDER ------------------------------------------------------------------------------------------------------------------------------------------------------------
     public class RecipeListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         // all the views of each row item (found in recycler_item_recipe layout)
@@ -55,6 +49,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         {
             super(itemView);
 
+            // bind the views
             mRecipeHolder = (LinearLayout) itemView.findViewById(R.id.recycler_item_recipe_holder);
             mRecipeName = (TextView) itemView.findViewById(R.id.recycler_item_recipe_name);
             mRecipeImage = (ImageView) itemView.findViewById(R.id.recycler_item_recipe_image);
@@ -74,19 +69,27 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             }
         }
     }
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    // setter for the mItemClickListener
-    public void setOnRecipeItemClickListener(final OnRecipeItemSelected itemClickListener, ArrayList<Recipe> recipes)
+
+    // constructor of adapter
+    public RecipeListAdapter(Context context, ArrayList<Recipe> recipes)
     {
-        this.mRecipeItemClickListener = itemClickListener;
+        mContext = context;
         mRecipesList = recipes;
     }
 
-    // this will create the view of each row of the RecyclerView
+    // setter for the mItemClickListener
+    public void setOnRecipeItemClickListener(final OnRecipeItemClickListener itemClickListener)
+    {
+        this.mRecipeItemClickListener = itemClickListener;
+    }
+
+    // creates the view holder
     @Override
     public RecipeListViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_recipe, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.recycler_item_recipe, parent, false);
         return new RecipeListViewHolder(view);
     }
 
@@ -94,7 +97,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     @Override
     public void onBindViewHolder(RecipeListViewHolder holder, int position)
     {
-        // get the position of the recipe we want form the data (global static instance)
+        // get the position of the recipe we want form the data
         Recipe recipe = mRecipesList.get(position);
 
         // set the recipe data
