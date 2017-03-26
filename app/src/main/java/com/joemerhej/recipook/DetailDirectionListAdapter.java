@@ -25,7 +25,7 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
     Context mContext;
 
     // list of directions
-    private ArrayList<String> mDirectionsList;
+    private ArrayList<String> mDirectionList;
 
     // click listener for the fabs that activity will deal with
     private OnDirectionButtonsClickListener mDirectionButtonsClickListener;
@@ -60,7 +60,7 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count)
         {
-            mDirectionsList.set(mDirectionPosition, s.toString());
+            mDirectionList.set(mDirectionPosition, s.toString());
         }
 
         @Override
@@ -117,13 +117,13 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
     public DetailDirectionListAdapter(Context context, ArrayList<String> directions)
     {
         mContext = context;
-        mDirectionsList = directions;
+        mDirectionList = directions;
     }
 
     // method to update the data used when canceling/discarding changes (like constructor)
     public void UpdateDataWith(ArrayList<String> directions)
     {
-        mDirectionsList = directions;
+        mDirectionList = directions;
     }
 
     // setter for fab click listener
@@ -147,7 +147,7 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
     public void onBindViewHolder(DetailDirectionListAdapter.DetailDirectionHolder holder, int position)
     {
         // fill the views with data
-        String direction = mDirectionsList.get(position);
+        String direction = mDirectionList.get(position);
 
         holder.mDirectionTextEditTextListener.updateDirectionPosition(position);
         holder.mDirectionText.setText(direction);
@@ -173,6 +173,6 @@ public class DetailDirectionListAdapter extends RecyclerView.Adapter<DetailDirec
     @Override
     public int getItemCount()
     {
-        return mDirectionsList.size();
+        return mDirectionList.size();
     }
 }

@@ -35,7 +35,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     public static final String EXTRA_RECIPE_ID = "recipe_id";
 
     // General Variables
-    public Recipe mRecipe;                          // recipe in question
+    public Recipe mRecipe;                          // main recipe of activity, this is a shallow copy of recipe in RecipeData
     public int mRecipeIndex;                        // index of recipe in question
     public Recipe mRecipeBeforeEdit;                // save a copy for undo edit changes
     public boolean mInEditMode;                     // if the activity is now in edit mode
@@ -100,6 +100,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        // create super and inflate view
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
@@ -143,13 +144,13 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mDirectionsRecyclerView = (RecyclerView) findViewById(R.id.detail_directions_list);
 
         // create recycler views adapters, layout managers, and set item dividers
-        mIngredientListAdapter = new DetailIngredientListAdapter(this, mRecipe.ingredients);
+        mIngredientListAdapter = new DetailIngredientListAdapter(this, mRecipe.mIngredients);
         mIngredientsRecyclerView.setAdapter(mIngredientListAdapter);
         mIngredientsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mIngredientsRecyclerView.setItemAnimator(null);
         mIngredientListAdapter.setIngredientButtonsClickListener(mIngredientButtonsClickListener);
 
-        mDirectionListAdapter = new DetailDirectionListAdapter(this, mRecipe.directions);
+        mDirectionListAdapter = new DetailDirectionListAdapter(this, mRecipe.mDirections);
         mDirectionsRecyclerView.setAdapter(mDirectionListAdapter);
         mDirectionsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mDirectionsRecyclerView.setItemAnimator(null);
@@ -189,9 +190,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mInputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         // load recipe title and image
-        mCollapsingToolbarLayout.setTitle(mRecipe.name);
+        mCollapsingToolbarLayout.setTitle(mRecipe.mName);
         Glide.with(this)
-                .load(Uri.parse(mRecipe.imageUri))
+                .load(Uri.parse(mRecipe.mImageUri))
                 .into(mCollapsingToolbarImageView);
 
         // activity starts in view mode
@@ -209,22 +210,22 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mRecipe.MakeCopyOf(mRecipeBeforeEdit);
 
         // reset title
-        mCollapsingToolbarLayout.setTitle(mRecipe.name);
+        mCollapsingToolbarLayout.setTitle(mRecipe.mName);
 
         // reset image
         Glide.with(this)
-                .load(Uri.parse(mRecipe.imageUri))
+                .load(Uri.parse(mRecipe.mImageUri))
                 .into(mCollapsingToolbarImageView);
 
         // reset categories
         handleCategoryViews();
 
         // reset ingredients
-        mIngredientListAdapter.updateDataWith(mRecipe.ingredients);
+        mIngredientListAdapter.updateDataWith(mRecipe.mIngredients);
         mIngredientListAdapter.notifyDataSetChanged();
 
         // reset directions
-        mDirectionListAdapter.UpdateDataWith(mRecipe.directions);
+        mDirectionListAdapter.UpdateDataWith(mRecipe.mDirections);
         mDirectionListAdapter.notifyDataSetChanged();
 
         // engage view mode
@@ -378,12 +379,12 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         // make the edit views visible
         mEditAddIngredientLayout.setVisibility(View.VISIBLE);
         mEditAddDirectionLayout.setVisibility(View.VISIBLE);
-        mEditAddDirectionNumber.setText(String.valueOf(mRecipe.directions.size()+1) + ".");
+        mEditAddDirectionNumber.setText(String.valueOf(mRecipe.mDirections.size()+1) + ".");
         mDeleteRecipeButton.setVisibility(View.VISIBLE);
 
         // notify the recycler view adapters so they make the right changes to theirs views
-        mIngredientListAdapter.notifyItemRangeChanged(0, mRecipe.ingredients.size());
-        mDirectionListAdapter.notifyItemRangeChanged(0, mRecipe.directions.size());
+        mIngredientListAdapter.notifyItemRangeChanged(0, mRecipe.mIngredients.size());
+        mDirectionListAdapter.notifyItemRangeChanged(0, mRecipe.mDirections.size());
     }
 
     // what happens when the activity is view mode
@@ -414,8 +415,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mDeleteRecipeButton.setVisibility(View.GONE);
 
         // notify the recycler view adapters so they make the right changes to theirs views
-        mIngredientListAdapter.notifyItemRangeChanged(0, mRecipe.ingredients.size());
-        mDirectionListAdapter.notifyItemRangeChanged(0, mRecipe.directions.size());
+        mIngredientListAdapter.notifyItemRangeChanged(0, mRecipe.mIngredients.size());
+        mDirectionListAdapter.notifyItemRangeChanged(0, mRecipe.mDirections.size());
 
         // hide the keyboard
         mInputManager.hideSoftInputFromWindow(this.findViewById(android.R.id.content).getWindowToken(), 0);
@@ -429,7 +430,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
 
         // only show category if it's contained in the recipe
-        if (mRecipe.categories.contains(Category.Appetizer))
+        if (mRecipe.mCategories.contains(Category.Appetizer))
         {
             mCategoryAppetizerLayout.setVisibility(View.VISIBLE);
             mCategoryAppetizerButton.setImageResource(R.drawable.ic_category_appetizer_green_32dp);
@@ -442,7 +443,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             mCategoryAppetizerText.setTextColor(grey);
         }
 
-        if (mRecipe.categories.contains(Category.MainCourse))
+        if (mRecipe.mCategories.contains(Category.MainCourse))
         {
             mCategoryMainCourseLayout.setVisibility(View.VISIBLE);
             mCategoryMainCourseButton.setImageResource(R.drawable.ic_category_main_course_green_32dp);
@@ -455,7 +456,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             mCategoryMainCourseText.setTextColor(grey);
         }
 
-        if (mRecipe.categories.contains(Category.SideDish))
+        if (mRecipe.mCategories.contains(Category.SideDish))
         {
             mCategorySideDishLayout.setVisibility(View.VISIBLE);
             mCategorySideDishButton.setImageResource(R.drawable.ic_category_side_dish_green_32dp);
@@ -468,7 +469,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             mCategorySideDishText.setTextColor(grey);
         }
 
-        if (mRecipe.categories.contains(Category.Dessert))
+        if (mRecipe.mCategories.contains(Category.Dessert))
         {
             mCategoryDessertLayout.setVisibility(View.VISIBLE);
             mCategoryDessertButton.setImageResource(R.drawable.ic_category_dessert_green_32dp);
@@ -481,7 +482,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             mCategoryDessertText.setTextColor(grey);
         }
 
-        if (mRecipe.categories.contains(Category.Beverage))
+        if (mRecipe.mCategories.contains(Category.Beverage))
         {
             mCategoryBeverageLayout.setVisibility(View.VISIBLE);
             mCategoryBeverageButton.setImageResource(R.drawable.ic_category_beverage_green_32dp);
@@ -499,15 +500,15 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     public void handleDurationsViews()
     {
         // show hours only if they exist, otherwise show only minutes
-        if(mRecipe.preparationTimeMinutes/60 != 0)
-            mPreparationTimeText.setText(String.valueOf(mRecipe.preparationTimeMinutes / 60) + "h " + String.valueOf(mRecipe.preparationTimeMinutes % 60) + "m");
+        if(mRecipe.mPreparationTimeMinutes /60 != 0)
+            mPreparationTimeText.setText(String.valueOf(mRecipe.mPreparationTimeMinutes / 60) + "h " + String.valueOf(mRecipe.mPreparationTimeMinutes % 60) + "m");
         else
-            mPreparationTimeText.setText(String.valueOf(mRecipe.preparationTimeMinutes % 60) + "m");
+            mPreparationTimeText.setText(String.valueOf(mRecipe.mPreparationTimeMinutes % 60) + "m");
 
-        if(mRecipe.cookingTimeMinutes/60 != 0)
-            mCookingTimeText.setText(String.valueOf(mRecipe.cookingTimeMinutes / 60) + "h " + String.valueOf(mRecipe.cookingTimeMinutes % 60) + "m");
+        if(mRecipe.mCookingTimeMinutes /60 != 0)
+            mCookingTimeText.setText(String.valueOf(mRecipe.mCookingTimeMinutes / 60) + "h " + String.valueOf(mRecipe.mCookingTimeMinutes % 60) + "m");
         else
-            mCookingTimeText.setText(String.valueOf(mRecipe.cookingTimeMinutes % 60) + "m");
+            mCookingTimeText.setText(String.valueOf(mRecipe.mCookingTimeMinutes % 60) + "m");
     }
 
 
@@ -541,7 +542,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    // INGREDIENT/DIRECTION RECYCLERVIEW ADAPTERS INTERFACE IMPLEMENTATION
+    // INGREDIENT/DIRECTION RECYCLERVIEW ADAPTERS INTERFACES IMPLEMENTATION
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     // Ingredient list adapter needs the ingredient buttons click listener to be implemented
@@ -550,7 +551,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         @Override
         public void onIngredientDeleteButtonClick(View view, int position)
         {
-            mRecipe.ingredients.remove(position);
+            mRecipe.mIngredients.remove(position);
             mIngredientListAdapter.notifyItemRemoved(position);
             mAtLeastOneChange = true;
         }
@@ -559,7 +560,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         public void onIngredientAddToShoppingListButtonClick(View view, int position)
         {
             //TODO: logic to add ingredient to shopping list
-            Snackbar.make(view, "Added " + mRecipe.ingredients.get(position).name + " to the Shopping List.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+            Snackbar.make(view, "Added " + mRecipe.mIngredients.get(position).mName + " to the Shopping List.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
         }
     };
 
@@ -569,10 +570,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         @Override
         public void onDirectionDeleteButtonClick(View view, int position)
         {
-            mRecipe.directions.remove(position);
+            mRecipe.mDirections.remove(position);
             mDirectionListAdapter.notifyItemRemoved(position);
             mDirectionListAdapter.notifyItemRangeChanged(position, mDirectionListAdapter.getItemCount());   // this updates the numbers
-            mEditAddDirectionNumber.setText(String.valueOf(mRecipe.directions.size()+1) + ".");
+            mEditAddDirectionNumber.setText(String.valueOf(mRecipe.mDirections.size()+1) + ".");
             mAtLeastOneChange = true;
         }
     };
@@ -594,8 +595,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         Ingredient newIngredient = RecipookTextUtils.Instance().GetIngredientFromIngredientString(newIngredientText);
         if (newIngredient != null)
         {
-            mRecipe.ingredients.add(newIngredient);
-            mIngredientListAdapter.notifyItemInserted(mRecipe.ingredients.size() - 1);
+            mRecipe.mIngredients.add(newIngredient);
+            mIngredientListAdapter.notifyItemInserted(mRecipe.mIngredients.size() - 1);
 
             mEditAddIngredientText.getText().clear();
 
@@ -611,11 +612,11 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         if (newDirectionText.isEmpty())
             return;
 
-        mRecipe.directions.add(newDirectionText);
-        mDirectionListAdapter.notifyItemInserted(mRecipe.directions.size() - 1);
+        mRecipe.mDirections.add(newDirectionText);
+        mDirectionListAdapter.notifyItemInserted(mRecipe.mDirections.size() - 1);
 
         mEditAddDirectionText.getText().clear();
-        mEditAddDirectionNumber.setText(String.valueOf(mRecipe.directions.size()+1) + ".");
+        mEditAddDirectionNumber.setText(String.valueOf(mRecipe.mDirections.size()+1) + ".");
 
         mAtLeastOneChange = true;
     }
@@ -667,15 +668,15 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     {
         if (mInEditMode)
         {
-            if (mRecipe.categories.contains(Category.Appetizer))
+            if (mRecipe.mCategories.contains(Category.Appetizer))
             {
-                mRecipe.categories.remove(Category.Appetizer);
+                mRecipe.mCategories.remove(Category.Appetizer);
                 mCategoryAppetizerButton.setImageResource(R.drawable.ic_category_appetizer_grey_32dp);
                 mCategoryAppetizerText.setTextColor(ContextCompat.getColor(this, R.color.categoryColorDisabled));
             }
             else
             {
-                mRecipe.categories.add(Category.Appetizer);
+                mRecipe.mCategories.add(Category.Appetizer);
                 mCategoryAppetizerButton.setImageResource(R.drawable.ic_category_appetizer_green_32dp);
                 mCategoryAppetizerText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
             }
@@ -687,15 +688,15 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     {
         if (mInEditMode)
         {
-            if (mRecipe.categories.contains(Category.MainCourse))
+            if (mRecipe.mCategories.contains(Category.MainCourse))
             {
-                mRecipe.categories.remove(Category.MainCourse);
+                mRecipe.mCategories.remove(Category.MainCourse);
                 mCategoryMainCourseButton.setImageResource(R.drawable.ic_category_main_course_grey_32dp);
                 mCategoryMainCourseText.setTextColor(ContextCompat.getColor(this, R.color.categoryColorDisabled));
             }
             else
             {
-                mRecipe.categories.add(Category.MainCourse);
+                mRecipe.mCategories.add(Category.MainCourse);
                 mCategoryMainCourseButton.setImageResource(R.drawable.ic_category_main_course_green_32dp);
                 mCategoryMainCourseText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
             }
@@ -707,15 +708,15 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     {
         if (mInEditMode)
         {
-            if (mRecipe.categories.contains(Category.SideDish))
+            if (mRecipe.mCategories.contains(Category.SideDish))
             {
-                mRecipe.categories.remove(Category.SideDish);
+                mRecipe.mCategories.remove(Category.SideDish);
                 mCategorySideDishButton.setImageResource(R.drawable.ic_category_side_dish_grey_32dp);
                 mCategorySideDishText.setTextColor(ContextCompat.getColor(this, R.color.categoryColorDisabled));
             }
             else
             {
-                mRecipe.categories.add(Category.SideDish);
+                mRecipe.mCategories.add(Category.SideDish);
                 mCategorySideDishButton.setImageResource(R.drawable.ic_category_side_dish_green_32dp);
                 mCategorySideDishText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
             }
@@ -727,15 +728,15 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     {
         if (mInEditMode)
         {
-            if (mRecipe.categories.contains(Category.Dessert))
+            if (mRecipe.mCategories.contains(Category.Dessert))
             {
-                mRecipe.categories.remove(Category.Dessert);
+                mRecipe.mCategories.remove(Category.Dessert);
                 mCategoryDessertButton.setImageResource(R.drawable.ic_category_dessert_grey_32dp);
                 mCategoryDessertText.setTextColor(ContextCompat.getColor(this, R.color.categoryColorDisabled));
             }
             else
             {
-                mRecipe.categories.add(Category.Dessert);
+                mRecipe.mCategories.add(Category.Dessert);
                 mCategoryDessertButton.setImageResource(R.drawable.ic_category_dessert_green_32dp);
                 mCategoryDessertText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
             }
@@ -747,15 +748,15 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     {
         if (mInEditMode)
         {
-            if (mRecipe.categories.contains(Category.Beverage))
+            if (mRecipe.mCategories.contains(Category.Beverage))
             {
-                mRecipe.categories.remove(Category.Beverage);
+                mRecipe.mCategories.remove(Category.Beverage);
                 mCategoryBeverageButton.setImageResource(R.drawable.ic_category_beverage_grey_32dp);
                 mCategoryBeverageText.setTextColor(ContextCompat.getColor(this, R.color.categoryColorDisabled));
             }
             else
             {
-                mRecipe.categories.add(Category.Beverage);
+                mRecipe.mCategories.add(Category.Beverage);
                 mCategoryBeverageButton.setImageResource(R.drawable.ic_category_beverage_green_32dp);
                 mCategoryBeverageText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
             }
@@ -771,8 +772,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     {
         if (mInEditMode)
         {
-            int cookingTimeHours = mRecipe.cookingTimeMinutes / 60;
-            int cookingTimeMinutes = mRecipe.cookingTimeMinutes % 60;
+            int cookingTimeHours = mRecipe.mCookingTimeMinutes / 60;
+            int cookingTimeMinutes = mRecipe.mCookingTimeMinutes % 60;
             mEditRecipeDurationsDialog = EditRecipeDurationsDialog.Instance(EditRecipeDurationsDialog.RecipeDurationDialogType.COOKING_TIME_DIALOG,
                     getResources().getString(R.string.detail_cooking_time_title),
                     cookingTimeHours,
@@ -786,8 +787,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     {
         if (mInEditMode)
         {
-            int preparationTimeHours = mRecipe.preparationTimeMinutes / 60;
-            int preparationTimeMinutes = mRecipe.preparationTimeMinutes % 60;
+            int preparationTimeHours = mRecipe.mPreparationTimeMinutes / 60;
+            int preparationTimeMinutes = mRecipe.mPreparationTimeMinutes % 60;
             mEditRecipeDurationsDialog = EditRecipeDurationsDialog.Instance(EditRecipeDurationsDialog.RecipeDurationDialogType.PREPARATION_TIME_DIALOG,
                     getResources().getString(R.string.detail_preparation_time_title),
                     preparationTimeHours,
@@ -814,20 +815,20 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         {
             case PREPARATION_TIME_DIALOG:
             {
-                if (newTotalInMinutes != mRecipe.preparationTimeMinutes)
+                if (newTotalInMinutes != mRecipe.mPreparationTimeMinutes)
                 {
                     mAtLeastOneChange = true;
-                    mRecipe.preparationTimeMinutes = newTotalInMinutes;
+                    mRecipe.mPreparationTimeMinutes = newTotalInMinutes;
                 }
             }
             break;
 
             case COOKING_TIME_DIALOG:
             {
-                if (newTotalInMinutes != mRecipe.cookingTimeMinutes)
+                if (newTotalInMinutes != mRecipe.mCookingTimeMinutes)
                 {
                     mAtLeastOneChange = true;
-                    mRecipe.cookingTimeMinutes = newTotalInMinutes;
+                    mRecipe.mCookingTimeMinutes = newTotalInMinutes;
                 }
             }
             break;
@@ -909,9 +910,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             if (mInEditMode)
             {
                 // show the dialog
-                mEditRecipeHeaderDialog = EditRecipeHeaderDialog.Instance(mRecipe.name, mRecipe.imageUri);
+                mEditRecipeHeaderDialog = EditRecipeHeaderDialog.Instance(mRecipe.mName, mRecipe.mImageUri);
                 mEditRecipeHeaderDialog.show(getFragmentManager(), EditRecipeHeaderDialog.class.getName());
-                mNewImageUri = Uri.parse(mRecipe.imageUri);
+                mNewImageUri = Uri.parse(mRecipe.mImageUri);
             }
         }
     };
@@ -923,16 +924,16 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         // get the new title
         String newTitle = dialog.mRecipeNameEditText.getText().toString();
         mCollapsingToolbarLayout.setTitle(newTitle);
-        mRecipe.name = newTitle;
+        mRecipe.mName = newTitle;
 
         // get the new image
-        mRecipe.imageUri = mNewImageUri.toString();
+        mRecipe.mImageUri = mNewImageUri.toString();
         Glide.with(this)
-                .load(Uri.parse(mRecipe.imageUri))
+                .load(Uri.parse(mRecipe.mImageUri))
                 .into(mCollapsingToolbarImageView);
 
         // check if smth actually changed in the recipe from this dialog
-        if (!mRecipe.name.equalsIgnoreCase(mRecipeBeforeEdit.name) || !mRecipe.imageUri.equalsIgnoreCase(mRecipeBeforeEdit.imageUri))
+        if (!mRecipe.mName.equalsIgnoreCase(mRecipeBeforeEdit.mName) || !mRecipe.mImageUri.equalsIgnoreCase(mRecipeBeforeEdit.mImageUri))
             mAtLeastOneChange = true;
 
         // hide the keyboard

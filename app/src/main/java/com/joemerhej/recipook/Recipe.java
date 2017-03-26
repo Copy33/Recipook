@@ -1,7 +1,6 @@
 package com.joemerhej.recipook;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Joe Merhej on 1/21/17.
@@ -20,54 +19,54 @@ enum Category
 public class Recipe
 {
     // recipe variables
-    String name;
-    ArrayList<Category> categories;
-    int preparationTimeMinutes;
-    int cookingTimeMinutes;
-    ArrayList<Ingredient> ingredients;
-    ArrayList<String> directions;
-    String imageName;
-    String imageUri;
+    String mName;
+    ArrayList<Category> mCategories;
+    int mPreparationTimeMinutes;
+    int mCookingTimeMinutes;
+    ArrayList<Ingredient> mIngredients;
+    ArrayList<String> mDirections;
+    String mImageName;
+    String mImageUri;
 
 
     // default constructor
     Recipe()
     {
-        categories = new ArrayList<>();
-        categories.add(Category.All); // all recipes will have 'All' category
-        ingredients = new ArrayList<>();
-        directions = new ArrayList<>();
+        mCategories = new ArrayList<>();
+        mCategories.add(Category.All); // all recipes will have 'All' category
+        mIngredients = new ArrayList<>();
+        mDirections = new ArrayList<>();
     }
 
     // makes deep copy of recipe elements
     void MakeCopyOf(Recipe CopyFrom)
     {
-        name = CopyFrom.name;
-        imageName = CopyFrom.imageName;
-        imageUri = CopyFrom.imageUri;
-        preparationTimeMinutes = CopyFrom.preparationTimeMinutes;
-        cookingTimeMinutes = CopyFrom.cookingTimeMinutes;
+        mName = CopyFrom.mName;
+        mImageName = CopyFrom.mImageName;
+        mImageUri = CopyFrom.mImageUri;
+        mPreparationTimeMinutes = CopyFrom.mPreparationTimeMinutes;
+        mCookingTimeMinutes = CopyFrom.mCookingTimeMinutes;
 
-        categories = new ArrayList<>();
-        for(Category c : CopyFrom.categories)
-            categories.add(c);
+        mCategories = new ArrayList<>();
+        for(Category c : CopyFrom.mCategories)
+            mCategories.add(c);
 
-        ingredients = new ArrayList<>();
-        for(Ingredient i : CopyFrom.ingredients)
-            ingredients.add(i);
+        mIngredients = new ArrayList<>();
+        for(Ingredient i : CopyFrom.mIngredients)
+            mIngredients.add(i);
 
-        directions = new ArrayList<>();
-        for(String d : CopyFrom.directions)
-            directions.add(d);
+        mDirections = new ArrayList<>();
+        for(String d : CopyFrom.mDirections)
+            mDirections.add(d);
     }
 
     // check if recipe has same categories as another recipe
     boolean HasSameCategoriesAs(Recipe recipe)
     {
         int result = 0;
-        for(Category c : recipe.categories)
+        for(Category c : recipe.mCategories)
             result ^= c.ordinal();
-        for(Category c : categories)
+        for(Category c : mCategories)
             result ^= c.ordinal();
 
         return result==0;

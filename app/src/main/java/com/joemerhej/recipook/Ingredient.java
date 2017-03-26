@@ -28,20 +28,27 @@ enum Unit
     gallon -> gal*/
 }
 
+enum ShoppingStatus
+{
+    NONE,
+    ADDED,
+    CHECKED
+}
+
 public class Ingredient
 {
-    double quantity;
-    Unit unit;
-    String name;
+    // ingredient details
+    double mQuantity;
+    Unit mUnit;
+    String mName;
+    ShoppingStatus mShoppingStatus;
 
-    Ingredient()
+    
+    Ingredient(double Number, Unit Unit, String Name, ShoppingStatus ShoppingStatus)
     {
-    }
-
-    Ingredient(double Number, Unit Unit, String Name)
-    {
-        quantity = Number;
-        unit = Unit;
-        name = Name;
+        mQuantity = Number;
+        mUnit = Unit;
+        mName = Name;
+        mShoppingStatus = ShoppingStatus;
     }
 }

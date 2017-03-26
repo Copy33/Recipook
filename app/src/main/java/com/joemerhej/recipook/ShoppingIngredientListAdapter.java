@@ -1,12 +1,14 @@
 package com.joemerhej.recipook;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckedTextView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -20,14 +22,25 @@ public class ShoppingIngredientListAdapter extends RecyclerView.Adapter<Shopping
     private Context mContext;
 
     // list of all the shopping ingredients
-    private ArrayList<Ingredient> mShoppingIngredientsList;
+    private ArrayList<Ingredient> mShoppingIngredientList;
+
+    // click listener instance for the shopping ingredient that parent will implement and assign
+    private OnShoppingIngredientClickListener mShoppingIngredientClickListener;
+
+
+    // interface for shopping ingredient listener
+    public interface OnShoppingIngredientClickListener
+    {
+        void onIngredientClick(View view, int position);
+    }
 
 
     // VIEW HOLDER ------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public class ShoppingIngredientListViewHolder extends RecyclerView.ViewHolder
+    public class ShoppingIngredientListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         // all the views of each row item
-        public CheckedTextView mShoppingIngredientText;
+        public RelativeLayout mShoppingIngredientHolder;
+        public TextView mShoppingIngredientText;
         public ImageView mShoppingIngredientImage;
 
 
@@ -37,8 +50,23 @@ public class ShoppingIngredientListAdapter extends RecyclerView.Adapter<Shopping
             super(itemView);
 
             // bind the views
-            mShoppingIngredientText = (CheckedTextView) itemView.findViewById(R.id.recycler_item_shopping_ingredient_text);
+            mShoppingIngredientHolder = (RelativeLayout) itemView.findViewById(R.id.recycler_item_shopping_ingredient_holder);
+            mShoppingIngredientText = (TextView) itemView.findViewById(R.id.recycler_item_shopping_ingredient_text);
             mShoppingIngredientImage = (ImageView) itemView.findViewById(R.id.recycler_item_shopping_ingredient_picture);
+
+            // need to set the click listener
+            mShoppingIngredientHolder.setOnClickListener(this);
+        }
+
+        // implements onClick method
+        @Override
+        public void onClick(View v)
+        {
+            // when clicked, call the OnShoppingIngredientListener callback method on the right viewholder position
+            if (mShoppingIngredientClickListener != null)
+            {
+                mShoppingIngredientClickListener.onIngredientClick(v, getLayoutPosition());
+            }
         }
     }
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -48,7 +76,13 @@ public class ShoppingIngredientListAdapter extends RecyclerView.Adapter<Shopping
     public ShoppingIngredientListAdapter(Context context, ArrayList<Ingredient> shoppingIngredientsList)
     {
         mContext = context;
-        mShoppingIngredientsList = shoppingIngredientsList;
+        mShoppingIngredientList = shoppingIngredientsList;
+    }
+
+    // setter for the mShoppingListClickListener
+    public void setOnShoppingIngredientClickListener(final OnShoppingIngredientClickListener itemClickListener)
+    {
+        mShoppingIngredientClickListener = itemClickListener;
     }
 
     // creates the view holder
@@ -64,18 +98,34 @@ public class ShoppingIngredientListAdapter extends RecyclerView.Adapter<Shopping
     public void onBindViewHolder(ShoppingIngredientListAdapter.ShoppingIngredientListViewHolder holder, int position)
     {
         // get the ingredient from data
-        Ingredient ingredient = mShoppingIngredientsList.get(position);
+        Ingredient ingredient = mShoppingIngredientList.get(position);
 
         // set the ingredient name
-        holder.mShoppingIngredientText.setText(ingredient.name);
+        holder.mShoppingIngredientText.setText(ingredient.mName);
+
+        // set the right styling depending on shopping status
+        int grey = ContextCompat.getColor(mContext, R.color.categoryColorDisabled);
+        int textColorPrimary = ContextCompat.getColor(mContext, R.color.textColorPrimary);
+
+        if(mShoppingIngredientList.get(position).mShoppingStatus == ShoppingStatus.CHECKED)
+        {
+            holder.mShoppingIngredientText.setTextColor(grey);
+            holder.mShoppingIngredientText.getPaint().setStrikeThruText(true);
+        }
+        else
+        {
+            holder.mShoppingIngredientText.setTextColor(textColorPrimary);
+            holder.mShoppingIngredientText.getPaint().setStrikeThruText(false);
+        }
 
         // TODO: set the ingredient image with Glide
+
     }
 
     // every adapter needs this method
     @Override
     public int getItemCount()
     {
-        return mShoppingIngredientsList.size();
+        return mShoppingIngredientList.size();
     }
 }

@@ -23,7 +23,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     private Context mContext;
 
     // list of all recipes
-    private ArrayList<Recipe> mRecipesList;
+    private ArrayList<Recipe> mRecipeList;
 
     // click listener instance
     private OnRecipeItemClickListener mRecipeItemClickListener;
@@ -58,14 +58,14 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             mRecipeHolder.setOnClickListener(this);
         }
 
-        // implements onClick method since we're doing it manually
+        // implements onClick method
         @Override
         public void onClick(View v)
         {
-            // when clicked, call the OnRecipeItemClicked callback method on this
+            // when clicked, call the OnRecipeItemClicked callback method on the right viewholder position
             if (mRecipeItemClickListener != null)
             {
-                mRecipeItemClickListener.OnRecipeItemClicked(itemView, getAdapterPosition());
+                mRecipeItemClickListener.OnRecipeItemClicked(v, getLayoutPosition());
             }
         }
     }
@@ -76,13 +76,13 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     public RecipeListAdapter(Context context, ArrayList<Recipe> recipes)
     {
         mContext = context;
-        mRecipesList = recipes;
+        mRecipeList = recipes;
     }
 
     // setter for the mItemClickListener
     public void setOnRecipeItemClickListener(final OnRecipeItemClickListener itemClickListener)
     {
-        this.mRecipeItemClickListener = itemClickListener;
+        mRecipeItemClickListener = itemClickListener;
     }
 
     // creates the view holder
@@ -98,14 +98,14 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     public void onBindViewHolder(RecipeListViewHolder holder, int position)
     {
         // get the position of the recipe we want form the data
-        Recipe recipe = mRecipesList.get(position);
+        Recipe recipe = mRecipeList.get(position);
 
         // set the recipe data
-        holder.mRecipeName.setText(recipe.name);
+        holder.mRecipeName.setText(recipe.mName);
 
         // set the image of the recipe
         Glide.with(mContext)
-                .load(Uri.parse(recipe.imageUri))
+                .load(Uri.parse(recipe.mImageUri))
                 .into(holder.mRecipeImage);
     }
 
@@ -113,6 +113,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     @Override
     public int getItemCount()
     {
-        return mRecipesList.size();
+        return mRecipeList.size();
     }
 }

@@ -56,19 +56,19 @@ public final class RecipookTextUtils
                         for(int i=2; i<strings.length; ++i)
                             name += strings[i] + " ";
 
-                        return new Ingredient(quantity, unit, name);
+                        return new Ingredient(quantity, unit, name, ShoppingStatus.NONE);
                     }
-                    else return new Ingredient(quantity, unit, "");
+                    else return new Ingredient(quantity, unit, "", ShoppingStatus.NONE);
                 }
                 else
                 {
                     for(int i=1; i<strings.length; ++i)
                         name += strings[i] + " ";
 
-                    return new Ingredient(quantity, unit, name);
+                    return new Ingredient(quantity, unit, name, ShoppingStatus.NONE);
                 }
             }
-            else return new Ingredient(quantity, unit, "");
+            else return new Ingredient(quantity, unit, "", ShoppingStatus.NONE);
         }
         else if (isValidUnit(strings[0]))
         {
@@ -77,11 +77,11 @@ public final class RecipookTextUtils
                 for(int i=1; i<strings.length; ++i)
                     name += strings[i] + " ";
 
-                return new Ingredient(1, unit, name);
+                return new Ingredient(1, unit, name, ShoppingStatus.NONE);
             }
-            else return new Ingredient(1, unit, "");
+            else return new Ingredient(1, unit, "", ShoppingStatus.NONE);
         }
-        else return new Ingredient(0, unit, ingredientString);
+        else return new Ingredient(0, unit, ingredientString, ShoppingStatus.NONE);
 
 
     }
@@ -90,24 +90,24 @@ public final class RecipookTextUtils
     // this will take care of plurals and ommit the word "unit"
     public String GetUnitStringFromIngredient(Ingredient ingredient)
     {
-        String ingredientUnit = ingredient.unit.toString();
+        String ingredientUnit = ingredient.mUnit.toString();
 
         // check if "s" or "es" need to be added for plural
-        if(ingredient.quantity > 1.0)
+        if(ingredient.mQuantity > 1.0)
         {
-            if(ingredient.unit == Unit.cup || ingredient.unit == Unit.lb || ingredient.unit == Unit.kg || ingredient.unit == Unit.gram
-                    || ingredient.unit == Unit.liter || ingredient.unit == Unit.quart || ingredient.unit == Unit.pint)
+            if(ingredient.mUnit == Unit.cup || ingredient.mUnit == Unit.lb || ingredient.mUnit == Unit.kg || ingredient.mUnit == Unit.gram
+                    || ingredient.mUnit == Unit.liter || ingredient.mUnit == Unit.quart || ingredient.mUnit == Unit.pint)
             {
                 ingredientUnit += "s";
             }
-            else if(ingredient.unit == Unit.dash)
+            else if(ingredient.mUnit == Unit.dash)
             {
                 ingredientUnit += "es";
             }
         }
 
-        // in case of "unit" return an empty text
-        if(ingredient.unit == Unit.unit)
+        // in case of "mUnit" return an empty text
+        if(ingredient.mUnit == Unit.unit)
         {
             ingredientUnit = "";
         }
@@ -119,38 +119,38 @@ public final class RecipookTextUtils
     // this will take care of ".0" after ints and will make fractions.
     public String GetQuantityStringFromIngredient(Ingredient ingredient)
     {
-        String ingredientQuantity = String.valueOf(ingredient.quantity);
+        String ingredientQuantity = String.valueOf(ingredient.mQuantity);
 
         // truncate to 2 decimal places
-        ingredient.quantity = Math.floor(ingredient.quantity * 100) / 100;
+        ingredient.mQuantity = Math.floor(ingredient.mQuantity * 100) / 100;
 
-        if(ingredient.quantity == 0)
+        if(ingredient.mQuantity == 0)
             return "";
 
-        if(ingredient.quantity % 1 == 0)
+        if(ingredient.mQuantity % 1 == 0)
         {
-            int ingredientQuantityInt = (int) ingredient.quantity;
+            int ingredientQuantityInt = (int) ingredient.mQuantity;
             ingredientQuantity = String.valueOf(ingredientQuantityInt);
             return ingredientQuantity;
         }
 
-        if(Double.compare(ingredient.quantity, 0.25) == 0)
+        if(Double.compare(ingredient.mQuantity, 0.25) == 0)
         {
             ingredientQuantity = "1/4";
         }
-        else if(Double.compare(ingredient.quantity, 0.33) == 0)
+        else if(Double.compare(ingredient.mQuantity, 0.33) == 0)
         {
             ingredientQuantity = "1/3";
         }
-        else if(Double.compare(ingredient.quantity, 0.5) == 0)
+        else if(Double.compare(ingredient.mQuantity, 0.5) == 0)
         {
             ingredientQuantity = "1/2";
         }
-        else if(Double.compare(ingredient.quantity, 0.66) == 0)
+        else if(Double.compare(ingredient.mQuantity, 0.66) == 0)
         {
             ingredientQuantity = "2/3";
         }
-        else if(Double.compare(ingredient.quantity, 0.75) == 0)
+        else if(Double.compare(ingredient.mQuantity, 0.75) == 0)
         {
             ingredientQuantity = "3/4";
         }

@@ -1,10 +1,6 @@
 package com.joemerhej.recipook;
 
-import android.text.Html;
-import android.util.ArraySet;
-
 import java.util.ArrayList;
-import java.util.Set;
 
 
 /**
@@ -29,7 +25,7 @@ public class RecipeData
     private static ArrayList<Integer> mDessertList = null;
     private static ArrayList<Integer> mBeverageList = null;
 
-    // list of all ingredients (used in recipes
+    // list of all ingredients (used in recipes)
     private static ArrayList<ArrayList<Ingredient>> mAllIngredients;
 
 
@@ -154,75 +150,75 @@ public class RecipeData
         ArrayList<Ingredient> RaspberryPieIngredients = new ArrayList<>();
         ArrayList<Ingredient> ToastedAlmondsWithRosemaryIngredients = new ArrayList<>();
 
-        BuffaloDrumsticksIngredients.add(new Ingredient(16, Unit.unit, "chicken drumsticks"));
-        BuffaloDrumsticksIngredients.add(new Ingredient(1, Unit.unit, "16 ounce bottle buffalo wing hot sauce"));
-        BuffaloDrumsticksIngredients.add(new Ingredient(0.25, Unit.cup, "tomato paste"));
-        BuffaloDrumsticksIngredients.add(new Ingredient(2, Unit.tbsp, "cider vinegar"));
-        BuffaloDrumsticksIngredients.add(new Ingredient(2, Unit.tbsp, "worcestershire sauce"));
-        BuffaloDrumsticksIngredients.add(new Ingredient(1, Unit.unit, "8 ounce carton dairy sour cream"));
-        BuffaloDrumsticksIngredients.add(new Ingredient(0.5, Unit.cup, "mayonnaise"));
-        BuffaloDrumsticksIngredients.add(new Ingredient(0.5, Unit.cup, "crumbled blue cheese"));
-        BuffaloDrumsticksIngredients.add(new Ingredient(0.5, Unit.tsp, "cayenne pepper"));
-        BuffaloDrumsticksIngredients.add(new Ingredient(2, Unit.unit, "celery sticks"));
+        BuffaloDrumsticksIngredients.add(new Ingredient(16, Unit.unit, "chicken drumsticks", ShoppingStatus.NONE));
+        BuffaloDrumsticksIngredients.add(new Ingredient(1, Unit.unit, "16 ounce bottle buffalo wing hot sauce", ShoppingStatus.NONE));
+        BuffaloDrumsticksIngredients.add(new Ingredient(0.25, Unit.cup, "tomato paste", ShoppingStatus.NONE));
+        BuffaloDrumsticksIngredients.add(new Ingredient(2, Unit.tbsp, "cider vinegar", ShoppingStatus.NONE));
+        BuffaloDrumsticksIngredients.add(new Ingredient(2, Unit.tbsp, "worcestershire sauce", ShoppingStatus.NONE));
+        BuffaloDrumsticksIngredients.add(new Ingredient(1, Unit.unit, "8 ounce carton dairy sour cream", ShoppingStatus.NONE));
+        BuffaloDrumsticksIngredients.add(new Ingredient(0.5, Unit.cup, "mayonnaise", ShoppingStatus.NONE));
+        BuffaloDrumsticksIngredients.add(new Ingredient(0.5, Unit.cup, "crumbled blue cheese", ShoppingStatus.NONE));
+        BuffaloDrumsticksIngredients.add(new Ingredient(0.5, Unit.tsp, "cayenne pepper", ShoppingStatus.NONE));
+        BuffaloDrumsticksIngredients.add(new Ingredient(2, Unit.unit, "celery sticks", ShoppingStatus.NONE));
 
-        ChickenPastaIngredients.add(new Ingredient(1, Unit.unit, "6 ounce jar marinated artichoke hearts"));
-        ChickenPastaIngredients.add(new Ingredient(1, Unit.tbsp, "olive oil"));
-        ChickenPastaIngredients.add(new Ingredient(12, Unit.oz, "skinless, boneless chicken breasts"));
-        ChickenPastaIngredients.add(new Ingredient(3, Unit.unit, "garlic cloves"));
-        ChickenPastaIngredients.add(new Ingredient(0.25, Unit.cup, "chicken broth"));
-        ChickenPastaIngredients.add(new Ingredient(0.25, Unit.cup, "dry white wine"));
-        ChickenPastaIngredients.add(new Ingredient(1, Unit.tsp, "dried oregano, crushed"));
-        ChickenPastaIngredients.add(new Ingredient(1, Unit.unit, "7 ounce jar roasted peppers"));
-        ChickenPastaIngredients.add(new Ingredient(0.25, Unit.cup, "pitted kalamata olives"));
-        ChickenPastaIngredients.add(new Ingredient(3, Unit.cup, "hot cooked campanelle"));
-        ChickenPastaIngredients.add(new Ingredient(0.25, Unit.cup, "crumbled feta cheese"));
+        ChickenPastaIngredients.add(new Ingredient(1, Unit.unit, "6 ounce jar marinated artichoke hearts", ShoppingStatus.NONE));
+        ChickenPastaIngredients.add(new Ingredient(1, Unit.tbsp, "olive oil", ShoppingStatus.NONE));
+        ChickenPastaIngredients.add(new Ingredient(12, Unit.oz, "skinless, boneless chicken breasts", ShoppingStatus.NONE));
+        ChickenPastaIngredients.add(new Ingredient(3, Unit.unit, "garlic cloves", ShoppingStatus.NONE));
+        ChickenPastaIngredients.add(new Ingredient(0.25, Unit.cup, "chicken broth", ShoppingStatus.NONE));
+        ChickenPastaIngredients.add(new Ingredient(0.25, Unit.cup, "dry white wine", ShoppingStatus.NONE));
+        ChickenPastaIngredients.add(new Ingredient(1, Unit.tsp, "dried oregano, crushed", ShoppingStatus.NONE));
+        ChickenPastaIngredients.add(new Ingredient(1, Unit.unit, "7 ounce jar roasted peppers", ShoppingStatus.NONE));
+        ChickenPastaIngredients.add(new Ingredient(0.25, Unit.cup, "pitted kalamata olives", ShoppingStatus.NONE));
+        ChickenPastaIngredients.add(new Ingredient(3, Unit.cup, "hot cooked campanelle", ShoppingStatus.NONE));
+        ChickenPastaIngredients.add(new Ingredient(0.25, Unit.cup, "crumbled feta cheese", ShoppingStatus.NONE));
 
-        GreenVegetableSoupIngredients.add(new Ingredient(2, Unit.tsp, "canola oil"));
-        GreenVegetableSoupIngredients.add(new Ingredient(1, Unit.unit, "medium onion, chopped"));
-        GreenVegetableSoupIngredients.add(new Ingredient(3, Unit.unit, "cloves garlic"));
-        GreenVegetableSoupIngredients.add(new Ingredient(1.5, Unit.tsp, "grated fresh ginger"));
-        GreenVegetableSoupIngredients.add(new Ingredient(3.5, Unit.cup, "water"));
-        GreenVegetableSoupIngredients.add(new Ingredient(1.25, Unit.cup, "less sodium vegetable broth"));
-        GreenVegetableSoupIngredients.add(new Ingredient(1, Unit.unit, "12 ounce package frozen shelled soybeans"));
-        GreenVegetableSoupIngredients.add(new Ingredient(1, Unit.unit, "9 ounce package frozen peas"));
-        GreenVegetableSoupIngredients.add(new Ingredient(2, Unit.tbsp, "reduced sodium soy sauce"));
-        GreenVegetableSoupIngredients.add(new Ingredient(0.25, Unit.tsp, "cayenne pepper"));
-        GreenVegetableSoupIngredients.add(new Ingredient(1, Unit.unit, "9 ounce package fresh spinach"));
-        GreenVegetableSoupIngredients.add(new Ingredient(1, Unit.unit, "medium red sweet pepper"));
+        GreenVegetableSoupIngredients.add(new Ingredient(2, Unit.tsp, "canola oil", ShoppingStatus.NONE));
+        GreenVegetableSoupIngredients.add(new Ingredient(1, Unit.unit, "medium onion, chopped", ShoppingStatus.NONE));
+        GreenVegetableSoupIngredients.add(new Ingredient(3, Unit.unit, "cloves garlic", ShoppingStatus.NONE));
+        GreenVegetableSoupIngredients.add(new Ingredient(1.5, Unit.tsp, "grated fresh ginger", ShoppingStatus.NONE));
+        GreenVegetableSoupIngredients.add(new Ingredient(3.5, Unit.cup, "water", ShoppingStatus.NONE));
+        GreenVegetableSoupIngredients.add(new Ingredient(1.25, Unit.cup, "less sodium vegetable broth", ShoppingStatus.NONE));
+        GreenVegetableSoupIngredients.add(new Ingredient(1, Unit.unit, "12 ounce package frozen shelled soybeans", ShoppingStatus.NONE));
+        GreenVegetableSoupIngredients.add(new Ingredient(1, Unit.unit, "9 ounce package frozen peas", ShoppingStatus.NONE));
+        GreenVegetableSoupIngredients.add(new Ingredient(2, Unit.tbsp, "reduced sodium soy sauce", ShoppingStatus.NONE));
+        GreenVegetableSoupIngredients.add(new Ingredient(0.25, Unit.tsp, "cayenne pepper", ShoppingStatus.NONE));
+        GreenVegetableSoupIngredients.add(new Ingredient(1, Unit.unit, "9 ounce package fresh spinach", ShoppingStatus.NONE));
+        GreenVegetableSoupIngredients.add(new Ingredient(1, Unit.unit, "medium red sweet pepper", ShoppingStatus.NONE));
 
-        HerbedOliveSpiralsIngredients.add(new Ingredient(1, Unit.unit, "16 ounce hot roll mix"));
-        HerbedOliveSpiralsIngredients.add(new Ingredient(0.33, Unit.cup, "oil pack dried tomatoes"));
-        HerbedOliveSpiralsIngredients.add(new Ingredient(2, Unit.unit, "3 ounce cream cheese, softened"));
-        HerbedOliveSpiralsIngredients.add(new Ingredient(0.33, Unit.cup, "finely chopped pitted ripe olives and/or green olives"));
-        HerbedOliveSpiralsIngredients.add(new Ingredient(0.33, Unit.cup, "chopped green onions"));
-        HerbedOliveSpiralsIngredients.add(new Ingredient(1, Unit.unit, "egg yolk"));
-        HerbedOliveSpiralsIngredients.add(new Ingredient(1, Unit.tsp, "cracked black pepper"));
-        HerbedOliveSpiralsIngredients.add(new Ingredient(0.5, Unit.tsp, "dried oregano or thyme, crushed"));
-        HerbedOliveSpiralsIngredients.add(new Ingredient(1, Unit.unit, "slightly beaten egg"));
-        HerbedOliveSpiralsIngredients.add(new Ingredient(1, Unit.tbsp, "water"));
+        HerbedOliveSpiralsIngredients.add(new Ingredient(1, Unit.unit, "16 ounce hot roll mix", ShoppingStatus.NONE));
+        HerbedOliveSpiralsIngredients.add(new Ingredient(0.33, Unit.cup, "oil pack dried tomatoes", ShoppingStatus.NONE));
+        HerbedOliveSpiralsIngredients.add(new Ingredient(2, Unit.unit, "3 ounce cream cheese, softened", ShoppingStatus.NONE));
+        HerbedOliveSpiralsIngredients.add(new Ingredient(0.33, Unit.cup, "finely chopped pitted ripe olives and/or green olives", ShoppingStatus.NONE));
+        HerbedOliveSpiralsIngredients.add(new Ingredient(0.33, Unit.cup, "chopped green onions", ShoppingStatus.NONE));
+        HerbedOliveSpiralsIngredients.add(new Ingredient(1, Unit.unit, "egg yolk", ShoppingStatus.NONE));
+        HerbedOliveSpiralsIngredients.add(new Ingredient(1, Unit.tsp, "cracked black pepper", ShoppingStatus.NONE));
+        HerbedOliveSpiralsIngredients.add(new Ingredient(0.5, Unit.tsp, "dried oregano or thyme, crushed", ShoppingStatus.NONE));
+        HerbedOliveSpiralsIngredients.add(new Ingredient(1, Unit.unit, "slightly beaten egg", ShoppingStatus.NONE));
+        HerbedOliveSpiralsIngredients.add(new Ingredient(1, Unit.tbsp, "water", ShoppingStatus.NONE));
 
-        PestoProvoloneTerrineIngredients.add(new Ingredient(1, Unit.unit, "8 ounce package cream cheese, softened"));
-        PestoProvoloneTerrineIngredients.add(new Ingredient(0.33, Unit.cup, "purchased basil pesto or dried tomato pesto"));
-        PestoProvoloneTerrineIngredients.add(new Ingredient(6, Unit.unit, "thinly sliced provolone cheese"));
-        PestoProvoloneTerrineIngredients.add(new Ingredient(0, Unit.unit, "thin baguette slices"));
+        PestoProvoloneTerrineIngredients.add(new Ingredient(1, Unit.unit, "8 ounce package cream cheese, softened", ShoppingStatus.NONE));
+        PestoProvoloneTerrineIngredients.add(new Ingredient(0.33, Unit.cup, "purchased basil pesto or dried tomato pesto", ShoppingStatus.NONE));
+        PestoProvoloneTerrineIngredients.add(new Ingredient(6, Unit.unit, "thinly sliced provolone cheese", ShoppingStatus.NONE));
+        PestoProvoloneTerrineIngredients.add(new Ingredient(0, Unit.unit, "thin baguette slices", ShoppingStatus.NONE));
 
-        RaspberryPieIngredients.add(new Ingredient(2, Unit.cup, "all-purpose flour"));
-        RaspberryPieIngredients.add(new Ingredient(0.5, Unit.tsp, "salt"));
-        RaspberryPieIngredients.add(new Ingredient(0.66, Unit.cup, "shortening"));
-        RaspberryPieIngredients.add(new Ingredient(6, Unit.tbsp, "water"));
-        RaspberryPieIngredients.add(new Ingredient(1, Unit.cup, "sugar"));
-        RaspberryPieIngredients.add(new Ingredient(0.33, Unit.cup, "all-purpose white flour"));
-        RaspberryPieIngredients.add(new Ingredient(5, Unit.cup, "raspberries"));
-        RaspberryPieIngredients.add(new Ingredient(2, Unit.tsp, "finely shredded lemon peel"));
-        RaspberryPieIngredients.add(new Ingredient(0, Unit.unit, "milk"));
-        RaspberryPieIngredients.add(new Ingredient(0, Unit.unit, "sugar"));
+        RaspberryPieIngredients.add(new Ingredient(2, Unit.cup, "all-purpose flour", ShoppingStatus.NONE));
+        RaspberryPieIngredients.add(new Ingredient(0.5, Unit.tsp, "salt", ShoppingStatus.NONE));
+        RaspberryPieIngredients.add(new Ingredient(0.66, Unit.cup, "shortening", ShoppingStatus.NONE));
+        RaspberryPieIngredients.add(new Ingredient(6, Unit.tbsp, "water", ShoppingStatus.NONE));
+        RaspberryPieIngredients.add(new Ingredient(1, Unit.cup, "sugar", ShoppingStatus.NONE));
+        RaspberryPieIngredients.add(new Ingredient(0.33, Unit.cup, "all-purpose white flour", ShoppingStatus.NONE));
+        RaspberryPieIngredients.add(new Ingredient(5, Unit.cup, "raspberries", ShoppingStatus.NONE));
+        RaspberryPieIngredients.add(new Ingredient(2, Unit.tsp, "finely shredded lemon peel", ShoppingStatus.NONE));
+        RaspberryPieIngredients.add(new Ingredient(0, Unit.unit, "milk", ShoppingStatus.NONE));
+        RaspberryPieIngredients.add(new Ingredient(0, Unit.unit, "sugar", ShoppingStatus.NONE));
 
-        ToastedAlmondsWithRosemaryIngredients.add(new Ingredient(8, Unit.oz, "unblanched almonds oro pecan halves"));
-        ToastedAlmondsWithRosemaryIngredients.add(new Ingredient(1.5, Unit.tsp, "margarine or butter"));
-        ToastedAlmondsWithRosemaryIngredients.add(new Ingredient(1, Unit.tbsp, "finely snipped fresh rosemary"));
-        ToastedAlmondsWithRosemaryIngredients.add(new Ingredient(1.5, Unit.tsp, "brown sugar"));
-        ToastedAlmondsWithRosemaryIngredients.add(new Ingredient(0.5, Unit.tsp, "salt"));
-        ToastedAlmondsWithRosemaryIngredients.add(new Ingredient(0.25, Unit.tsp, "ground red pepper"));
+        ToastedAlmondsWithRosemaryIngredients.add(new Ingredient(8, Unit.oz, "unblanched almonds oro pecan halves", ShoppingStatus.NONE));
+        ToastedAlmondsWithRosemaryIngredients.add(new Ingredient(1.5, Unit.tsp, "margarine or butter", ShoppingStatus.NONE));
+        ToastedAlmondsWithRosemaryIngredients.add(new Ingredient(1, Unit.tbsp, "finely snipped fresh rosemary", ShoppingStatus.NONE));
+        ToastedAlmondsWithRosemaryIngredients.add(new Ingredient(1.5, Unit.tsp, "brown sugar", ShoppingStatus.NONE));
+        ToastedAlmondsWithRosemaryIngredients.add(new Ingredient(0.5, Unit.tsp, "salt", ShoppingStatus.NONE));
+        ToastedAlmondsWithRosemaryIngredients.add(new Ingredient(0.25, Unit.tsp, "ground red pepper", ShoppingStatus.NONE));
 
 
         mAllIngredients.add(BuffaloDrumsticksIngredients);
@@ -259,27 +255,27 @@ public class RecipeData
     {
         mShoppingIngredientList = new ArrayList<>();
 
-        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "apples"));
-        mShoppingIngredientList.add(new Ingredient(1/2, Unit.cup, "milk"));
-        mShoppingIngredientList.add(new Ingredient(2, Unit.lb, "ground beef"));
-        mShoppingIngredientList.add(new Ingredient(1, Unit.kg, "flour"));
-        mShoppingIngredientList.add(new Ingredient(0.25, Unit.cup, "extra virgin olive oil"));
-        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "onions"));
-        mShoppingIngredientList.add(new Ingredient(15, Unit.oz, "2% milk"));
-        mShoppingIngredientList.add(new Ingredient(1, Unit.unit, "cabbage"));
-        mShoppingIngredientList.add(new Ingredient(6, Unit.cup, "rice"));
-        mShoppingIngredientList.add(new Ingredient(22, Unit.oz, "water"));
-        mShoppingIngredientList.add(new Ingredient(1, Unit.dash, "pepper"));
-        mShoppingIngredientList.add(new Ingredient(5.25, Unit.tsp, "vanilla extract"));
-        mShoppingIngredientList.add(new Ingredient(4, Unit.unit, "carrots"));
-        mShoppingIngredientList.add(new Ingredient(11, Unit.gram, "dried mint"));
-        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "apples"));
-        mShoppingIngredientList.add(new Ingredient(1/2, Unit.cup, "milk"));
-        mShoppingIngredientList.add(new Ingredient(2, Unit.lb, "ground beef"));
-        mShoppingIngredientList.add(new Ingredient(1, Unit.kg, "flour"));
-        mShoppingIngredientList.add(new Ingredient(0.25, Unit.cup, "extra virgin olive oil"));
-        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "onions"));
-        mShoppingIngredientList.add(new Ingredient(15, Unit.oz, "2% milk"));
+        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "apples", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(1/2, Unit.cup, "milk", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(2, Unit.lb, "ground beef", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(1, Unit.kg, "flour", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(0.25, Unit.cup, "extra virgin olive oil", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "onions", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(15, Unit.oz, "2% milk", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(1, Unit.unit, "cabbage", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(6, Unit.cup, "rice", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(22, Unit.oz, "water", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(1, Unit.dash, "pepper", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(5.25, Unit.tsp, "vanilla extract", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(4, Unit.unit, "carrots", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(11, Unit.gram, "dried mint", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "apples", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(1/2, Unit.cup, "milk", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(2, Unit.lb, "ground beef", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(1, Unit.kg, "flour", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(0.25, Unit.cup, "extra virgin olive oil", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "onions", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(15, Unit.oz, "2% milk", ShoppingStatus.ADDED));
     }
 
 
@@ -298,25 +294,25 @@ public class RecipeData
             for (int i = 0; i < recipeListNames.length; ++i)
             {
                 Recipe recipe = new Recipe();
-                recipe.name = recipeListNames[i];
-                recipe.imageName = recipeListNames[i].replaceAll("\\s+", "").toLowerCase();
-                recipe.imageUri = "android.resource://com.joemerhej.recipook/drawable/" + recipe.imageName;
-                recipe.preparationTimeMinutes = preparationTimes[i];
-                recipe.cookingTimeMinutes = cookingTimes[i];
+                recipe.mName = recipeListNames[i];
+                recipe.mImageName = recipeListNames[i].replaceAll("\\s+", "").toLowerCase();
+                recipe.mImageUri = "android.resource://com.joemerhej.recipook/drawable/" + recipe.mImageName;
+                recipe.mPreparationTimeMinutes = preparationTimes[i];
+                recipe.mCookingTimeMinutes = cookingTimes[i];
 
                 for(int j = 0; j < recipeListCategories[i].length; ++j)
                 {
-                    recipe.categories.add(recipeListCategories[i][j]);
+                    recipe.mCategories.add(recipeListCategories[i][j]);
                 }
 
                 for(int j = 0; j < recipeListDirections[i].length; ++j)
                 {
-                    recipe.directions.add(recipeListDirections[i][j]);
+                    recipe.mDirections.add(recipeListDirections[i][j]);
                 }
 
                 for(int j = 0; j < mAllIngredients.get(i).size(); ++j)
                 {
-                    recipe.ingredients.add(mAllIngredients.get(i).get(j));
+                    recipe.mIngredients.add(mAllIngredients.get(i).get(j));
                 }
 
                 mRecipelist.add(recipe);

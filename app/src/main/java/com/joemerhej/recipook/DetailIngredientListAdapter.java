@@ -25,7 +25,7 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
     private Context mContext;
 
     // list of ingredients
-    public ArrayList<Ingredient> mIngredientsList;
+    public ArrayList<Ingredient> mIngredientList;
 
     // click listener for the ingredient buttons that activity will implement and assign
     private OnIngredientButtonsClickListener mIngredientButtonsClickListeners;
@@ -70,7 +70,7 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         @Override
         public void afterTextChanged(Editable s)
         {
-            mIngredientsList.get(mIngredientPosition).name = s.toString();
+            mIngredientList.get(mIngredientPosition).mName = s.toString();
         }
     }
 
@@ -101,8 +101,8 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         @Override
         public void afterTextChanged(Editable s)
         {
-            mIngredientsList.get(mIngredientPosition).quantity = RecipookTextUtils.Instance().GetQuantityFromQuantityString(s.toString());
-            mIngredientsList.get(mIngredientPosition).unit = RecipookTextUtils.Instance().GetUnitFromQuantityString(s.toString());
+            mIngredientList.get(mIngredientPosition).mQuantity = RecipookTextUtils.Instance().GetQuantityFromQuantityString(s.toString());
+            mIngredientList.get(mIngredientPosition).mUnit = RecipookTextUtils.Instance().GetUnitFromQuantityString(s.toString());
         }
     }
 
@@ -149,6 +149,7 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
             mIngredientQuantity.addTextChangedListener(mIngredientQuantityEditTextListener);
         }
 
+        // implements onClick method
         @Override
         public void onClick(View v)
         {
@@ -169,13 +170,13 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
     public DetailIngredientListAdapter(Context context, ArrayList<Ingredient> ingredients)
     {
         mContext = context;
-        mIngredientsList = ingredients;
+        mIngredientList = ingredients;
     }
 
     // method to update the data used when canceling/discarding changes (like constructor)
     public void updateDataWith(ArrayList<Ingredient> ingredients)
     {
-        mIngredientsList = ingredients;
+        mIngredientList = ingredients;
     }
 
     // TODO: fix this memory leak (see onenote for details)
@@ -211,7 +212,7 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         Log.d("onBindViewHolder", "Binding position: " + position + " --- Size is: " + mOriginalIngredientQuantityEditTextBackground.size());
 
         // fill the views with data
-        Ingredient ingredient = mIngredientsList.get(position);
+        Ingredient ingredient = mIngredientList.get(position);
 
         // parse ingredient unit and quantity with the correct handling
         String ingredientUnit = RecipookTextUtils.Instance().GetUnitStringFromIngredient(ingredient);
@@ -220,7 +221,7 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         // update the listener position so it knows which EditText to listen to for each view, and set that text
         holder.mIngredientNameEditTextListener.updateIngredientPosition(position);
 
-        holder.mIngredientText.setText(ingredient.name);
+        holder.mIngredientText.setText(ingredient.mName);
         holder.mIngredientText.setSelection(holder.mIngredientText.getText().length());
 
         holder.mIngredientQuantityEditTextListener.updateIngredientPosition(position);
@@ -253,7 +254,7 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
     @Override
     public int getItemCount()
     {
-        return mIngredientsList.size();
+        return mIngredientList.size();
     }
 }
 
