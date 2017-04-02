@@ -25,7 +25,7 @@
 
     <!-- Preparation/Cooking time view -->
     <string name="detail_preparation_time_title">Preparation Time</string>
-    <string name="detail_preparation_time_text_default">1h 20m</string>
+    <string name="detail_preparation_time_text_default">20m</string>
     <string name="detail_cooking_time_title">Cooking Time</string>
     <string name="detail_cooking_time_text_default">1h 45m</string>
 

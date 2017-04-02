@@ -497,18 +497,33 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     }
 
     // method that will set the right durations in the view in view mode
+    // TODO: fix the hardconding of string here, implement RecipookTextUtils function for that
     public void handleDurationsViews()
     {
         // show hours only if they exist, otherwise show only minutes
-        if(mRecipe.mPreparationTimeMinutes /60 != 0)
-            mPreparationTimeText.setText(String.valueOf(mRecipe.mPreparationTimeMinutes / 60) + "h " + String.valueOf(mRecipe.mPreparationTimeMinutes % 60) + "m");
+        if(mRecipe.mPreparationTimeMinutes / 60 != 0)
+        {
+            if(mRecipe.mPreparationTimeMinutes % 60 != 0)
+                mPreparationTimeText.setText(String.valueOf(mRecipe.mPreparationTimeMinutes / 60) + "h " + String.valueOf(mRecipe.mPreparationTimeMinutes % 60) + "m");
+            else
+                mPreparationTimeText.setText(String.valueOf(mRecipe.mPreparationTimeMinutes / 60) + "h");
+        }
         else
+        {
             mPreparationTimeText.setText(String.valueOf(mRecipe.mPreparationTimeMinutes % 60) + "m");
+        }
 
         if(mRecipe.mCookingTimeMinutes /60 != 0)
-            mCookingTimeText.setText(String.valueOf(mRecipe.mCookingTimeMinutes / 60) + "h " + String.valueOf(mRecipe.mCookingTimeMinutes % 60) + "m");
+        {
+            if(mRecipe.mCookingTimeMinutes % 60 != 0)
+                mCookingTimeText.setText(String.valueOf(mRecipe.mCookingTimeMinutes / 60) + "h " + String.valueOf(mRecipe.mCookingTimeMinutes % 60) + "m");
+            else
+                mCookingTimeText.setText(String.valueOf(mRecipe.mCookingTimeMinutes / 60) + "h");
+        }
         else
+        {
             mCookingTimeText.setText(String.valueOf(mRecipe.mCookingTimeMinutes % 60) + "m");
+        }
     }
 
 

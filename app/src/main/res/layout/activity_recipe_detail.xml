@@ -226,16 +226,17 @@
                     android:id="@+id/detail_preparation_time_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:gravity="center"
                     android:onClick="onClickPreparationTimeLayout">
 
                     <TextView
                         android:id="@+id/detail_preparation_time_text"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_weight="1"
                         android:paddingEnd="@dimen/detail_durations_layout_text_vertical_padding"
                         android:paddingLeft="@dimen/detail_durations_layout_text_vertical_padding"
                         android:paddingRight="@dimen/detail_durations_layout_text_vertical_padding"
@@ -248,6 +249,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_chopping_green_36dp"/>
 
@@ -265,14 +267,15 @@
                     android:id="@+id/detail_cooking_time_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:gravity="center"
                     android:onClick="onClickCookingTimeLayout">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_cooking_green_36dp"/>
 
