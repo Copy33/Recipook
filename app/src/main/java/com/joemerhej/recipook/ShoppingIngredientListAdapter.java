@@ -39,7 +39,8 @@ public class ShoppingIngredientListAdapter extends RecyclerView.Adapter<Shopping
     public class ShoppingIngredientListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         // all the views of each row item
-        public RelativeLayout mShoppingIngredientHolder;
+        public RelativeLayout mShoppingIngredientLayout;
+        public TextView mShoppingIngredientQuantity;
         public TextView mShoppingIngredientText;
         public ImageView mShoppingIngredientImage;
 
@@ -50,12 +51,13 @@ public class ShoppingIngredientListAdapter extends RecyclerView.Adapter<Shopping
             super(itemView);
 
             // bind the views
-            mShoppingIngredientHolder = (RelativeLayout) itemView.findViewById(R.id.recycler_item_shopping_ingredient_holder);
+            mShoppingIngredientLayout = (RelativeLayout) itemView.findViewById(R.id.recycler_item_shopping_ingredient_holder);
+            mShoppingIngredientQuantity = (TextView) itemView.findViewById(R.id.recycler_item_shopping_ingredient_quantity);
             mShoppingIngredientText = (TextView) itemView.findViewById(R.id.recycler_item_shopping_ingredient_text);
             mShoppingIngredientImage = (ImageView) itemView.findViewById(R.id.recycler_item_shopping_ingredient_picture);
 
             // need to set the click listener
-            mShoppingIngredientHolder.setOnClickListener(this);
+            mShoppingIngredientLayout.setOnClickListener(this);
         }
 
         // implements onClick method
@@ -100,20 +102,31 @@ public class ShoppingIngredientListAdapter extends RecyclerView.Adapter<Shopping
         // get the ingredient from data
         Ingredient ingredient = mShoppingIngredientList.get(position);
 
+        // parse ingredient unit and quantity with the correct text handling
+        String ingredientUnit = RecipookTextUtils.Instance().GetUnitStringFromIngredient(ingredient);
+        String ingredientQuantity = RecipookTextUtils.Instance().GetQuantityStringFromIngredient(ingredient);
+
+        holder.mShoppingIngredientQuantity.setText(ingredientQuantity + " " + ingredientUnit);
+
         // set the ingredient name
         holder.mShoppingIngredientText.setText(ingredient.mName);
 
         // set the right styling depending on shopping status
         int grey = ContextCompat.getColor(mContext, R.color.categoryColorDisabled);
         int textColorPrimary = ContextCompat.getColor(mContext, R.color.textColorPrimary);
+        int colorPrimary = ContextCompat.getColor(mContext, R.color.colorPrimary);
 
         if(mShoppingIngredientList.get(position).mShoppingStatus == ShoppingStatus.CHECKED)
         {
+            holder.mShoppingIngredientQuantity.setTextColor(grey);
+            holder.mShoppingIngredientQuantity.getPaint().setStrikeThruText(true);
             holder.mShoppingIngredientText.setTextColor(grey);
             holder.mShoppingIngredientText.getPaint().setStrikeThruText(true);
         }
         else
         {
+            holder.mShoppingIngredientQuantity.setTextColor(colorPrimary);
+            holder.mShoppingIngredientQuantity.getPaint().setStrikeThruText(false);
             holder.mShoppingIngredientText.setTextColor(textColorPrimary);
             holder.mShoppingIngredientText.getPaint().setStrikeThruText(false);
         }

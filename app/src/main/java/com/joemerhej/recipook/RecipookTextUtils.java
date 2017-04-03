@@ -96,7 +96,8 @@ public final class RecipookTextUtils
         if(ingredient.mQuantity > 1.0)
         {
             if(ingredient.mUnit == Unit.cup || ingredient.mUnit == Unit.lb || ingredient.mUnit == Unit.kg || ingredient.mUnit == Unit.gram
-                    || ingredient.mUnit == Unit.liter || ingredient.mUnit == Unit.quart || ingredient.mUnit == Unit.pint)
+                    || ingredient.mUnit == Unit.liter || ingredient.mUnit == Unit.quart || ingredient.mUnit == Unit.pint
+                    || ingredient.mUnit == Unit.tbsp || ingredient.mUnit == Unit.tsp)
             {
                 ingredientUnit += "s";
             }
@@ -106,7 +107,7 @@ public final class RecipookTextUtils
             }
         }
 
-        // in case of "mUnit" return an empty text
+        // in case of "unit" return an empty text
         if(ingredient.mUnit == Unit.unit)
         {
             ingredientUnit = "";

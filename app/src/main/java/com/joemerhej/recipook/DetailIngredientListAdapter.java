@@ -214,7 +214,7 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
         // fill the views with data
         Ingredient ingredient = mIngredientList.get(position);
 
-        // parse ingredient unit and quantity with the correct handling
+        // parse ingredient unit and quantity with the correct text handling
         String ingredientUnit = RecipookTextUtils.Instance().GetUnitStringFromIngredient(ingredient);
         String ingredientQuantity = RecipookTextUtils.Instance().GetQuantityStringFromIngredient(ingredient);
 

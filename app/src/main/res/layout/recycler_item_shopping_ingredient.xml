@@ -7,16 +7,31 @@
                 android:layout_gravity="center">
 
     <TextView
+        android:id="@+id/recycler_item_shopping_ingredient_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/recycler_item_shopping_ingredient_picture"
+        android:layout_toRightOf="@+id/recycler_item_shopping_ingredient_picture"
+        android:paddingBottom="@dimen/detail_list_content_text_horizontal_padding"
+        android:paddingEnd="@dimen/detail_list_content_text_vertical_padding"
+        android:paddingLeft="@dimen/detail_list_content_text_vertical_padding"
+        android:paddingRight="@dimen/detail_list_content_text_vertical_padding"
+        android:paddingStart="@dimen/detail_list_content_text_vertical_padding"
+        android:paddingTop="@dimen/detail_list_content_text_horizontal_padding"
+        android:text="@string/detail_recycler_item_ingredient_quantity_default"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/detail_list_content_text_size"/>
+
+    <TextView
         android:id="@+id/recycler_item_shopping_ingredient_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/detail_list_content_text_vertical_padding"
-        android:layout_marginLeft="@dimen/detail_list_content_text_vertical_padding"
         android:layout_marginRight="@dimen/detail_list_content_text_vertical_padding"
-        android:layout_marginStart="@dimen/detail_list_content_text_vertical_padding"
-        android:layout_toEndOf="@+id/recycler_item_shopping_ingredient_picture"
-        android:layout_toRightOf="@+id/recycler_item_shopping_ingredient_picture"
+        android:layout_toEndOf="@+id/recycler_item_shopping_ingredient_quantity"
+        android:layout_toRightOf="@+id/recycler_item_shopping_ingredient_quantity"
         android:paddingBottom="@dimen/detail_list_content_text_horizontal_padding"
         android:paddingTop="@dimen/detail_list_content_text_horizontal_padding"
         android:text="@string/detail_recycler_item_ingredient_name_default"

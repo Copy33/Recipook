@@ -255,8 +255,9 @@ public class RecipeData
     {
         mShoppingIngredientList = new ArrayList<>();
 
+        mShoppingIngredientList.add(new Ingredient(5.25, Unit.tsp, "vanilla extract", ShoppingStatus.ADDED));
         mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "apples", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(1/2, Unit.cup, "milk", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(0.5, Unit.cup, "milk", ShoppingStatus.ADDED));
         mShoppingIngredientList.add(new Ingredient(2, Unit.lb, "ground beef", ShoppingStatus.ADDED));
         mShoppingIngredientList.add(new Ingredient(1, Unit.kg, "flour", ShoppingStatus.ADDED));
         mShoppingIngredientList.add(new Ingredient(0.25, Unit.cup, "extra virgin olive oil", ShoppingStatus.ADDED));
@@ -270,7 +271,7 @@ public class RecipeData
         mShoppingIngredientList.add(new Ingredient(4, Unit.unit, "carrots", ShoppingStatus.ADDED));
         mShoppingIngredientList.add(new Ingredient(11, Unit.gram, "dried mint", ShoppingStatus.ADDED));
         mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "apples", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(1/2, Unit.cup, "milk", ShoppingStatus.ADDED));
+        mShoppingIngredientList.add(new Ingredient(0.5, Unit.cup, "milk", ShoppingStatus.ADDED));
         mShoppingIngredientList.add(new Ingredient(2, Unit.lb, "ground beef", ShoppingStatus.ADDED));
         mShoppingIngredientList.add(new Ingredient(1, Unit.kg, "flour", ShoppingStatus.ADDED));
         mShoppingIngredientList.add(new Ingredient(0.25, Unit.cup, "extra virgin olive oil", ShoppingStatus.ADDED));
