@@ -30,7 +30,7 @@
         android:layout_marginRight="@dimen/detail_list_content_text_vertical_padding"
         android:layout_toEndOf="@id/recycler_item_detail_direction_edit_number"
         android:layout_toRightOf="@id/recycler_item_detail_direction_edit_number"
-        android:inputType="textCapSentences|textMultiLine"
+        android:inputType="textCapSentences|textMultiLine|textNoSuggestions"
         android:paddingBottom="@dimen/detail_list_content_text_horizontal_padding"
         android:paddingTop="@dimen/detail_list_content_text_horizontal_padding"
         android:text="@string/detail_recycler_item_direction_text_default"

@@ -354,7 +354,7 @@
                         android:id="@+id/detail_ingredient_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textMultiLine"
+                        android:inputType="textMultiLine|textNoSuggestions"
                         android:textSize="@dimen/detail_list_content_text_size"/>
                 </android.support.design.widget.TextInputLayout>
 
@@ -440,7 +440,7 @@
                         android:id="@+id/detail_direction_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textMultiLine"
+                        android:inputType="textMultiLine|textNoSuggestions"
                         android:textSize="@dimen/detail_list_content_text_size"/>
                 </android.support.design.widget.TextInputLayout>
 

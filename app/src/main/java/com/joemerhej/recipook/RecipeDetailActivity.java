@@ -3,6 +3,7 @@ package com.joemerhej.recipook;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -13,6 +14,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -22,6 +28,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -111,7 +120,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         // create temp recipe
         mRecipeBeforeEdit = new Recipe();
 
-        // set up the page header views
+        // set up the toolbar views
         mCollapsingToolbarImageView = (ImageView) findViewById(R.id.collapsing_toolbar_image_view);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
         mCollapsingToolbarLayout.setOnClickListener(mCollapsingToolbarLayoutClickListener);
@@ -159,7 +168,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         // set up edit mode views
         mEditAddIngredientLayout = (RelativeLayout) findViewById(R.id.detail_ingredient_add_layout);
         mEditAddIngredientText = (TextInputEditText) findViewById(R.id.detail_ingredient_edit_text);
-        //mEditAddIngredientText.addTextChangedListener(new MyAddIngredientEditTextWatcher()); // TODO (see other todo below)
+        mEditAddIngredientText.addTextChangedListener(new MyAddIngredientEditTextWatcher());
         mEditAddDirectionLayout = (RelativeLayout) findViewById(R.id.detail_direction_add_layout);
         mEditAddDirectionNumber = (TextView) findViewById(R.id.recycler_item_detail_direction_edit_number);
         mEditAddDirectionText = (TextInputEditText) findViewById(R.id.detail_direction_edit_text);
@@ -528,35 +537,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    // ADD INGREDIENT TEXTWATCHER TODO: Implement text watcher for add ingredient textinput.
-    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-//    // text watcher to be attached to the add ingredient editText
-//    public class MyAddIngredientEditTextWatcher implements TextWatcher
-//    {
-//        //boolean editing = false;
-//
-//        @Override
-//        public void beforeTextChanged(CharSequence s, int start, int count, int after)
-//        {
-//
-//        }
-//
-//        @Override
-//        public void onTextChanged(CharSequence s, int start, int before, int count)
-//        {
-//
-//        }
-//
-//        @Override
-//        public void afterTextChanged(Editable s)
-//        {
-//
-//        }
-//    }
-
-
-    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // INGREDIENT/DIRECTION RECYCLERVIEW ADAPTERS INTERFACES IMPLEMENTATION
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -592,6 +572,94 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             mAtLeastOneChange = true;
         }
     };
+
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ADD INGREDIENT TEXTWATCHER TODO: Implement text watcher for add ingredient textinput.
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    // text watcher to be attached to the add ingredient editText
+    public class MyAddIngredientEditTextWatcher implements TextWatcher
+    {
+        boolean editing = false;
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after)
+        {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count)
+        {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s)
+        {
+            if(editing)
+                return;
+
+            int [] qunIndices = RecipookTextUtils.Instance().GetQUNIndicesFromIngredientString(s.toString());
+            int length = s.length();
+            int colorStartIndex = 0;
+            int colorEndIndex = 0;
+
+            // if there are no quantity in the beginning...
+            if(qunIndices[0] == -1)
+            {
+                // ...and no unit, this will keep indices at 0 and color everything black
+                if(qunIndices[1] == -1)
+                {
+                }
+                // ...and valid quantity
+                else
+                {
+                    // ...and no name, this will color the whole text.
+                    if(qunIndices[2] == -1)
+                        colorEndIndex = length;
+                    // ...and a name
+                    else
+                        // this will color only the unit
+                        colorEndIndex = qunIndices[2];
+                }
+            }
+            // else if there is a valid quantity but no unit...
+            else if(qunIndices[1] == -1)
+            {
+                // ...and no name, this will color the whole text.
+                if(qunIndices[2] == -1)
+                    colorEndIndex = length;
+                // ...and a valid name, this will color quantity.
+                else
+                    colorEndIndex = qunIndices[2];
+            }
+            // else if there's a valid quantity and a valid unit...
+            else
+            {
+                // and no name, this will color the whole text.
+                if(qunIndices[2] == -1)
+                    colorEndIndex = length;
+                // and a valid name, this will color quantity and unit.
+                else
+                    colorEndIndex = qunIndices[2];
+            }
+
+            // set the primary color and text color spannables and apply them
+            int green = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
+            int black = ContextCompat.getColor(getApplicationContext(), R.color.textColorPrimary);
+            Spannable sectionToSpan = new SpannableString(s.toString());
+            sectionToSpan.setSpan(new ForegroundColorSpan(green), colorStartIndex, colorEndIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            sectionToSpan.setSpan(new ForegroundColorSpan(black), colorEndIndex, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            editing = true;
+            int startSelection = mEditAddIngredientText.getSelectionStart();
+            mEditAddIngredientText.setText(sectionToSpan);
+            mEditAddIngredientText.setSelection(startSelection);
+            editing = false;
+        }
+    }
 
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -14,7 +14,7 @@
 
 
 
-    <!-- recipe Detail Activity Dimensions -->
+    <!-- Recipe Detail Activity Dimensions -->
     <dimen name="detail_collapsing_toolbar_height">180dp</dimen>
     <dimen name="detail_collapsing_toolbar_text_size_collapsed">24sp</dimen>
     <dimen name="detail_collapsing_toolbar_text_size_expanded">28sp</dimen>
@@ -50,5 +50,8 @@
     <dimen name="detail_list_add_content_text_vertical_padding">8dp</dimen>
 
     <dimen name="detail_delete_button_horizontal_margin">48dp</dimen>
+
+
+    <!-- Shopping List Fragment Dimensions -->
 
 </resources>

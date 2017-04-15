@@ -308,7 +308,64 @@ public final class RecipookTextUtils
         }
         else return Unit.unit;
     }
+
+    // method that will return indices of quantity, unit, and name of ingredient string
+    public int [] GetQUNIndicesFromIngredientString(String s)
+    {
+        int [] result = {-1, -1, -1};
+
+        if(s == null || s.isEmpty())
+            return result;
+
+        String trimmed = s.trim();
+
+        String[] strings = trimmed.split("\\s+");
+
+        if(isValidQuantity(strings[0]))
+        {
+            result[0] = s.indexOf(strings[0]);
+
+            if(strings.length > 1 && isValidUnit(strings[1]))
+            {
+                result[1] = s.indexOf(strings[1]);
+
+                if(strings.length > 2)
+                {
+                    result[2] = s.indexOf(strings[2], result[1]+strings[1].length());
+                }
+            }
+            else if(strings.length > 1)
+            {
+                result[2] = s.indexOf(strings[1]);
+            }
+        }
+        else if(isValidUnit(strings[0]))
+        {
+            result[1] = s.indexOf(strings[0]);
+
+            if(strings.length > 1)
+            {
+                result[2] = s.indexOf(strings[1], result[1]+strings[0].length());
+            }
+        }
+        else
+        {
+            result[2] = s.indexOf(strings[0]);
+        }
+
+        return result;
+    }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
