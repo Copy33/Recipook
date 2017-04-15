@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="16dp"
-                android:paddingStart="16dp"
-                android:paddingRight="16dp"
-                android:paddingEnd="16dp">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:paddingEnd="16dp"
+              android:paddingLeft="16dp"
+              android:paddingRight="16dp"
+              android:paddingStart="16dp">
 
     <!--===================================== TIME VIEW ====================================-->
     <LinearLayout
@@ -14,53 +14,58 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingTop="16dp">
+
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end">
+            android:layout_weight="1"
+            android:gravity="end"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/dialog_edit_duration_hours"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00"
+                android:text="@string/number_00"
                 android:textSize="56sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="h"
+                android:text="@string/letter_hour"
+                android:textColor="@color/colorPrimary"
                 android:textSize="22sp"/>
 
             <TextView
                 android:id="@+id/dialog_edit_duration_minutes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00"
-                android:textSize="56sp"
                 android:paddingLeft="18dp"
-                android:paddingStart="18dp"/>
+                android:paddingStart="18dp"
+                android:text="@string/number_00"
+                android:textSize="56sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="m"
+                android:text="@string/letter_minute"
+                android:textColor="@color/colorPrimary"
                 android:textSize="22sp"/>
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/dialog_edit_duration_backspace_layout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:clickable="true"
             android:background="?attr/selectableItemBackground"
+            android:clickable="true"
             android:gravity="center"
+            android:paddingEnd="30dp"
             android:paddingLeft="30dp"
-            android:paddingStart="30dp"
             android:paddingRight="30dp"
-            android:paddingEnd="30dp">
+            android:paddingStart="30dp">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -80,52 +85,58 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:baselineAligned="false"
+        android:orientation="horizontal"
         android:paddingTop="16dp">
+
         <LinearLayout
             android:id="@+id/dialog_edit_duration_number_1_layout"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:background="?attr/selectableItemBackground">
+            android:gravity="center"
+            android:padding="20dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1"
+                android:text="@string/number_1"
                 android:textSize="28sp"/>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/dialog_edit_duration_number_2_layout"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:background="?attr/selectableItemBackground">
+            android:gravity="center"
+            android:padding="20dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2"
+                android:text="@string/number_2"
                 android:textSize="28sp"/>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/dialog_edit_duration_number_3_layout"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:background="?attr/selectableItemBackground">
+            android:gravity="center"
+            android:padding="20dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3"
+                android:text="@string/number_3"
                 android:textSize="28sp"/>
         </LinearLayout>
     </LinearLayout>
@@ -134,51 +145,57 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
         <LinearLayout
             android:id="@+id/dialog_edit_duration_number_4_layout"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:background="?attr/selectableItemBackground">
+            android:gravity="center"
+            android:padding="20dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4"
+                android:text="@string/number_4"
                 android:textSize="28sp"/>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/dialog_edit_duration_number_5_layout"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:background="?attr/selectableItemBackground">
+            android:gravity="center"
+            android:padding="20dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5"
+                android:text="@string/number_5"
                 android:textSize="28sp"/>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/dialog_edit_duration_number_6_layout"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:background="?attr/selectableItemBackground">
+            android:gravity="center"
+            android:padding="20dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="6"
+                android:text="@string/number_6"
                 android:textSize="28sp"/>
         </LinearLayout>
     </LinearLayout>
@@ -187,51 +204,57 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
         <LinearLayout
             android:id="@+id/dialog_edit_duration_number_7_layout"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:background="?attr/selectableItemBackground">
+            android:gravity="center"
+            android:padding="20dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="7"
+                android:text="@string/number_7"
                 android:textSize="28sp"/>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/dialog_edit_duration_number_8_layout"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:background="?attr/selectableItemBackground">
+            android:gravity="center"
+            android:padding="20dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="8"
+                android:text="@string/number_8"
                 android:textSize="28sp"/>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/dialog_edit_duration_number_9_layout"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:background="?attr/selectableItemBackground">
+            android:gravity="center"
+            android:padding="20dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="9"
+                android:text="@string/number_9"
                 android:textSize="28sp"/>
         </LinearLayout>
     </LinearLayout>
@@ -240,36 +263,40 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:gravity="center">
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="20dp">
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/dialog_edit_duration_number_0_layout"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:background="?attr/selectableItemBackground">
+            android:gravity="center"
+            android:padding="20dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text="@string/number_0"
                 android:textSize="28sp"/>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:gravity="center">
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="20dp">
         </LinearLayout>
     </LinearLayout>
 
