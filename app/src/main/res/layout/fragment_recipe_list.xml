@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="com.joemerhej.recipook.RecipeListTabFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recipe_recycler_view"
@@ -18,6 +19,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_margin="@dimen/padding_16dp"
         android:src="@android:drawable/ic_dialog_email"/>
 </android.support.design.widget.CoordinatorLayout>

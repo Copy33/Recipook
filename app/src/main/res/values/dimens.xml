@@ -10,48 +10,18 @@
     <dimen name="recycler_title_padding_left">10dp</dimen>
 
 
+    <dimen name="padding_0dp">0dp</dimen>
+    <dimen name="padding_8dp">8dp</dimen>
+    <dimen name="padding_10dp">10dp</dimen>
+    <dimen name="padding_16dp">16dp</dimen>
+    <dimen name="padding_48dp">48dp</dimen>
+    <dimen name="padding_180dp">180dp</dimen>
 
-
-
-
-    <!-- Recipe Detail Activity Dimensions -->
-    <dimen name="detail_collapsing_toolbar_height">180dp</dimen>
-    <dimen name="detail_collapsing_toolbar_text_size_collapsed">24sp</dimen>
-    <dimen name="detail_collapsing_toolbar_text_size_expanded">28sp</dimen>
-
-    <dimen name="detail_scrollview_vertical_padding">16dp</dimen>
-    <dimen name="detail_scrollview_horizontal_padding">16dp</dimen>
-
-    <dimen name="fab_margin">16dp</dimen>
-
-    <dimen name="detail_category_layout_vertical_padding">0dp</dimen>
-    <dimen name="detail_category_layout_horizontal_padding">16dp</dimen>
-    <dimen name="detail_category_image_padding">10dp</dimen>
-    <dimen name="detail_category_name_size">14sp</dimen>
-
-    <dimen name="detail_durations_layout_vertical_padding">0dp</dimen>
-    <dimen name="detail_durations_layout_horizontal_padding">16dp</dimen>
-    <dimen name="detail_durations_layout_text_vertical_padding">16dp</dimen>
-    <dimen name="detail_durations_layout_text_size">14sp</dimen>
-
-    <dimen name="detail_list_title_layout_height">48dp</dimen>
-    <dimen name="detail_list_title_horizontal_padding">8dp</dimen>
-    <dimen name="detail_list_title_vertical_padding">0dp</dimen>
-    <dimen name="detail_list_title_size">20sp</dimen>
-    <dimen name="detail_list_number_text_size">18sp</dimen>
-    <dimen name="detail_list_content_text_size">16sp</dimen>
-    <dimen name="detail_list_action_button_horizontal_padding">8dp</dimen>
-    <dimen name="detail_list_action_button_vertical_padding">8dp</dimen>
-    <dimen name="detail_list_content_text_horizontal_padding">8dp</dimen>
-    <dimen name="detail_list_content_text_vertical_padding">8dp</dimen>
-    <dimen name="detail_list_add_action_button_horizontal_padding">8dp</dimen>
-    <dimen name="detail_list_add_action_button_vertical_padding">8dp</dimen>
-    <dimen name="detail_list_add_content_text_horizontal_padding">0dp</dimen>
-    <dimen name="detail_list_add_content_text_vertical_padding">8dp</dimen>
-
-    <dimen name="detail_delete_button_horizontal_margin">48dp</dimen>
-
-
-    <!-- Shopping List Fragment Dimensions -->
+    <dimen name="text_size_14sp">14sp</dimen>
+    <dimen name="text_size_16sp">16sp</dimen>
+    <dimen name="text_size_18sp">18sp</dimen>
+    <dimen name="text_size_20sp">20sp</dimen>
+    <dimen name="text_size_24sp">24sp</dimen>
+    <dimen name="text_size_28sp">28sp</dimen>
 
 </resources>

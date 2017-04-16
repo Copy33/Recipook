@@ -14,15 +14,15 @@
         android:layout_toRightOf="@+id/recycler_item_detail_ingredient_add_to_shopping_list_button"
         android:backgroundTint="@color/colorPrimary"
         android:inputType="textMultiLine|textNoSuggestions"
-        android:paddingBottom="@dimen/detail_list_content_text_horizontal_padding"
-        android:paddingEnd="@dimen/detail_list_content_text_vertical_padding"
-        android:paddingLeft="@dimen/detail_list_content_text_vertical_padding"
-        android:paddingRight="@dimen/detail_list_content_text_vertical_padding"
-        android:paddingStart="@dimen/detail_list_content_text_vertical_padding"
-        android:paddingTop="@dimen/detail_list_content_text_horizontal_padding"
+        android:paddingBottom="@dimen/padding_8dp"
+        android:paddingEnd="@dimen/padding_8dp"
+        android:paddingLeft="@dimen/padding_8dp"
+        android:paddingRight="@dimen/padding_8dp"
+        android:paddingStart="@dimen/padding_8dp"
+        android:paddingTop="@dimen/padding_8dp"
         android:text="@string/detail_recycler_item_ingredient_quantity_default"
         android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/detail_list_content_text_size"/>
+        android:textSize="@dimen/text_size_16sp"/>
 
     <EditText
         android:id="@+id/recycler_item_detail_ingredient_text"
@@ -32,13 +32,13 @@
         android:layout_toEndOf="@+id/recycler_item_detail_ingredient_quantity"
         android:layout_toRightOf="@+id/recycler_item_detail_ingredient_quantity"
         android:inputType="textMultiLine|textNoSuggestions"
-        android:paddingBottom="@dimen/detail_list_content_text_horizontal_padding"
-        android:layout_marginEnd="@dimen/detail_list_content_text_vertical_padding"
-        android:layout_marginRight="@dimen/detail_list_content_text_vertical_padding"
-        android:paddingTop="@dimen/detail_list_content_text_horizontal_padding"
+        android:paddingBottom="@dimen/padding_8dp"
+        android:layout_marginEnd="@dimen/padding_8dp"
+        android:layout_marginRight="@dimen/padding_8dp"
+        android:paddingTop="@dimen/padding_8dp"
         android:text="@string/detail_recycler_item_ingredient_name_default"
         android:textColor="@color/textColorPrimary"
-        android:textSize="@dimen/detail_list_content_text_size"/>
+        android:textSize="@dimen/text_size_16sp"/>
 
     <ImageButton
         android:id="@+id/recycler_item_detail_ingredient_add_to_shopping_list_button"
@@ -46,12 +46,12 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:background="@android:color/transparent"
-        android:paddingBottom="@dimen/detail_list_content_text_horizontal_padding"
-        android:paddingEnd="@dimen/detail_list_action_button_vertical_padding"
-        android:paddingLeft="@dimen/detail_list_action_button_vertical_padding"
-        android:paddingRight="@dimen/detail_list_action_button_vertical_padding"
-        android:paddingStart="@dimen/detail_list_action_button_vertical_padding"
-        android:paddingTop="@dimen/detail_list_action_button_horizontal_padding"
+        android:paddingBottom="@dimen/padding_8dp"
+        android:paddingEnd="@dimen/padding_8dp"
+        android:paddingLeft="@dimen/padding_8dp"
+        android:paddingRight="@dimen/padding_8dp"
+        android:paddingStart="@dimen/padding_8dp"
+        android:paddingTop="@dimen/padding_8dp"
         android:src="@drawable/ic_add_circle_filled_green_24dp"/>
 
     <ImageButton
@@ -60,12 +60,12 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:background="@android:color/transparent"
-        android:paddingBottom="@dimen/detail_list_content_text_horizontal_padding"
-        android:paddingEnd="@dimen/detail_list_action_button_vertical_padding"
-        android:paddingLeft="@dimen/detail_list_action_button_vertical_padding"
-        android:paddingRight="@dimen/detail_list_action_button_vertical_padding"
-        android:paddingStart="@dimen/detail_list_action_button_vertical_padding"
-        android:paddingTop="@dimen/detail_list_action_button_horizontal_padding"
+        android:paddingBottom="@dimen/padding_8dp"
+        android:paddingEnd="@dimen/padding_8dp"
+        android:paddingLeft="@dimen/padding_8dp"
+        android:paddingRight="@dimen/padding_8dp"
+        android:paddingStart="@dimen/padding_8dp"
+        android:paddingTop="@dimen/padding_8dp"
         android:src="@drawable/ic_delete_red_24dp"/>
 
 </RelativeLayout>

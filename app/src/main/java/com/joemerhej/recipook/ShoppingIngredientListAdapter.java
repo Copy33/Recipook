@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
 /**
@@ -107,6 +106,10 @@ public class ShoppingIngredientListAdapter extends RecyclerView.Adapter<Shopping
         String ingredientQuantity = RecipookTextUtils.Instance().GetQuantityStringFromIngredient(ingredient);
 
         holder.mShoppingIngredientQuantity.setText(ingredientQuantity + " " + ingredientUnit);
+
+        // check if the quantity string is just the space I just added above
+        if(holder.mShoppingIngredientQuantity.getText().toString().compareTo(" ") == 0)
+            holder.mShoppingIngredientQuantity.setVisibility(View.GONE);
 
         // set the ingredient name
         holder.mShoppingIngredientText.setText(ingredient.mName);

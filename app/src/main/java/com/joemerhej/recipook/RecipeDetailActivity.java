@@ -3,7 +3,6 @@ package com.joemerhej.recipook;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -28,9 +27,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**
@@ -101,6 +97,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     private com.github.clans.fab.FloatingActionButton mEditFab;
     private com.github.clans.fab.FloatingActionButton mShareFab;
     private com.github.clans.fab.FloatingActionButton mAddToShoppingListFab;
+
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // ACTIVITY CREATE FUNCTION
@@ -575,7 +572,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    // ADD INGREDIENT TEXTWATCHER TODO: Implement text watcher for add ingredient textinput.
+    // ADD INGREDIENT TEXTWATCHER
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     // text watcher to be attached to the add ingredient editText

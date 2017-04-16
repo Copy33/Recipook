@@ -21,7 +21,7 @@
 
     <!-- collapsed toolbar styles -->
     <style name="ExpandedAppBar" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textSize">@dimen/detail_collapsing_toolbar_text_size_expanded</item>
+        <item name="android:textSize">@dimen/text_size_28sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textStyle">bold</item>
         <item name="android:shadowDy">0</item>
@@ -31,7 +31,7 @@
     </style>
 
     <style name="CollapsedAppBar" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textSize">@dimen/detail_collapsing_toolbar_text_size_collapsed</item>
+        <item name="android:textSize">@dimen/text_size_24sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textStyle">bold</item>
         <item name="android:shadowDy">0</item>
