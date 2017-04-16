@@ -108,8 +108,10 @@ public class ShoppingIngredientListAdapter extends RecyclerView.Adapter<Shopping
         holder.mShoppingIngredientQuantity.setText(ingredientQuantity + " " + ingredientUnit);
 
         // check if the quantity string is just the space I just added above
-        if(holder.mShoppingIngredientQuantity.getText().toString().compareTo(" ") == 0)
+        if(ingredientQuantity.isEmpty() && ingredientUnit.isEmpty())
             holder.mShoppingIngredientQuantity.setVisibility(View.GONE);
+        else
+            holder.mShoppingIngredientQuantity.setVisibility(View.VISIBLE);
 
         // set the ingredient name
         holder.mShoppingIngredientText.setText(ingredient.mName);
