@@ -23,11 +23,11 @@ public class MainTabsFragmentsAdapter extends FragmentPagerAdapter
         switch (position)
         {
             case 0:
-                return RecipeListTabFragment.Instance();
+                return RecipeListTabFragment.Instance(position);
             case 1:
-                return ShoppingListTabFragment.Instance();
+                return ShoppingListTabFragment.Instance(position);
             case 2:
-                return PlaceholderFragment.newInstance(position + 1);
+                return PlaceholderFragment.newInstance(position);
             default:
                 return null;
         }
@@ -47,11 +47,11 @@ public class MainTabsFragmentsAdapter extends FragmentPagerAdapter
         switch (position)
         {
             case 0:
-                return "Recipe List";
+                return "Recipes";
             case 1:
                 return "Shopping List";
             case 2:
-                return "SECTION 3";
+                return "TAB 3";
             default:
                 return null;
         }

@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -67,6 +68,21 @@ public class ShoppingListTabFragment extends Fragment
         }
     };
 
+    // main activity's main fab click listener for this fragment
+    MainActivity.OnMainFabClickListener mMainFabClickListener = new MainActivity.OnMainFabClickListener()
+    {
+        @Override
+        public void onMainFabClick()
+        {
+            Toast.makeText(mParentActivity,"from shopping list",Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    public MainActivity.OnMainFabClickListener getMainFabClickListener()
+    {
+        return mMainFabClickListener;
+    }
+
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // Constructor and Instance methods : Every fragment requires both
@@ -75,9 +91,15 @@ public class ShoppingListTabFragment extends Fragment
     {
     }
 
-    public static ShoppingListTabFragment Instance()
+    public static ShoppingListTabFragment Instance(int position)
     {
-        return new ShoppingListTabFragment();
+        ShoppingListTabFragment fragment = new ShoppingListTabFragment();
+
+        Bundle args = new Bundle();
+        args.putInt("TabPosition", position);
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
 

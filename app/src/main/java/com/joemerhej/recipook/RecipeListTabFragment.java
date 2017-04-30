@@ -2,7 +2,6 @@ package com.joemerhej.recipook;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import static android.R.attr.fragment;
 import static android.app.Activity.RESULT_OK;
 
 
@@ -34,6 +34,21 @@ public class RecipeListTabFragment extends Fragment
     // adapter of the recipe list
     public RecipeListAdapter mRecipeListAdapter;
 
+    // main activity's main fab click listener for this fragment
+    public MainActivity.OnMainFabClickListener mMainFabClickListener = new MainActivity.OnMainFabClickListener()
+    {
+        @Override
+        public void onMainFabClick()
+        {
+            Toast.makeText(mParentActivity,"from recipe list",Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    public MainActivity.OnMainFabClickListener getMainFabClickListener()
+    {
+        return mMainFabClickListener;
+    }
+
 
     // every fragment requires a default constructor and a Instance method
     public RecipeListTabFragment()
@@ -41,12 +56,12 @@ public class RecipeListTabFragment extends Fragment
     }
 
     // returns a RecipeListTabFragment instance
-    public static RecipeListTabFragment Instance()
+    public static RecipeListTabFragment Instance(int position)
     {
-        // TODO: this arguments bundle is empty and not needed
-        Bundle args = new Bundle();
-
         RecipeListTabFragment fragment = new RecipeListTabFragment();
+
+        Bundle args = new Bundle();
+        args.putInt("TabPosition", position);
         fragment.setArguments(args);
 
         return fragment;
@@ -74,18 +89,6 @@ public class RecipeListTabFragment extends Fragment
         mRecipeListAdapter = new RecipeListAdapter(mParentActivity, RecipeData.Instance().getRecipeList());
         mRecipesList.setAdapter(mRecipeListAdapter);
         mRecipeListAdapter.setOnRecipeItemClickListener(onRecipeItemClickListener);
-
-        // set up the FloatingActionButton and set a listener that will show the Snackbar when it's clicked
-        com.github.clans.fab.FloatingActionButton fab = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.main_fab);
-        fab.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Snackbar.make(view, "Switched to Grid view.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-                mStaggeredLayoutManager.setSpanCount(2);
-            }
-        });
 
         return view;
     }
