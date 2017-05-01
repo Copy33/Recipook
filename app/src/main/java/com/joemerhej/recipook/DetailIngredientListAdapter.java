@@ -248,6 +248,16 @@ public class DetailIngredientListAdapter extends RecyclerView.Adapter<DetailIngr
             holder.mEditDeleteIngredientButton.setVisibility(View.INVISIBLE);
             holder.mAddToShoppingListButton.setVisibility(View.VISIBLE);
         }
+
+        // show the right shopping list button depending on ingredient shopping status
+        if(ingredient.mShoppingStatus == ShoppingStatus.NONE)
+        {
+            holder.mAddToShoppingListButton.setImageResource(R.drawable.ic_add_circle_filled_green_24dp);
+        }
+        else
+        {
+            holder.mAddToShoppingListButton.setImageResource(R.drawable.ic_shopping_cart_green_24dp);
+        }
     }
 
     // every adapter needs this method

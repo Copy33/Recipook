@@ -1,5 +1,6 @@
 package com.joemerhej.recipook;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -255,35 +256,35 @@ public class RecipeData
     {
         mShoppingIngredientList = new ArrayList<>();
 
-        mShoppingIngredientList.add(new Ingredient(5.25, Unit.tsp, "vanilla extract", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "apples", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(0.5, Unit.cup, "milk", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(2, Unit.lb, "ground beef", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(1, Unit.kg, "flour", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(0.25, Unit.cup, "extra virgin olive oil", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "onions", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(15, Unit.oz, "2% milk", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(1, Unit.unit, "cabbage", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(6, Unit.cup, "rice", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(22, Unit.oz, "water", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(1, Unit.dash, "pepper", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(5.25, Unit.tsp, "vanilla extract", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(4, Unit.unit, "carrots", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(11, Unit.gram, "dried mint", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "apples", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(0.5, Unit.cup, "milk", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(2, Unit.lb, "ground beef", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(1, Unit.kg, "flour", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(0.25, Unit.cup, "extra virgin olive oil", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "onions", ShoppingStatus.ADDED));
-        mShoppingIngredientList.add(new Ingredient(15, Unit.oz, "2% milk", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(5.25, Unit.tsp, "vanilla extract", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "apples", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(0.5, Unit.cup, "milk", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(2, Unit.lb, "ground beef", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(1, Unit.kg, "flour", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(0.25, Unit.cup, "extra virgin olive oil", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "onions", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(15, Unit.oz, "2% milk", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(1, Unit.unit, "cabbage", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(6, Unit.cup, "rice", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(22, Unit.oz, "water", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(1, Unit.dash, "pepper", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(5.25, Unit.tsp, "vanilla extract", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(4, Unit.unit, "carrots", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(11, Unit.gram, "dried mint", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "apples", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(0.5, Unit.cup, "milk", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(2, Unit.lb, "ground beef", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(1, Unit.kg, "flour", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(0.25, Unit.cup, "extra virgin olive oil", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(3, Unit.unit, "onions", ShoppingStatus.ADDED));
+//        mShoppingIngredientList.add(new Ingredient(15, Unit.oz, "2% milk", ShoppingStatus.ADDED));
     }
 
 
     // instance method will create the instance or return it if it exists
     public static RecipeData Instance()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = new RecipeData();
             mRecipelist = new ArrayList<>();
@@ -301,17 +302,17 @@ public class RecipeData
                 recipe.mPreparationTimeMinutes = preparationTimes[i];
                 recipe.mCookingTimeMinutes = cookingTimes[i];
 
-                for(int j = 0; j < recipeListCategories[i].length; ++j)
+                for (int j = 0; j < recipeListCategories[i].length; ++j)
                 {
                     recipe.mCategories.add(recipeListCategories[i][j]);
                 }
 
-                for(int j = 0; j < recipeListDirections[i].length; ++j)
+                for (int j = 0; j < recipeListDirections[i].length; ++j)
                 {
                     recipe.mDirections.add(recipeListDirections[i][j]);
                 }
 
-                for(int j = 0; j < mAllIngredients.get(i).size(); ++j)
+                for (int j = 0; j < mAllIngredients.get(i).size(); ++j)
                 {
                     recipe.mIngredients.add(mAllIngredients.get(i).get(j));
                 }
@@ -341,6 +342,36 @@ public class RecipeData
     public void removeRecipe(int recipeIndex)
     {
         mRecipelist.remove(recipeIndex);
+    }
+
+    // method to add a shopping ingredient to the shopping list
+    public void addIngredientToShoppingList(Ingredient ingredient)
+    {
+        // TODO: add logic to check for existence first and concatinate ingredients
+        ingredient.mShoppingStatus = ShoppingStatus.ADDED;
+        mShoppingIngredientList.add(ingredient);
+    }
+
+    // method to remove a shopping ingredient from the shopping list
+    public void removeIngredientFromShoppingList(Ingredient ingredient)
+    {
+        // TODO: add logic to check for existence first (matching other than names)
+        ingredient.mShoppingStatus = ShoppingStatus.NONE;
+        mShoppingIngredientList.remove(ingredient);
+    }
+
+    // method to add a list of ingredients to the shopping list
+    public void addIngredientsToShoppingList(ArrayList<Ingredient> ingredients)
+    {
+        // TODO: add logic to check for existence first and concatinate ingredients
+        for (Ingredient ingredient : ingredients)
+        {
+            if(ingredient.mShoppingStatus != ShoppingStatus.ADDED)
+            {
+                ingredient.mShoppingStatus = ShoppingStatus.ADDED;
+                mShoppingIngredientList.add(ingredient);
+            }
+        }
     }
 }
 

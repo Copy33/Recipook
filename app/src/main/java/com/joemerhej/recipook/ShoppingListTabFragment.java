@@ -96,12 +96,25 @@ public class ShoppingListTabFragment extends Fragment
 
         // set up shopping ingredients list recycler view
         mShoppingIngredientsRecyclerView = (RecyclerView) view.findViewById(R.id.shopping_list_ingredients_list);
-        mShoppingIngredientListAdapter = new ShoppingIngredientListAdapter(mParentActivity, mShoppingIngredientList);
-        mShoppingIngredientsRecyclerView.setAdapter(mShoppingIngredientListAdapter);
         mShoppingIngredientsRecyclerView.setLayoutManager(new LinearLayoutManager(mParentActivity));
-        mShoppingIngredientListAdapter.setOnShoppingIngredientClickListener(mShoppingIngredientClickListener);
 
         return view;
+    }
+
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // FRAGMENT RESUME FUNCTION : set up the shopping list adapter since other activities/fragments will modify the shopping list
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        // set up shopping ingredients list recycler view
+        mShoppingIngredientListAdapter = new ShoppingIngredientListAdapter(mParentActivity, mShoppingIngredientList);
+        mShoppingIngredientsRecyclerView.setAdapter(mShoppingIngredientListAdapter);
+        mShoppingIngredientListAdapter.setOnShoppingIngredientClickListener(mShoppingIngredientClickListener);
     }
 
 
@@ -176,6 +189,7 @@ public class ShoppingListTabFragment extends Fragment
             {
                 if (mShoppingIngredientList.get(i).mShoppingStatus == ShoppingStatus.CHECKED)
                 {
+                    mShoppingIngredientList.get(i).mShoppingStatus = ShoppingStatus.NONE;
                     mShoppingIngredientList.remove(i);
                     mShoppingIngredientListAdapter.notifyItemRemoved(i);
                 }
@@ -184,9 +198,9 @@ public class ShoppingListTabFragment extends Fragment
             int postSize = mShoppingIngredientList.size();
 
             if (postSize == originalSize)
-                Toast.makeText(mParentActivity, getResources().getString(R.string.shopping_list_clear_text_empty), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mParentActivity, getResources().getString(R.string.shopping_list_clear_notification_text_empty), Toast.LENGTH_SHORT).show();
             else
-                Toast.makeText(mParentActivity, getResources().getString(R.string.shopping_list_clear_text_non_empty), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mParentActivity, getResources().getString(R.string.shopping_list_clear_notification_text_non_empty), Toast.LENGTH_SHORT).show();
         }
     };
 

@@ -481,6 +481,7 @@
         app:menu_colorNormal="#DA4336"
         app:menu_colorPressed="#E75043"
         app:menu_colorRipple="#E75043"
+        app:menu_labels_colorRipple="@android:color/transparent"
         app:menu_icon="@drawable/ic_restaurant_menu_white_24dp"
         app:menu_openDirection="up">
 

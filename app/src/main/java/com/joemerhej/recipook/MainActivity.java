@@ -6,10 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.View;
-
 import java.util.ArrayList;
-
-import static android.R.attr.fragment;
 
 
 /**
@@ -29,6 +26,9 @@ public class MainActivity extends AppCompatActivity
 
     // Floating action button shared by all tab fragments
     private com.github.clans.fab.FloatingActionButton mMainFab;
+
+    // starting tab position
+    private int mStartingTabPosition;
 
     // interface for fab listener
     public interface OnMainFabClickListener
@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mStartingTabPosition = getIntent().getIntExtra("TabToShow", 0);
+
         mTabTitles.add("Recipe List");
         mTabTitles.add("Shopping List");
         mTabTitles.add("tab 3");
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity
         // set up the ViewPager with the adapter.
         mViewPager = (ViewPager) findViewById(R.id.main_view_pager);
         mViewPager.setAdapter(mTabFragmentPagerAdapter);
+        mViewPager.setCurrentItem(mStartingTabPosition);
 
         // set up the TabLayout with the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -76,25 +79,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onPageSelected(int position)
             {
-                Fragment fragment = mTabFragmentPagerAdapter.getFragment(position);
-
-                switch (position)
-                {
-                    case 0:
-                        mMainFab.setImageResource(R.drawable.ic_add_white_24dp);
-                        if (fragment != null)
-                            setMainFabClickListener(((RecipeListTabFragment) fragment).mMainFabClickListener);
-                        return;
-                    case 1:
-                        mMainFab.setImageResource(R.drawable.ic_clear_white_24dp);
-                        if (fragment != null)
-                            setMainFabClickListener(((ShoppingListTabFragment) fragment).mMainFabClickListener);
-                        return;
-                    case 2:
-                        mMainFab.setImageResource(R.drawable.ic_add_white_24dp);
-                        return;
-
-                }
+                setupMainFab(position);
             }
 
             @Override
@@ -105,6 +90,7 @@ public class MainActivity extends AppCompatActivity
 
         // set up the main fab
         mMainFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.main_activity_fab);
+        setupMainFab(mStartingTabPosition);
         mMainFab.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -113,15 +99,36 @@ public class MainActivity extends AppCompatActivity
                 // if the click listener is not set, set it to the listener of the recipe page (landing page)
                 if (mMainFabClickListener == null)
                 {
-                    Fragment fragment = mTabFragmentPagerAdapter.getFragment(0);
-                    if(fragment != null)
-                        setMainFabClickListener(((RecipeListTabFragment) fragment).mMainFabClickListener);
+                    setupMainFab(mStartingTabPosition);
                 }
 
                 // if the click listener is set, call the interface onMainFabClick function;
                 mMainFabClickListener.onMainFabClick();
             }
         });
+    }
+
+    void setupMainFab(int tabPosition)
+    {
+        Fragment fragment = mTabFragmentPagerAdapter.getFragment(tabPosition);
+
+        switch (tabPosition)
+        {
+            case 0:
+                mMainFab.setImageResource(R.drawable.ic_add_white_24dp);
+                if (fragment != null)
+                    setMainFabClickListener(((RecipeListTabFragment) fragment).mMainFabClickListener);
+                return;
+            case 1:
+                mMainFab.setImageResource(R.drawable.ic_clear_white_24dp);
+                if (fragment != null)
+                    setMainFabClickListener(((ShoppingListTabFragment) fragment).mMainFabClickListener);
+                return;
+            case 2:
+                mMainFab.setImageResource(R.drawable.ic_add_white_24dp);
+                return;
+
+        }
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------

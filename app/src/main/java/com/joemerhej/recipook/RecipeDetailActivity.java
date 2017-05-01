@@ -18,6 +18,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -27,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
+
 
 
 /**
@@ -190,7 +192,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
         mAddToShoppingListFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.recipe_detail_add_to_shopping_list_fab);
         mAddToShoppingListFab.setOnClickListener(mClickDetailFabsListener);
-        mAddToShoppingListFab.setEnabled(false); //TODO: implement adding to shopping list and enable this button
 
         // set up input manager
         mInputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -205,6 +206,17 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         engageViewMode();
     }
 
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ACTIVITY RESUME FUNCTION : refresh the ingredient list in case changes were made in the shopping list
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        mIngredientListAdapter.notifyItemRangeChanged(0, mRecipe.mIngredients.size());
+    }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // BACK BUTTON PRESSED LISTENER
@@ -328,6 +340,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
                     break;
 
                 case R.id.recipe_detail_add_to_shopping_list_fab:
+                    handleAddToShoppingListButtonClicked();
                     break;
             }
         }
@@ -358,6 +371,30 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
 
     }
 
+    // what happens when the add to shopping list button is clicked
+    private void handleAddToShoppingListButtonClicked()
+    {
+        RecipeData.Instance().addIngredientsToShoppingList(mRecipe.mIngredients);
+
+        mIngredientListAdapter.notifyItemRangeChanged(0, mRecipe.mIngredients.size());
+
+        mMainFAM.close(true);
+
+        Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.detail_add_ingredients_to_shopping_list_notification_text), Snackbar.LENGTH_LONG)
+                .setAction("VIEW", new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra("TabToShow", 1);
+                        startActivity(intent);
+                    }
+                })
+                .setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent))
+                .show();
+    }
+
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // EDIT MODE AND VIEW MODE METHODS
@@ -385,7 +422,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         // make the edit views visible
         mEditAddIngredientLayout.setVisibility(View.VISIBLE);
         mEditAddDirectionLayout.setVisibility(View.VISIBLE);
-        mEditAddDirectionNumber.setText(String.valueOf(mRecipe.mDirections.size()+1) + ".");
+        mEditAddDirectionNumber.setText(String.valueOf(mRecipe.mDirections.size() + 1) + ".");
         mDeleteRecipeButton.setVisibility(View.VISIBLE);
 
         // notify the recycler view adapters so they make the right changes to theirs views
@@ -507,9 +544,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
     public void handleDurationsViews()
     {
         // show hours only if they exist, otherwise show only minutes
-        if(mRecipe.mPreparationTimeMinutes / 60 != 0)
+        if (mRecipe.mPreparationTimeMinutes / 60 != 0)
         {
-            if(mRecipe.mPreparationTimeMinutes % 60 != 0)
+            if (mRecipe.mPreparationTimeMinutes % 60 != 0)
                 mPreparationTimeText.setText(String.valueOf(mRecipe.mPreparationTimeMinutes / 60) + "h " + String.valueOf(mRecipe.mPreparationTimeMinutes % 60) + "m");
             else
                 mPreparationTimeText.setText(String.valueOf(mRecipe.mPreparationTimeMinutes / 60) + "h");
@@ -519,9 +556,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             mPreparationTimeText.setText(String.valueOf(mRecipe.mPreparationTimeMinutes % 60) + "m");
         }
 
-        if(mRecipe.mCookingTimeMinutes /60 != 0)
+        if (mRecipe.mCookingTimeMinutes / 60 != 0)
         {
-            if(mRecipe.mCookingTimeMinutes % 60 != 0)
+            if (mRecipe.mCookingTimeMinutes % 60 != 0)
                 mCookingTimeText.setText(String.valueOf(mRecipe.mCookingTimeMinutes / 60) + "h " + String.valueOf(mRecipe.mCookingTimeMinutes % 60) + "m");
             else
                 mCookingTimeText.setText(String.valueOf(mRecipe.mCookingTimeMinutes / 60) + "h");
@@ -551,8 +588,28 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         @Override
         public void onIngredientAddToShoppingListButtonClick(View view, int position)
         {
-            //TODO: logic to add ingredient to shopping list
-            Snackbar.make(view, "Added " + mRecipe.mIngredients.get(position).mName + " to the Shopping List.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+            Ingredient ingredient = mRecipe.mIngredients.get(position);
+
+            if (ingredient.mShoppingStatus == ShoppingStatus.NONE)
+            {
+                RecipeData.Instance().addIngredientToShoppingList(ingredient);
+
+                mIngredientListAdapter.notifyItemChanged(position);
+
+                Toast.makeText(getApplication(), getResources().getString(R.string.detail_add_ingredient_to_shopping_list_notification_text_start)
+                        + " " + ingredient.mName
+                        + " " + getResources().getString(R.string.detail_add_ingredient_to_shopping_list_notification_text_end), Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                RecipeData.Instance().removeIngredientFromShoppingList(ingredient);
+
+                mIngredientListAdapter.notifyItemChanged(position);
+
+                Toast.makeText(getApplication(), getResources().getString(R.string.detail_remove_ingredient_from_shopping_list_notification_text_start)
+                        + " " + ingredient.mName
+                        + " " + getResources().getString(R.string.detail_remove_ingredient_from_shopping_list_notification_text_end), Toast.LENGTH_SHORT).show();
+            }
         }
     };
 
@@ -565,7 +622,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             mRecipe.mDirections.remove(position);
             mDirectionListAdapter.notifyItemRemoved(position);
             mDirectionListAdapter.notifyItemRangeChanged(position, mDirectionListAdapter.getItemCount());   // this updates the numbers
-            mEditAddDirectionNumber.setText(String.valueOf(mRecipe.mDirections.size()+1) + ".");
+            mEditAddDirectionNumber.setText(String.valueOf(mRecipe.mDirections.size() + 1) + ".");
             mAtLeastOneChange = true;
         }
     };
@@ -595,40 +652,40 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         @Override
         public void afterTextChanged(Editable s)
         {
-            if(editing)
+            if (editing)
                 return;
 
-            int [] qunIndices = RecipookTextUtils.Instance().GetQUNIndicesFromIngredientString(s.toString());
+            int[] qunIndices = RecipookTextUtils.Instance().GetQUNIndicesFromIngredientString(s.toString());
             int length = s.length();
             int colorStartIndex = 0;
             int colorEndIndex = 0;
 
             // if there are no quantity in the beginning...
-            if(qunIndices[0] == -1)
+            if (qunIndices[0] == -1)
             {
                 // ...and no unit, this will keep indices at 0 and color everything black
-                if(qunIndices[1] == -1)
+                if (qunIndices[1] == -1)
                 {
                 }
                 // ...and valid quantity
                 else
                 {
                     // ...and no name, this will color the whole text.
-                    if(qunIndices[2] == -1)
+                    if (qunIndices[2] == -1)
                         colorEndIndex = length;
-                    // ...and a name
+                        // ...and a name
                     else
                         // this will color only the unit
                         colorEndIndex = qunIndices[2];
                 }
             }
             // else if there is a valid quantity but no unit...
-            else if(qunIndices[1] == -1)
+            else if (qunIndices[1] == -1)
             {
                 // ...and no name, this will color the whole text.
-                if(qunIndices[2] == -1)
+                if (qunIndices[2] == -1)
                     colorEndIndex = length;
-                // ...and a valid name, this will color quantity.
+                    // ...and a valid name, this will color quantity.
                 else
                     colorEndIndex = qunIndices[2];
             }
@@ -636,9 +693,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
             else
             {
                 // and no name, this will color the whole text.
-                if(qunIndices[2] == -1)
+                if (qunIndices[2] == -1)
                     colorEndIndex = length;
-                // and a valid name, this will color quantity and unit.
+                    // and a valid name, this will color quantity and unit.
                 else
                     colorEndIndex = qunIndices[2];
             }
@@ -696,7 +753,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements EditRecip
         mDirectionListAdapter.notifyItemInserted(mRecipe.mDirections.size() - 1);
 
         mEditAddDirectionText.getText().clear();
-        mEditAddDirectionNumber.setText(String.valueOf(mRecipe.mDirections.size()+1) + ".");
+        mEditAddDirectionNumber.setText(String.valueOf(mRecipe.mDirections.size() + 1) + ".");
 
         mAtLeastOneChange = true;
     }
