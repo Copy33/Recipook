@@ -7,6 +7,10 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.ArrayList;
+
+import static android.R.attr.fragment;
+
 
 /**
  * Created by Joe Merhej on 1/21/17.
@@ -14,11 +18,14 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity
 {
-    // adapter for the different tab fragments
-    private MainTabsFragmentsAdapter mTabFragmentPagerAdapter;
+    // tab titles of the main activity
+    private ArrayList<String> mTabTitles = new ArrayList<>();
 
     // ViewPager is the view that will hold all the fragments
     private ViewPager mViewPager;
+
+    // adapter for the different tab fragments
+    private MainTabsFragmentsAdapter mTabFragmentPagerAdapter;
 
     // Floating action button shared by all tab fragments
     private com.github.clans.fab.FloatingActionButton mMainFab;
@@ -33,14 +40,22 @@ public class MainActivity extends AppCompatActivity
     private OnMainFabClickListener mMainFabClickListener;
 
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // ACTIVITY CREATE FUNCTION
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mTabTitles.add("Recipe List");
+        mTabTitles.add("Shopping List");
+        mTabTitles.add("tab 3");
+
         // create the adapter that will return a fragment for each of the primary sections of the activity.
-        mTabFragmentPagerAdapter = new MainTabsFragmentsAdapter(getSupportFragmentManager());
+        mTabFragmentPagerAdapter = new MainTabsFragmentsAdapter(getSupportFragmentManager(), mTabTitles);
 
         // set up the ViewPager with the adapter.
         mViewPager = (ViewPager) findViewById(R.id.main_view_pager);
@@ -50,18 +65,7 @@ public class MainActivity extends AppCompatActivity
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        // set up the FloatingActionButton
-        mMainFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.main_activity_fab);
-        mMainFab.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                mMainFabClickListener.onMainFabClick();
-            }
-        });
-
-
+        // set up the viewpager on page change listener
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
         {
             @Override
@@ -72,17 +76,19 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onPageSelected(int position)
             {
+                Fragment fragment = mTabFragmentPagerAdapter.getFragment(position);
+
                 switch (position)
                 {
                     case 0:
                         mMainFab.setImageResource(R.drawable.ic_add_white_24dp);
-                        RecipeListTabFragment recipeFragment = (RecipeListTabFragment) mTabFragmentPagerAdapter.getItem(position);
-                        setMainFabClickListener(recipeFragment.getMainFabClickListener());
+                        if (fragment != null)
+                            setMainFabClickListener(((RecipeListTabFragment) fragment).mMainFabClickListener);
                         return;
                     case 1:
                         mMainFab.setImageResource(R.drawable.ic_clear_white_24dp);
-                        ShoppingListTabFragment shoppingFragment = (ShoppingListTabFragment) mTabFragmentPagerAdapter.getItem(position);
-                        setMainFabClickListener(shoppingFragment.getMainFabClickListener());
+                        if (fragment != null)
+                            setMainFabClickListener(((ShoppingListTabFragment) fragment).mMainFabClickListener);
                         return;
                     case 2:
                         mMainFab.setImageResource(R.drawable.ic_add_white_24dp);
@@ -96,12 +102,61 @@ public class MainActivity extends AppCompatActivity
             {
             }
         });
+
+        // set up the main fab
+        mMainFab = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.main_activity_fab);
+        mMainFab.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                // if the click listener is not set, set it to the listener of the recipe page (landing page)
+                if (mMainFabClickListener == null)
+                {
+                    Fragment fragment = mTabFragmentPagerAdapter.getFragment(0);
+                    if(fragment != null)
+                        setMainFabClickListener(((RecipeListTabFragment) fragment).mMainFabClickListener);
+                }
+
+                // if the click listener is set, call the interface onMainFabClick function;
+                mMainFabClickListener.onMainFabClick();
+            }
+        });
     }
 
-    // setter for the fab click listener
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // SETTER FOR MAIN FAB LISTENER
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     public void setMainFabClickListener(final OnMainFabClickListener mainFabClickListener)
     {
         mMainFabClickListener = mainFabClickListener;
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

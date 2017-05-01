@@ -15,11 +15,9 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -36,7 +34,7 @@ public class ShoppingListTabFragment extends Fragment
     // parent activity of this fragment
     public Activity mParentActivity;
 
-    // shopping list of activity, this is a shallow copy of RecipeData
+    // shopping list of activity, this is a shallow copy from RecipeData
     public ArrayList<Ingredient> mShoppingIngredientList;
 
     // views : header area - header image, add ingredient views
@@ -47,46 +45,12 @@ public class ShoppingListTabFragment extends Fragment
     // views : the shopping ingredients recycler view
     private RecyclerView mShoppingIngredientsRecyclerView;
     private ShoppingIngredientListAdapter mShoppingIngredientListAdapter;
-    private ShoppingIngredientListAdapter.OnShoppingIngredientClickListener mShoppingIngredientClickListener = new ShoppingIngredientListAdapter.OnShoppingIngredientClickListener()
-    {
-        @Override
-        public void onIngredientClick(View view, int position)
-        {
-            // mark ingredient checked if it isn't
-            Ingredient clickedIngredient = mShoppingIngredientList.get(position);
-            if (clickedIngredient.mShoppingStatus != ShoppingStatus.CHECKED)
-            {
-                clickedIngredient.mShoppingStatus = ShoppingStatus.CHECKED;
-                mShoppingIngredientListAdapter.notifyItemChanged(position);
-            }
-            // if it is checked, uncheck it
-            else
-            {
-                clickedIngredient.mShoppingStatus = ShoppingStatus.ADDED;
-                mShoppingIngredientListAdapter.notifyItemChanged(position);
-            }
-        }
-    };
-
-    // main activity's main fab click listener for this fragment
-    MainActivity.OnMainFabClickListener mMainFabClickListener = new MainActivity.OnMainFabClickListener()
-    {
-        @Override
-        public void onMainFabClick()
-        {
-            Toast.makeText(mParentActivity,"from shopping list",Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    public MainActivity.OnMainFabClickListener getMainFabClickListener()
-    {
-        return mMainFabClickListener;
-    }
 
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    // Constructor and Instance methods : Every fragment requires both
+    // CONSTRUCTOR AND INSTANCE METHODS - Every fragment requires both
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     public ShoppingListTabFragment()
     {
     }
@@ -106,6 +70,7 @@ public class ShoppingListTabFragment extends Fragment
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // FRAGMENT CREATE FUNCTION : Creates the view
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -141,6 +106,32 @@ public class ShoppingListTabFragment extends Fragment
 
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // CLICK LISTENERS : Ingredient click listener
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    private ShoppingIngredientListAdapter.OnShoppingIngredientClickListener mShoppingIngredientClickListener = new ShoppingIngredientListAdapter.OnShoppingIngredientClickListener()
+    {
+        @Override
+        public void onIngredientClick(View view, int position)
+        {
+            // mark ingredient checked if it isn't
+            Ingredient clickedIngredient = mShoppingIngredientList.get(position);
+            if (clickedIngredient.mShoppingStatus != ShoppingStatus.CHECKED)
+            {
+                clickedIngredient.mShoppingStatus = ShoppingStatus.CHECKED;
+                mShoppingIngredientListAdapter.notifyItemChanged(position);
+            }
+            // if it is checked, uncheck it
+            else
+            {
+                clickedIngredient.mShoppingStatus = ShoppingStatus.ADDED;
+                mShoppingIngredientListAdapter.notifyItemChanged(position);
+            }
+        }
+    };
+
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // CLICK LISTENERS : Add Ingredient Button
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -149,17 +140,18 @@ public class ShoppingListTabFragment extends Fragment
         @Override
         public void onClick(View v)
         {
-            mShoppingIngredientsRecyclerView.scrollToPosition(0);
-
             String newIngredientText = mAddIngredientEditText.getText().toString();
             newIngredientText = newIngredientText.trim();
 
             if (newIngredientText.isEmpty())
                 return;
 
+            mShoppingIngredientsRecyclerView.scrollToPosition(0);
+
             Ingredient newIngredient = RecipookTextUtils.Instance().GetIngredientFromIngredientString(newIngredientText);
             if (newIngredient != null)
             {
+                newIngredient.mShoppingStatus = ShoppingStatus.ADDED;
                 mShoppingIngredientList.add(0, newIngredient);
                 mShoppingIngredientListAdapter.notifyItemInserted(0);
                 mAddIngredientEditText.getText().clear();
@@ -169,11 +161,42 @@ public class ShoppingListTabFragment extends Fragment
 
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // CLICK LISTENERS : Main Fab - main activity will set this
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    public MainActivity.OnMainFabClickListener mMainFabClickListener = new MainActivity.OnMainFabClickListener()
+    {
+        @Override
+        public void onMainFabClick()
+        {
+            int originalSize = mShoppingIngredientList.size();
+
+            // remove the checked ingredients from the shopping list and notify the adapter
+            for (int i = mShoppingIngredientList.size() - 1; i >= 0; --i)
+            {
+                if (mShoppingIngredientList.get(i).mShoppingStatus == ShoppingStatus.CHECKED)
+                {
+                    mShoppingIngredientList.remove(i);
+                    mShoppingIngredientListAdapter.notifyItemRemoved(i);
+                }
+            }
+
+            int postSize = mShoppingIngredientList.size();
+
+            if (postSize == originalSize)
+                Toast.makeText(mParentActivity, getResources().getString(R.string.shopping_list_clear_text_empty), Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(mParentActivity, getResources().getString(R.string.shopping_list_clear_text_non_empty), Toast.LENGTH_SHORT).show();
+        }
+    };
+
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // ADD INGREDIENT TEXTWATCHER
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     // text watcher to be attached to the add ingredient editText
-    public class MyAddIngredientEditTextWatcher implements TextWatcher
+    private class MyAddIngredientEditTextWatcher implements TextWatcher
     {
         boolean editing = false;
 
@@ -192,26 +215,26 @@ public class ShoppingListTabFragment extends Fragment
         @Override
         public void afterTextChanged(Editable s)
         {
-            if(editing)
+            if (editing)
                 return;
 
-            int [] qunIndices = RecipookTextUtils.Instance().GetQUNIndicesFromIngredientString(s.toString());
+            int[] qunIndices = RecipookTextUtils.Instance().GetQUNIndicesFromIngredientString(s.toString());
             int length = s.length();
             int colorStartIndex = 0;
             int colorEndIndex = 0;
 
             // if there are no quantity in the beginning...
-            if(qunIndices[0] == -1)
+            if (qunIndices[0] == -1)
             {
                 // ...and no unit, this will keep indices at 0 and color everything black
-                if(qunIndices[1] == -1)
+                if (qunIndices[1] == -1)
                 {
                 }
-                // ...and valid quantity
+                // ...and valid unit
                 else
                 {
                     // ...and no name, this will color the whole text.
-                    if(qunIndices[2] == -1)
+                    if (qunIndices[2] == -1)
                         colorEndIndex = length;
                         // ...and a name
                     else
@@ -220,10 +243,10 @@ public class ShoppingListTabFragment extends Fragment
                 }
             }
             // else if there is a valid quantity but no unit...
-            else if(qunIndices[1] == -1)
+            else if (qunIndices[1] == -1)
             {
                 // ...and no name, this will color the whole text.
-                if(qunIndices[2] == -1)
+                if (qunIndices[2] == -1)
                     colorEndIndex = length;
                     // ...and a valid name, this will color quantity.
                 else
@@ -233,7 +256,7 @@ public class ShoppingListTabFragment extends Fragment
             else
             {
                 // and no name, this will color the whole text.
-                if(qunIndices[2] == -1)
+                if (qunIndices[2] == -1)
                     colorEndIndex = length;
                     // and a valid name, this will color quantity and unit.
                 else
@@ -254,7 +277,6 @@ public class ShoppingListTabFragment extends Fragment
             editing = false;
         }
     }
-
 
 
 }

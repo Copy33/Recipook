@@ -58,5 +58,9 @@
     <string name="detail_fab_item_edit_label">Edit</string>
     <string name="detail_fab_item_share_label">Share</string>
     <string name="detail_fab_item_add_to_shopping_list_label">Add to Shopping List</string>
+    
+    <!-- Shopping List -->
+    <string name="shopping_list_clear_text_empty">Select ingredients to clear</string>
+    <string name="shopping_list_clear_text_non_empty">Cleared selected ingredients</string>
 
 </resources>

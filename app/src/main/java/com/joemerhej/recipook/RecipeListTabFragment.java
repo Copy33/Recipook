@@ -44,11 +44,6 @@ public class RecipeListTabFragment extends Fragment
         }
     };
 
-    public MainActivity.OnMainFabClickListener getMainFabClickListener()
-    {
-        return mMainFabClickListener;
-    }
-
 
     // every fragment requires a default constructor and a Instance method
     public RecipeListTabFragment()
